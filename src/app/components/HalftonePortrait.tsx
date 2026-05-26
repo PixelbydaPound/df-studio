@@ -3,11 +3,29 @@ import portraitImage from "figma:asset/a96981bb6877cda98199de6acc8b2114d354d90a.
 import "./HalftonePortrait.css";
 
 const SIZE = 120;
-const DOT_SPACING = 3;
+const DOT_SPACING = 2.5;
+const DENSITY_THRESHOLD = 0.08;
 const INFLUENCE_RADIUS = 40;
 const PUSH_STRENGTH = 3.2;
 const SPRING = 0.14;
 const DAMPING = 0.8;
+
+/** Matches CSS object-fit: cover + object-position: center */
+function drawImageCover(
+  ctx: CanvasRenderingContext2D,
+  img: HTMLImageElement,
+  size: number,
+) {
+  const iw = img.naturalWidth;
+  const ih = img.naturalHeight;
+  const scale = Math.max(size / iw, size / ih);
+  const sw = size / scale;
+  const sh = size / scale;
+  const sx = (iw - sw) / 2;
+  const sy = (ih - sh) / 2;
+
+  ctx.drawImage(img, sx, sy, sw, sh, 0, 0, size, size);
+}
 
 type Dot = {
   baseX: number;
@@ -40,7 +58,7 @@ function buildDots(imageData: ImageData, scale: number): Dot[] {
 
       const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
       const density = 1 - luminance;
-      if (density < 0.12) continue;
+      if (density < DENSITY_THRESHOLD) continue;
 
       const bx = x / scale;
       const by = y / scale;
@@ -119,7 +137,7 @@ export function HalftonePortrait() {
         return;
       }
 
-      offCtx.drawImage(img, 0, 0, pixelSize, pixelSize);
+      drawImageCover(offCtx, img, pixelSize);
 
       let imageData: ImageData;
       try {
