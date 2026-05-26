@@ -1,4 +1,26 @@
-const { isAuthenticatedCookie } = require("./_auth-config.cjs");
+const AUTH_COOKIE = "df_site_auth";
+
+function getAuthToken() {
+  return (
+    process.env.AUTH_SECRET ||
+    process.env.VITE_AUTH_SECRET ||
+    "dev-secret-change-me"
+  );
+}
+
+function isAuthenticatedCookie(cookieHeader) {
+  if (!cookieHeader) return false;
+
+  const cookies = cookieHeader.split(";").map((part) => part.trim());
+  const authCookie = cookies.find((cookie) =>
+    cookie.startsWith(`${AUTH_COOKIE}=`),
+  );
+
+  if (!authCookie) return false;
+
+  const value = authCookie.slice(`${AUTH_COOKIE}=`.length);
+  return value === getAuthToken();
+}
 
 module.exports = async (req, res) => {
   if (req.method !== "GET") {

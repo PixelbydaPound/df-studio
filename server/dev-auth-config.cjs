@@ -59,7 +59,6 @@ function readRequestPassword(body) {
 }
 
 module.exports = {
-  AUTH_COOKIE,
   buildAuthCookie,
   isAuthenticatedCookie,
   readRequestPassword,

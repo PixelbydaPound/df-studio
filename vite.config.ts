@@ -10,7 +10,7 @@ const {
   isAuthenticatedCookie,
   readRequestPassword,
   validatePassword,
-} = require('./api/_auth-config.cjs')
+} = require('./server/dev-auth-config.cjs')
 
 
 function figmaAssetResolver() {
