@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import portraitImage from "figma:asset/a96981bb6877cda98199de6acc8b2114d354d90a.png";
+import "./HalftonePortrait.css";
 
 const SIZE = 120;
 const DOT_SPACING = 3;
@@ -63,24 +64,33 @@ function buildDots(imageData: ImageData, scale: number): Dot[] {
   return dots;
 }
 
+function dotsSettled(dots: Dot[]): boolean {
+  for (const dot of dots) {
+    if (
+      Math.abs(dot.x - dot.baseX) > 0.05 ||
+      Math.abs(dot.y - dot.baseY) > 0.05 ||
+      Math.abs(dot.vx) > 0.01 ||
+      Math.abs(dot.vy) > 0.01
+    ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 export function HalftonePortrait() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointerRef = useRef({ x: -999, y: -999, active: false });
+  const hoveringRef = useRef(false);
   const dotsRef = useRef<Dot[]>([]);
   const frameRef = useRef<number>(0);
-  const [ready, setReady] = useState(false);
   const [staticFallback, setStaticFallback] = useState(false);
 
   useEffect(() => {
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    if (!container || !canvas) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setStaticFallback(true);
-      return;
-    }
+    if (!container || !canvas || staticFallback) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
@@ -126,7 +136,6 @@ export function HalftonePortrait() {
       }
 
       dotsRef.current = dots;
-      setReady(true);
     };
 
     const updatePointer = (clientX: number, clientY: number) => {
@@ -139,18 +148,24 @@ export function HalftonePortrait() {
     };
 
     const onPointerMove = (event: PointerEvent) => {
+      if (!hoveringRef.current) return;
       updatePointer(event.clientX, event.clientY);
     };
 
-    const onPointerLeave = () => {
-      pointerRef.current = { x: -999, y: -999, active: false };
+    const onPointerEnter = () => {
+      hoveringRef.current = true;
+      frameRef.current = requestAnimationFrame(tick);
     };
 
-    const tick = () => {
-      if (disposed) return;
+    const onPointerLeave = () => {
+      hoveringRef.current = false;
+      pointerRef.current = { x: -999, y: -999, active: false };
+      frameRef.current = requestAnimationFrame(tick);
+    };
 
+    const draw = () => {
       const dots = dotsRef.current;
-      const pointer = pointerRef.current;
+      if (dots.length === 0) return;
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, SIZE, SIZE);
@@ -164,7 +179,27 @@ export function HalftonePortrait() {
       ctx.fillRect(0, 0, SIZE, SIZE);
 
       for (const dot of dots) {
-        if (pointer.active) {
+        ctx.fillStyle = `rgba(255, 255, 255, ${dot.alpha})`;
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    };
+
+    const tick = () => {
+      if (disposed) return;
+
+      const dots = dotsRef.current;
+      if (dots.length === 0) return;
+
+      const pointer = pointerRef.current;
+      const isHovering = hoveringRef.current;
+      let moved = false;
+
+      for (const dot of dots) {
+        if (isHovering && pointer.active) {
           const dx = dot.x - pointer.x;
           const dy = dot.y - pointer.y;
           const dist = Math.hypot(dx, dy);
@@ -173,6 +208,7 @@ export function HalftonePortrait() {
             const force = (1 - dist / INFLUENCE_RADIUS) ** 2 * PUSH_STRENGTH;
             dot.vx += (dx / dist) * force;
             dot.vy += (dy / dist) * force;
+            moved = true;
           }
         }
 
@@ -183,92 +219,63 @@ export function HalftonePortrait() {
         dot.x += dot.vx;
         dot.y += dot.vy;
 
-        ctx.fillStyle = `rgba(255, 255, 255, ${dot.alpha})`;
-        ctx.beginPath();
-        ctx.arc(dot.x, dot.y, dot.radius, 0, Math.PI * 2);
-        ctx.fill();
+        if (
+          Math.abs(dot.x - dot.baseX) > 0.05 ||
+          Math.abs(dot.y - dot.baseY) > 0.05 ||
+          Math.abs(dot.vx) > 0.01 ||
+          Math.abs(dot.vy) > 0.01
+        ) {
+          moved = true;
+        }
       }
 
-      ctx.restore();
-      frameRef.current = requestAnimationFrame(tick);
+      if (isHovering || moved) {
+        draw();
+      }
+
+      if (isHovering || !dotsSettled(dots)) {
+        frameRef.current = requestAnimationFrame(tick);
+      }
     };
 
     img.onload = init;
     img.onerror = fail;
     img.src = portraitImage;
 
-    container.addEventListener("pointermove", onPointerMove);
+    container.addEventListener("pointerenter", onPointerEnter);
     container.addEventListener("pointerleave", onPointerLeave);
-    container.addEventListener("pointerdown", onPointerMove);
-
-    frameRef.current = requestAnimationFrame(tick);
+    container.addEventListener("pointermove", onPointerMove);
 
     return () => {
       disposed = true;
       cancelAnimationFrame(frameRef.current);
-      container.removeEventListener("pointermove", onPointerMove);
+      container.removeEventListener("pointerenter", onPointerEnter);
       container.removeEventListener("pointerleave", onPointerLeave);
-      container.removeEventListener("pointerdown", onPointerMove);
+      container.removeEventListener("pointermove", onPointerMove);
     };
+  }, [staticFallback]);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setStaticFallback(true);
+    }
   }, []);
 
   return (
     <div
       ref={containerRef}
+      className={`halftone-portrait${staticFallback ? " halftone-portrait--static" : ""}`}
       role="img"
       aria-label="Daniel"
-      style={{
-        position: "relative",
-        width: `${SIZE}px`,
-        height: `${SIZE}px`,
-        borderRadius: "50%",
-        overflow: "hidden",
-        flexShrink: 0,
-        cursor: "pointer",
-        touchAction: "none",
-        verticalAlign: "middle",
-        display: "inline-block",
-      }}
     >
-      {!ready && !staticFallback && (
-        <img
-          src={portraitImage}
-          alt=""
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "50%",
-          }}
-        />
-      )}
-      {staticFallback ? (
-        <img
-          src={portraitImage}
-          alt=""
-          aria-hidden
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            borderRadius: "50%",
-          }}
-        />
-      ) : (
-        <canvas
-          ref={canvasRef}
-          style={{
-            display: "block",
-            width: "100%",
-            height: "100%",
-            borderRadius: "50%",
-            opacity: ready ? 1 : 0,
-            transition: "opacity 0.2s ease",
-          }}
-        />
+      <img
+        className="halftone-portrait__photo"
+        src={portraitImage}
+        alt=""
+        aria-hidden
+      />
+      {!staticFallback && (
+        <canvas ref={canvasRef} className="halftone-portrait__canvas" />
       )}
     </div>
   );
