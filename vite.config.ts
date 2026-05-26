@@ -5,8 +5,9 @@ import react from '@vitejs/plugin-react'
 import {
   buildAuthCookie,
   isAuthenticatedCookie,
+  readRequestPassword,
   validatePassword,
-} from './lib/auth-config'
+} from './api/_auth-config'
 
 
 function figmaAssetResolver() {
@@ -79,7 +80,7 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
         if (req.url === '/api/login' && req.method === 'POST') {
           try {
             const body = (await readJsonBody(req)) as { password?: string }
-            const password = typeof body.password === 'string' ? body.password : ''
+            const password = readRequestPassword(body)
 
             if (!validatePassword(password)) {
               res.statusCode = 401

@@ -1,21 +1,31 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { buildAuthCookie, validatePassword } from "../lib/auth-config";
-import { readRequestPassword } from "./_request-password";
+import { buildAuthCookie, readRequestPassword, validatePassword } from "./_auth-config";
 
 export default async function handler(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+  request: Request,
+): Promise<Response> {
+  if (request.method !== "POST") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
-  const password = await readRequestPassword(req);
+  let body: unknown;
+
+  try {
+    body = await request.json();
+  } catch {
+    body = null;
+  }
+
+  const password = readRequestPassword(body);
 
   if (!validatePassword(password)) {
-    return res.status(401).json({ error: "Invalid password" });
+    return Response.json({ error: "Invalid password" }, { status: 401 });
   }
 
-  res.setHeader("Set-Cookie", buildAuthCookie());
-  return res.status(200).json({ ok: true });
+  return new Response(JSON.stringify({ ok: true }), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/json",
+      "Set-Cookie": buildAuthCookie(),
+    },
+  });
 }

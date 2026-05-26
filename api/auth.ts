@@ -1,16 +1,15 @@
-import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { isAuthenticatedCookie } from "../lib/auth-config";
+import { isAuthenticatedCookie } from "./_auth-config";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
+export default async function handler(request: Request): Promise<Response> {
+  if (request.method !== "GET") {
+    return Response.json({ error: "Method not allowed" }, { status: 405 });
   }
 
-  const cookieHeader = req.headers.cookie;
+  const cookieHeader = request.headers.get("cookie") ?? undefined;
 
   if (!isAuthenticatedCookie(cookieHeader)) {
-    return res.status(401).json({ authenticated: false });
+    return Response.json({ authenticated: false }, { status: 401 });
   }
 
-  return res.status(200).json({ authenticated: true });
+  return Response.json({ authenticated: true });
 }

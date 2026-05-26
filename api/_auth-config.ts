@@ -37,3 +37,27 @@ export function isAuthenticatedCookie(cookieHeader?: string): boolean {
   const value = authCookie.slice(`${AUTH_COOKIE}=`.length);
   return value === getAuthToken();
 }
+
+function readPasswordFromBody(body: unknown): string {
+  if (body && typeof body === "object" && "password" in body) {
+    const password = (body as { password?: unknown }).password;
+    if (typeof password === "string") {
+      return password;
+    }
+  }
+
+  if (typeof body === "string" && body.length > 0) {
+    try {
+      const parsed = JSON.parse(body) as { password?: unknown };
+      return typeof parsed.password === "string" ? parsed.password : "";
+    } catch {
+      return "";
+    }
+  }
+
+  return "";
+}
+
+export function readRequestPassword(body: unknown): string {
+  return readPasswordFromBody(body);
+}

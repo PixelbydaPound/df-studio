@@ -20,5 +20,5 @@
       "@/*": ["./src/app/*"]
     }
   },
-  "include": ["src", "api", "lib"]
+  "include": ["src", "api"]
 }
