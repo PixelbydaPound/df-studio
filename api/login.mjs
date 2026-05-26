@@ -44,25 +44,29 @@ function readRequestPassword(body) {
   return "";
 }
 
-module.exports = async (req, res) => {
+function sendJson(res, statusCode, payload, headers = {}) {
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json");
+
+  for (const [key, value] of Object.entries(headers)) {
+    res.setHeader(key, value);
+  }
+
+  res.end(JSON.stringify(payload));
+}
+
+export default async function handler(req, res) {
   if (req.method !== "POST") {
-    res.statusCode = 405;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "Method not allowed" }));
+    sendJson(res, 405, { error: "Method not allowed" });
     return;
   }
 
   const password = readRequestPassword(req.body);
 
   if (!validatePassword(password)) {
-    res.statusCode = 401;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "Invalid password" }));
+    sendJson(res, 401, { error: "Invalid password" });
     return;
   }
 
-  res.statusCode = 200;
-  res.setHeader("Content-Type", "application/json");
-  res.setHeader("Set-Cookie", buildAuthCookie());
-  res.end(JSON.stringify({ ok: true }));
-};
+  sendJson(res, 200, { ok: true }, { "Set-Cookie": buildAuthCookie() });
+}

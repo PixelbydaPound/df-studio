@@ -22,17 +22,18 @@ function isAuthenticatedCookie(cookieHeader) {
   return value === getAuthToken();
 }
 
-module.exports = async (req, res) => {
+function sendJson(res, statusCode, payload) {
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json");
+  res.end(JSON.stringify(payload));
+}
+
+export default async function handler(req, res) {
   if (req.method !== "GET") {
-    res.statusCode = 405;
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify({ error: "Method not allowed" }));
+    sendJson(res, 405, { error: "Method not allowed" });
     return;
   }
 
   const authenticated = isAuthenticatedCookie(req.headers.cookie);
-
-  res.statusCode = authenticated ? 200 : 401;
-  res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ authenticated }));
-};
+  sendJson(res, authenticated ? 200 : 401, { authenticated });
+}
