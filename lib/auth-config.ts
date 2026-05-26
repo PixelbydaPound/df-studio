@@ -18,10 +18,10 @@ export function validatePassword(password: string): boolean {
 }
 
 export function buildAuthCookie(): string {
-  const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
+  const secure = process.env.VERCEL === "1" ? "; Secure" : "";
   const maxAge = 60 * 60 * 24 * 30;
 
-  return `${AUTH_COOKIE}=${getAuthToken()}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${maxAge}${secure}`;
+  return `${AUTH_COOKIE}=${getAuthToken()}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure}`;
 }
 
 export function isAuthenticatedCookie(cookieHeader?: string): boolean {
