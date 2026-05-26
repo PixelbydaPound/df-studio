@@ -1,7 +1,5 @@
 import { motion } from "motion/react";
 import { ArrowDown } from "lucide-react";
-import portraitImage from "figma:asset/a96981bb6877cda98199de6acc8b2114d354d90a.png";
-import avatarImage from "figma:asset/97babe4e241b7f49dd489e07cf0b1b719e61f640.png";
 import { HalftonePortrait } from "./HalftonePortrait";
 
 export function Hero() {
