@@ -1,13 +1,16 @@
+import { createRequire } from 'node:module'
 import { defineConfig, loadEnv, type Plugin } from 'vite'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import {
+
+const require = createRequire(import.meta.url)
+const {
   buildAuthCookie,
   isAuthenticatedCookie,
   readRequestPassword,
   validatePassword,
-} from './api/_auth-config'
+} = require('./api/_auth-config.cjs')
 
 
 function figmaAssetResolver() {

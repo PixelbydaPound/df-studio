@@ -1,6 +1,6 @@
-export const AUTH_COOKIE = "df_site_auth";
+const AUTH_COOKIE = "df_site_auth";
 
-export function getAuthToken(): string {
+function getAuthToken() {
   return (
     process.env.AUTH_SECRET ||
     process.env.VITE_AUTH_SECRET ||
@@ -8,23 +8,23 @@ export function getAuthToken(): string {
   );
 }
 
-export function getSitePassword(): string {
+function getSitePassword() {
   return process.env.SITE_PASSWORD || process.env.VITE_SITE_PASSWORD || "";
 }
 
-export function validatePassword(password: string): boolean {
+function validatePassword(password) {
   const expected = getSitePassword();
   return expected.length > 0 && password === expected;
 }
 
-export function buildAuthCookie(): string {
+function buildAuthCookie() {
   const secure = process.env.VERCEL === "1" ? "; Secure" : "";
   const maxAge = 60 * 60 * 24 * 30;
 
   return `${AUTH_COOKIE}=${getAuthToken()}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure}`;
 }
 
-export function isAuthenticatedCookie(cookieHeader?: string): boolean {
+function isAuthenticatedCookie(cookieHeader) {
   if (!cookieHeader) return false;
 
   const cookies = cookieHeader.split(";").map((part) => part.trim());
@@ -38,9 +38,9 @@ export function isAuthenticatedCookie(cookieHeader?: string): boolean {
   return value === getAuthToken();
 }
 
-function readPasswordFromBody(body: unknown): string {
+function readRequestPassword(body) {
   if (body && typeof body === "object" && "password" in body) {
-    const password = (body as { password?: unknown }).password;
+    const password = body.password;
     if (typeof password === "string") {
       return password;
     }
@@ -48,7 +48,7 @@ function readPasswordFromBody(body: unknown): string {
 
   if (typeof body === "string" && body.length > 0) {
     try {
-      const parsed = JSON.parse(body) as { password?: unknown };
+      const parsed = JSON.parse(body);
       return typeof parsed.password === "string" ? parsed.password : "";
     } catch {
       return "";
@@ -58,6 +58,10 @@ function readPasswordFromBody(body: unknown): string {
   return "";
 }
 
-export function readRequestPassword(body: unknown): string {
-  return readPasswordFromBody(body);
-}
+module.exports = {
+  AUTH_COOKIE,
+  buildAuthCookie,
+  isAuthenticatedCookie,
+  readRequestPassword,
+  validatePassword,
+};
