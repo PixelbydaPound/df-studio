@@ -89,14 +89,27 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
     { name: "Contact Me", href: "#contact" }
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    e.preventDefault();
+  const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({ top: offsetTop, behavior: "smooth" });
-      setIsMobileMenuOpen(false);
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
     }
+  };
+
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLElement>,
+    href: string,
+    closeMenu = false,
+  ) => {
+    e.preventDefault();
+
+    if (closeMenu) {
+      setIsMobileMenuOpen(false);
+      window.setTimeout(() => scrollToSection(href), 320);
+      return;
+    }
+
+    scrollToSection(href);
   };
 
   return (
@@ -161,11 +174,11 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
                     className="h-12 w-12 mb-2"
                   />
                   {navLinks.map((link, index) => (
-                    <motion.a
+                    <motion.button
                       key={link.name}
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      className="hover:opacity-70 transition-opacity"
+                      type="button"
+                      onClick={(e) => handleNavClick(e, link.href, true)}
+                      className="hover:opacity-70 transition-opacity text-left bg-transparent border-0 p-0 cursor-pointer"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -173,11 +186,10 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
                         fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
                         color: 'white',
                         fontSize: '20px',
-                        textDecoration: 'none'
                       }}
                     >
                       {link.name}
-                    </motion.a>
+                    </motion.button>
                   ))}
                 </div>
               </SheetContent>
