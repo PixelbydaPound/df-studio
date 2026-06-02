@@ -5,7 +5,7 @@ import { NextProject } from "./NextProject";
 import { PreviousProject } from "./PreviousProject";
 import { Footer } from "./Footer";
 import { useState, useEffect } from "react";
-import hritImage from "figma:asset/fd4ed4ac951d5261c50bc5fcc23d06cca40ca2c0.png";
+import hritOverviewImage from "figma:asset/maia-hrit-overview-mockup-candidate.png";
 import workflowImage1 from "figma:asset/48b237b78a7e71c0bd970cc1e8dfc9947d5e5068.png";
 import workflowImage2 from "figma:asset/2cafd9253a0af5993add3d8c4b20a10f5b62ee06.png";
 import workflowImage3 from "figma:asset/3b735189c3104e4de37209bba8022e4fc2a027a7.png";
@@ -310,8 +310,8 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
             <div className="mt-8">
               <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
                 <img 
-                  src={hritImage} 
-                  alt="HRIT Platform Interface"
+                  src={hritOverviewImage} 
+                  alt="MAIA candidate platform mockup on laptop showing job match dashboard and SmartMatch score"
                   className="w-full h-auto"
                   loading="lazy"
                 />
