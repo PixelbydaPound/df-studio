@@ -58,6 +58,7 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
   const [currentManagerImageIndex, setCurrentManagerImageIndex] = useState(0);
   const [currentLegacyImageIndex, setCurrentLegacyImageIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
+  const [isOverviewImageExpanded, setIsOverviewImageExpanded] = useState(false);
   const [isJourneyMapExpanded, setIsJourneyMapExpanded] = useState(false);
   const [isInstructionsExpanded, setIsInstructionsExpanded] = useState(false);
   const [isLegacyImageExpanded, setIsLegacyImageExpanded] = useState(false);
@@ -308,15 +309,50 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
 
             {/* Hero Image */}
             <div className="mt-8">
-              <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+              <div className="relative group bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <button
+                  onClick={() => setIsOverviewImageExpanded(true)}
+                  className="absolute top-4 left-4 z-10 bg-black/80 hover:bg-black border border-white/20 hover:border-white/40 rounded-lg p-2 transition-all duration-200 flex items-center gap-2"
+                  aria-label="Expand overview image"
+                >
+                  <Expand className="w-4 h-4 text-white" />
+                  <span className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">Expand</span>
+                </button>
                 <img 
                   src={hritOverviewImage} 
                   alt="MAIA candidate platform mockup on laptop showing job match dashboard and SmartMatch score"
-                  className="w-full h-auto"
+                  className="w-full h-auto cursor-pointer"
                   loading="lazy"
+                  onClick={() => setIsOverviewImageExpanded(true)}
                 />
               </div>
             </div>
+
+            {/* Overview Image Expanded Modal */}
+            {isOverviewImageExpanded && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+                onClick={() => setIsOverviewImageExpanded(false)}
+              >
+                <button
+                  onClick={() => setIsOverviewImageExpanded(false)}
+                  className="absolute top-6 right-6 z-[110] bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg p-3 transition-all duration-200"
+                  aria-label="Close expanded view"
+                >
+                  <X className="w-6 h-6 text-white" />
+                </button>
+                <div className="max-w-[95vw] max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
+                  <img
+                    src={hritOverviewImage}
+                    alt="MAIA candidate platform mockup on laptop showing job match dashboard and SmartMatch score"
+                    className="w-full h-auto"
+                  />
+                </div>
+              </motion.div>
+            )}
 
           </motion.div>
 
