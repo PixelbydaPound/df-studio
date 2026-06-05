@@ -1,3 +1,8 @@
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const { recordEvent } = require("../server/analytics-store.cjs");
+
 const DOD_AUTH_COOKIE = "df_dod_auth";
 
 function getAuthToken() {
@@ -70,6 +75,12 @@ export default async function handler(req, res) {
   if (!validateDodPassword(password)) {
     sendJson(res, 401, { error: "Invalid password" });
     return;
+  }
+
+  try {
+    await recordEvent({ type: "dod_unlock" });
+  } catch {
+    // Login should succeed even if analytics storage fails.
   }
 
   sendJson(res, 200, { ok: true }, { "Set-Cookie": buildDodAuthCookie() });

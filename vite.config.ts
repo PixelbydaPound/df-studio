@@ -14,6 +14,11 @@ const {
   validatePassword,
   validateDodPassword,
 } = require('./server/dev-auth-config.cjs')
+const {
+  readStats,
+  recordEvent,
+  VALID_EVENT_TYPES,
+} = require('./server/analytics-store.cjs')
 
 
 function figmaAssetResolver() {
@@ -130,6 +135,12 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
               return
             }
 
+            try {
+              await recordEvent({ type: 'dod_unlock' })
+            } catch {
+              // Login should succeed even if analytics storage fails.
+            }
+
             res.statusCode = 200
             res.setHeader('Content-Type', 'application/json')
             res.setHeader('Set-Cookie', buildDodAuthCookie())
@@ -138,6 +149,69 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
             res.statusCode = 400
             res.setHeader('Content-Type', 'application/json')
             res.end(JSON.stringify({ error: 'Invalid request' }))
+          }
+
+          return
+        }
+
+        if (req.url === '/api/analytics/stats' && req.method === 'GET') {
+          if (!isAuthenticatedCookie(req.headers.cookie)) {
+            res.statusCode = 401
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'Unauthorized' }))
+            return
+          }
+
+          try {
+            const stats = await readStats()
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify(stats))
+          } catch {
+            res.statusCode = 500
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'Failed to read analytics' }))
+          }
+
+          return
+        }
+
+        if (req.url === '/api/analytics/event' && req.method === 'POST') {
+          try {
+            const body = (await readJsonBody(req)) as {
+              type?: string
+              projectId?: string
+            }
+
+            if (
+              !body ||
+              typeof body.type !== 'string' ||
+              !VALID_EVENT_TYPES.has(body.type)
+            ) {
+              res.statusCode = 400
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Invalid event' }))
+              return
+            }
+
+            const stats = await recordEvent({
+              type: body.type,
+              projectId:
+                typeof body.projectId === 'string' ? body.projectId : undefined,
+            })
+
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ ok: true, updatedAt: stats.updatedAt }))
+          } catch (error) {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json')
+            res.end(
+              JSON.stringify({
+                error:
+                  error instanceof Error ? error.message : 'Invalid request',
+              }),
+            )
           }
 
           return

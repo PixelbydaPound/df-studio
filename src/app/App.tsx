@@ -12,6 +12,12 @@ import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { BlurReveal } from "./components/BlurReveal";
 import { CaseStudyPasswordModal } from "./components/CaseStudyPasswordModal";
+import { AnalyticsDashboard } from "./components/AnalyticsDashboard";
+import {
+  isAnalyticsDashboardEnabled,
+  trackCaseStudyView,
+  trackPortfolioSession,
+} from "./lib/analytics";
 import { AlliedCreditProject } from "./components/AlliedCreditProject";
 import { JuiceUpProject } from "./components/JuiceUpProject";
 import { UrcRecordsProject } from "./components/UrcRecordsProject";
@@ -57,16 +63,30 @@ export default function App() {
   const [showDodModal, setShowDodModal] = useState(false);
   const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
   const [modalProjectTitle, setModalProjectTitle] = useState("DoD case study");
+  const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(
+    () => isAnalyticsDashboardEnabled(),
+  );
 
   useEffect(() => {
     checkDodAuth().then(setDodAuthenticated);
   }, []);
 
+  useEffect(() => {
+    setShowAnalyticsDashboard(isAnalyticsDashboardEnabled());
+  }, [currentPage]);
+
   const navigateToProject = useCallback((projectId: string) => {
+    trackCaseStudyView(projectId);
     setPageHistory((prev) => [...prev, projectId]);
     setCurrentPage(projectId);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
+
+  useEffect(() => {
+    if (currentPage === "home") {
+      trackPortfolioSession();
+    }
+  }, [currentPage]);
 
   const handleNavigateToProject = useCallback(
     async (projectId: string) => {
@@ -296,6 +316,17 @@ export default function App() {
           projectTitle={modalProjectTitle}
           onAuthenticated={handleDodAuthenticated}
           onCancel={handleDodModalCancel}
+        />
+      )}
+
+      {showAnalyticsDashboard && (
+        <AnalyticsDashboard
+          onClose={() => {
+            setShowAnalyticsDashboard(false);
+            const url = new URL(window.location.href);
+            url.searchParams.delete("analytics");
+            window.history.replaceState({}, "", url.toString());
+          }}
         />
       )}
     </div>
