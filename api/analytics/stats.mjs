@@ -1,7 +1,10 @@
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { readStats } = require("../../server/analytics-store.cjs");
+const {
+  isStorageConfigured,
+  readStats,
+} = require("../../server/analytics-store.cjs");
 const { isAuthenticatedCookie } = require("../../server/dev-auth-config.cjs");
 
 function sendJson(res, statusCode, payload) {
@@ -23,7 +26,10 @@ export default async function handler(req, res) {
 
   try {
     const stats = await readStats();
-    sendJson(res, 200, stats);
+    sendJson(res, 200, {
+      ...stats,
+      storageConfigured: isStorageConfigured(),
+    });
   } catch {
     sendJson(res, 500, { error: "Failed to read analytics" });
   }

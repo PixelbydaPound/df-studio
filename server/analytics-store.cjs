@@ -132,9 +132,25 @@ function useBlobStorage() {
   return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
 }
 
+function isVercelRuntime() {
+  return process.env.VERCEL === "1";
+}
+
+function isStorageConfigured() {
+  if (useBlobStorage()) {
+    return true;
+  }
+
+  return !isVercelRuntime();
+}
+
 async function readStats() {
   if (useBlobStorage()) {
     return readBlobStats();
+  }
+
+  if (isVercelRuntime()) {
+    return createEmptyStats();
   }
 
   return readLocalStats();
@@ -147,6 +163,14 @@ async function recordEvent(event) {
 
   if (event.type === "case_study_view" && !sanitizeProjectId(event.projectId)) {
     throw new Error("Invalid project id");
+  }
+
+  if (!isStorageConfigured()) {
+    const error = new Error(
+      "Analytics storage is not configured. Link a Vercel Blob store to this project.",
+    );
+    error.code = "STORAGE_NOT_CONFIGURED";
+    throw error;
   }
 
   const current = await readStats();
@@ -165,6 +189,7 @@ module.exports = {
   BLOB_PATHNAME,
   LOCAL_DATA_FILE,
   createEmptyStats,
+  isStorageConfigured,
   readStats,
   recordEvent,
   sanitizeProjectId,

@@ -50,21 +50,34 @@ export type PortfolioStats = {
     at: string;
   }>;
   updatedAt: string;
+  storageConfigured?: boolean;
 };
 
-export async function fetchPortfolioStats(): Promise<PortfolioStats | null> {
+export type PortfolioStatsResult =
+  | { status: "ok"; stats: PortfolioStats }
+  | { status: "unauthorized" }
+  | { status: "error" };
+
+export async function fetchPortfolioStats(): Promise<PortfolioStatsResult> {
   try {
     const response = await fetch("/api/analytics/stats", {
       credentials: "include",
     });
 
-    if (!response.ok) {
-      return null;
+    if (response.status === 401) {
+      return { status: "unauthorized" };
     }
 
-    return (await response.json()) as PortfolioStats;
+    if (!response.ok) {
+      return { status: "error" };
+    }
+
+    return {
+      status: "ok",
+      stats: (await response.json()) as PortfolioStats,
+    };
   } catch {
-    return null;
+    return { status: "error" };
   }
 }
 

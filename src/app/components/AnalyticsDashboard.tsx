@@ -32,15 +32,28 @@ function formatEventLabel(type: string): string {
 export function AnalyticsDashboard({ onClose }: AnalyticsDashboardProps) {
   const [stats, setStats] = useState<PortfolioStats | null>(null);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
-    fetchPortfolioStats().then((data) => {
-      if (!cancelled) {
-        setStats(data);
-        setLoading(false);
+    fetchPortfolioStats().then((result) => {
+      if (cancelled) return;
+
+      if (result.status === "ok") {
+        setStats(result.stats);
+        setErrorMessage(null);
+      } else if (result.status === "unauthorized") {
+        setStats(null);
+        setErrorMessage(
+          "You need to be signed in to the portfolio before opening this dashboard.",
+        );
+      } else {
+        setStats(null);
+        setErrorMessage("Unable to load analytics right now. Try again shortly.");
       }
+
+      setLoading(false);
     });
 
     return () => {
@@ -80,15 +93,19 @@ export function AnalyticsDashboard({ onClose }: AnalyticsDashboardProps) {
           <p className="analytics-dashboard__loading">Loading analytics...</p>
         )}
 
-        {!loading && !stats && (
-          <p className="analytics-dashboard__empty">
-            Unable to load analytics. Check that you are signed in and storage is
-            configured.
-          </p>
+        {!loading && errorMessage && (
+          <p className="analytics-dashboard__empty">{errorMessage}</p>
         )}
 
         {!loading && stats && (
           <>
+            {stats.storageConfigured === false && (
+              <p className="analytics-dashboard__empty" style={{ marginBottom: 16 }}>
+                Analytics storage is not connected yet. In Vercel, create a Blob
+                store, link it to this project, redeploy, then revisit this page.
+              </p>
+            )}
+
             <div className="analytics-dashboard__grid">
               <div className="analytics-dashboard__card">
                 <div className="analytics-dashboard__card-label">

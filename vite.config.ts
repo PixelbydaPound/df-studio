@@ -15,6 +15,7 @@ const {
   validateDodPassword,
 } = require('./server/dev-auth-config.cjs')
 const {
+  isStorageConfigured,
   readStats,
   recordEvent,
   VALID_EVENT_TYPES,
@@ -166,7 +167,12 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
             const stats = await readStats()
             res.statusCode = 200
             res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify(stats))
+            res.end(
+              JSON.stringify({
+                ...stats,
+                storageConfigured: isStorageConfigured(),
+              }),
+            )
           } catch {
             res.statusCode = 500
             res.setHeader('Content-Type', 'application/json')

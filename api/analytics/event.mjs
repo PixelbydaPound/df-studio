@@ -46,6 +46,14 @@ export default async function handler(req, res) {
 
     sendJson(res, 200, { ok: true, updatedAt: stats.updatedAt });
   } catch (error) {
+    if (error && typeof error === "object" && error.code === "STORAGE_NOT_CONFIGURED") {
+      sendJson(res, 503, {
+        error: error.message,
+        code: "STORAGE_NOT_CONFIGURED",
+      });
+      return;
+    }
+
     sendJson(res, 400, {
       error: error instanceof Error ? error.message : "Invalid request",
     });
