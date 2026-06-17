@@ -46,13 +46,14 @@ export function Experience() {
     {
       id: "localfluxai",
       title: "Product Designer",
-      company: "Local Flux AI",
-      period: "Jan 2019 – Current",
+      company: "Local Flux",
+      period: "Nov 2025 – Current",
       logo: localfluxaiLogo,
       color: "#8B5CF6",
       responsibilities: [
-        "Started with DFStudio delivering end-to-end design and digital services (web, branding, UI/UX, SaaS).",
-        "Evolved into Local Flux AI, where I integrate design with AI-driven development, smart funnels, and automation to help businesses scale and grow."
+        "Product Strategy and UX execution for small businesses and B2C platforms.",
+        "UX strategy, conversion-focused experiences, digital product architecture, and end-to-end delivery from concept through launch.",
+        "Evolved from DFStudio into Local Flux in Nov 2025, integrating design with smart funnels and automation to help businesses scale and grow."
       ]
     }
   ];
