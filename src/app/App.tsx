@@ -11,7 +11,6 @@ import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { BlurReveal } from "./components/BlurReveal";
-import { CaseStudyPasswordModal } from "./components/CaseStudyPasswordModal";
 import { AnalyticsDashboard } from "./components/AnalyticsDashboard";
 import {
   isAnalyticsDashboardEnabled,
@@ -21,11 +20,6 @@ import {
 import { AlliedCreditProject } from "./components/AlliedCreditProject";
 import { JuiceUpProject } from "./components/JuiceUpProject";
 import { UrcRecordsProject } from "./components/UrcRecordsProject";
-import { checkDodAuth } from "./lib/dod-auth";
-import {
-  getDodProtectedProjectTitle,
-  isDodProtectedProject,
-} from "./lib/protected-projects";
 
 const MaiaProject = lazy(() =>
   import("./components/MaiaProject").then((module) => ({
@@ -57,25 +51,15 @@ export default function App() {
   const [currentPage, setCurrentPage] = useState<string>("home");
   const [pageHistory, setPageHistory] = useState<string[]>(["home"]);
   const [blurOpacity, setBlurOpacity] = useState<number>(1);
-  const [dodAuthenticated, setDodAuthenticated] = useState<boolean | null>(
-    null,
-  );
-  const [showDodModal, setShowDodModal] = useState(false);
-  const [pendingProjectId, setPendingProjectId] = useState<string | null>(null);
-  const [modalProjectTitle, setModalProjectTitle] = useState("DoD case study");
   const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(
     () => isAnalyticsDashboardEnabled(),
   );
 
   useEffect(() => {
-    checkDodAuth().then(setDodAuthenticated);
-  }, []);
-
-  useEffect(() => {
     setShowAnalyticsDashboard(isAnalyticsDashboardEnabled());
   }, [currentPage]);
 
-  const navigateToProject = useCallback((projectId: string) => {
+  const handleNavigateToProject = useCallback((projectId: string) => {
     trackCaseStudyView(projectId);
     setPageHistory((prev) => [...prev, projectId]);
     setCurrentPage(projectId);
@@ -85,49 +69,6 @@ export default function App() {
   useEffect(() => {
     if (currentPage === "home") {
       trackPortfolioSession();
-    }
-  }, [currentPage]);
-
-  const handleNavigateToProject = useCallback(
-    async (projectId: string) => {
-      if (!isDodProtectedProject(projectId)) {
-        navigateToProject(projectId);
-        return;
-      }
-
-      const authed = await checkDodAuth();
-      setDodAuthenticated(authed);
-
-      if (authed) {
-        navigateToProject(projectId);
-        return;
-      }
-
-      setPendingProjectId(projectId);
-      setModalProjectTitle(getDodProtectedProjectTitle(projectId));
-      setShowDodModal(true);
-    },
-    [navigateToProject],
-  );
-
-  const handleDodAuthenticated = useCallback(() => {
-    setDodAuthenticated(true);
-    setShowDodModal(false);
-
-    if (pendingProjectId) {
-      navigateToProject(pendingProjectId);
-      setPendingProjectId(null);
-    }
-  }, [navigateToProject, pendingProjectId]);
-
-  const handleDodModalCancel = useCallback(() => {
-    setShowDodModal(false);
-    setPendingProjectId(null);
-
-    if (isDodProtectedProject(currentPage)) {
-      setPageHistory(["home"]);
-      setCurrentPage("home");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [currentPage]);
 
@@ -158,74 +99,32 @@ export default function App() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [currentPage]);
 
-  useEffect(() => {
-    if (!isDodProtectedProject(currentPage)) return;
-
-    let cancelled = false;
-
-    checkDodAuth().then((authed) => {
-      if (cancelled) return;
-
-      setDodAuthenticated(authed);
-
-      if (!authed) {
-        setModalProjectTitle(getDodProtectedProjectTitle(currentPage));
-        setShowDodModal(true);
-      }
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [currentPage]);
-
-  const renderProtectedProject = (
-    projectId: "maia" | "rappi-mix",
-    ProjectComponent: typeof MaiaProject,
-  ) => {
-    if (dodAuthenticated === null) {
-      return (
-        <>
-          <Navigation showBackButton onBack={handleBackToHome} />
-          <ProjectLoading />
-        </>
-      );
-    }
-
-    if (!dodAuthenticated) {
-      return (
-        <>
-          <Navigation showBackButton onBack={handleBackToHome} />
-          {showDodModal && (
-            <CaseStudyPasswordModal
-              projectTitle={modalProjectTitle}
-              onAuthenticated={handleDodAuthenticated}
-              onCancel={handleDodModalCancel}
-            />
-          )}
-        </>
-      );
-    }
-
+  if (currentPage === "maia") {
     return (
       <>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
-          <ProjectComponent
+          <MaiaProject
             onBack={handleBackToHome}
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
       </>
     );
-  };
-
-  if (currentPage === "maia") {
-    return renderProtectedProject("maia", MaiaProject);
   }
 
   if (currentPage === "rappi-mix") {
-    return renderProtectedProject("rappi-mix", HritProject);
+    return (
+      <>
+        <Navigation showBackButton onBack={handleBackToHome} />
+        <Suspense fallback={<ProjectLoading />}>
+          <HritProject
+            onBack={handleBackToHome}
+            onNavigateToProject={handleNavigateToProject}
+          />
+        </Suspense>
+      </>
+    );
   }
 
   if (currentPage === "project-3") {
@@ -310,14 +209,6 @@ export default function App() {
         </BlurReveal>
       </div>
       <ScrollToTop />
-
-      {showDodModal && (
-        <CaseStudyPasswordModal
-          projectTitle={modalProjectTitle}
-          onAuthenticated={handleDodAuthenticated}
-          onCancel={handleDodModalCancel}
-        />
-      )}
 
       {showAnalyticsDashboard && (
         <AnalyticsDashboard

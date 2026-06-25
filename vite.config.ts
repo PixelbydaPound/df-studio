@@ -7,12 +7,9 @@ import react from '@vitejs/plugin-react'
 const require = createRequire(import.meta.url)
 const {
   buildAuthCookie,
-  buildDodAuthCookie,
   isAuthenticatedCookie,
-  isDodAuthenticatedCookie,
   readRequestPassword,
   validatePassword,
-  validateDodPassword,
 } = require('./server/dev-auth-config.cjs')
 const {
   isStorageConfigured,
@@ -72,7 +69,6 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
     configureServer(server) {
       process.env.SITE_PASSWORD = env.SITE_PASSWORD || env.VITE_SITE_PASSWORD
       process.env.AUTH_SECRET = env.AUTH_SECRET || env.VITE_AUTH_SECRET
-      process.env.DOD_CASE_STUDY_PASSWORD = env.DOD_CASE_STUDY_PASSWORD
       process.env.NODE_ENV = 'development'
 
       server.middlewares.use(async (req, res, next) => {
@@ -105,46 +101,6 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
             res.statusCode = 200
             res.setHeader('Content-Type', 'application/json')
             res.setHeader('Set-Cookie', buildAuthCookie())
-            res.end(JSON.stringify({ ok: true }))
-          } catch {
-            res.statusCode = 400
-            res.setHeader('Content-Type', 'application/json')
-            res.end(JSON.stringify({ error: 'Invalid request' }))
-          }
-
-          return
-        }
-
-        if (req.url === '/api/dod-auth' && req.method === 'GET') {
-          const authenticated = isDodAuthenticatedCookie(req.headers.cookie)
-
-          res.statusCode = authenticated ? 200 : 401
-          res.setHeader('Content-Type', 'application/json')
-          res.end(JSON.stringify({ authenticated }))
-          return
-        }
-
-        if (req.url === '/api/dod-login' && req.method === 'POST') {
-          try {
-            const body = (await readJsonBody(req)) as { password?: string }
-            const password = readRequestPassword(body)
-
-            if (!validateDodPassword(password)) {
-              res.statusCode = 401
-              res.setHeader('Content-Type', 'application/json')
-              res.end(JSON.stringify({ error: 'Invalid password' }))
-              return
-            }
-
-            try {
-              await recordEvent({ type: 'dod_unlock' })
-            } catch {
-              // Login should succeed even if analytics storage fails.
-            }
-
-            res.statusCode = 200
-            res.setHeader('Content-Type', 'application/json')
-            res.setHeader('Set-Cookie', buildDodAuthCookie())
             res.end(JSON.stringify({ ok: true }))
           } catch {
             res.statusCode = 400

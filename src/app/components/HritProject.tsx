@@ -45,6 +45,8 @@ import candidateDocuments from "figma:asset/2f9156623a9e6d80a340afa80678bc7c1cfa
 import candidateUploaded from "figma:asset/6625952fa99bbe3e47925ad3e21f86cf6ba5bc55.png";
 import candidateProfile from "figma:asset/36dc0241631664da5a0d1eef60ad17b0f809d3b3.png";
 import candidateSettings from "figma:asset/99c6ebdbf605b0bfa27e682944840e478154afd5.png";
+import mmvUserJourney from "../../assets/MMVUserJourney.png";
+import mmvUserFlow from "../../assets/MMV_UserFlow.png";
 
 interface HritProjectProps {
   onBack: () => void;
@@ -66,6 +68,8 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
   const [isCandidateOnboardingExpanded, setIsCandidateOnboardingExpanded] = useState(false);
   const [isCandidateInterfaceExpanded, setIsCandidateInterfaceExpanded] = useState(false);
   const [isManagerInterfaceExpanded, setIsManagerInterfaceExpanded] = useState(false);
+  const [isMmvUserJourneyExpanded, setIsMmvUserJourneyExpanded] = useState(false);
+  const [isMmvUserFlowExpanded, setIsMmvUserFlowExpanded] = useState(false);
 
   // Array of workflow images for cycling
   const workflowImages = [workflowImage1, workflowImage2, workflowImage3, workflowImage4, workflowImage5];
@@ -201,6 +205,13 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                 style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
               >
                 Research
+              </button>
+              <button 
+                onClick={() => handleScrollToSection('interaction-architecture')}
+                className="block text-left w-full text-white/60 hover:text-white transition-colors cursor-pointer text-sm"
+                style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
+              >
+                Interaction Architecture
               </button>
               <button 
                 onClick={() => handleScrollToSection('key-decisions')}
@@ -667,6 +678,60 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                 </div>
               </div>
 
+              {/* Hiring Manager Deep Dive */}
+              <div className="mt-16">
+                <p className="mt-4 mb-2 text-center text-sm uppercase tracking-widest text-white/40">
+                  Hiring Manager Deep Dive
+                </p>
+                <h3
+                  className="text-xl text-white text-center mb-2"
+                  style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif', fontWeight: 600 }}
+                >
+                  From legacy friction to Maia intervention
+                </h3>
+                <p
+                  className="text-white/60 text-center text-sm mb-8 max-w-2xl mx-auto"
+                  style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.8' }}
+                >
+                  A persona-led journey map tracing seven phases of federal hiring — from vacancy intake through offer — with emotional signal, pain points, and design decisions annotated at each Maia touchpoint.
+                </p>
+
+                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                  <div className="p-6 pb-0">
+                    <h3 className="text-lg text-white" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                      Hiring Manager Journey Map — Monty, GS-14 Program Manager
+                    </h3>
+                    <p className="text-white/40 text-sm mt-1" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                      Seven phases from vacancy identified through offer and close, with emotional arc and AI intervention points.
+                    </p>
+                  </div>
+                  <div className="relative group p-6 pt-4">
+                    <button
+                      onClick={() => setIsMmvUserJourneyExpanded(true)}
+                      className="absolute top-8 right-8 z-10 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg p-2 transition-all duration-200 flex items-center gap-2 group"
+                      aria-label="Expand hiring manager journey map"
+                    >
+                      <Expand className="w-4 h-4 text-white" />
+                      <span className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">Expand</span>
+                    </button>
+                    <img
+                      src={mmvUserJourney}
+                      alt="Hiring Manager Journey Map for Monty, GS-14 Program Manager at a DoD agency — seven phases from vacancy identified through offer and close, showing emotional journey, pain points, and Maia design decisions"
+                      className="w-full h-auto cursor-pointer rounded-lg"
+                      loading="lazy"
+                      onClick={() => setIsMmvUserJourneyExpanded(true)}
+                    />
+                  </div>
+                </div>
+
+                <p
+                  className="text-white/80 mt-8 italic text-center max-w-3xl mx-auto"
+                  style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.8', fontSize: '1.125rem' }}
+                >
+                  Monty is a composite persona representing GS-14 hiring managers at DoD agencies — not an individual on the project team. Phase 04 — receiving 40 unranked names on a certificate with no scoring rationale — became the primary design target for SmartMatch.
+                </p>
+              </div>
+
               {/* Journey Map Expanded Modal */}
               {isJourneyMapExpanded && (
                 <motion.div
@@ -703,6 +768,78 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                       <img
                         src={journeyMapMain}
                         alt="Maia Dual Journey Map — MMV Jobseekers showing 5 stages: Awareness & Onboarding, Exploration & Search, Decision Making, Application, and Post-Application with Candidate, Recruiter/HM, Pain Points, and AI Opportunity rows"
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Hiring Manager Journey Map Expanded Modal */}
+              {isMmvUserJourneyExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+                  onClick={() => setIsMmvUserJourneyExpanded(false)}
+                >
+                  <button
+                    onClick={() => setIsMmvUserJourneyExpanded(false)}
+                    className="absolute top-6 right-6 z-[110] bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg p-3 transition-all duration-200"
+                    aria-label="Close expanded view"
+                  >
+                    <X className="w-6 h-6 text-white" />
+                  </button>
+                  <div className="max-w-[95vw] max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                      <div className="p-6 pb-0">
+                        <h3 className="text-lg text-white" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                          Hiring Manager Journey Map — Monty, GS-14 Program Manager
+                        </h3>
+                        <p className="text-white/40 text-sm mt-1" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                          Seven phases from vacancy identified through offer and close, with emotional arc and AI intervention points.
+                        </p>
+                      </div>
+                      <img
+                        src={mmvUserJourney}
+                        alt="Hiring Manager Journey Map for Monty, GS-14 Program Manager at a DoD agency — seven phases from vacancy identified through offer and close"
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {/* MMV User Flow Expanded Modal */}
+              {isMmvUserFlowExpanded && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+                  onClick={() => setIsMmvUserFlowExpanded(false)}
+                >
+                  <button
+                    onClick={() => setIsMmvUserFlowExpanded(false)}
+                    className="absolute top-6 right-6 z-[110] bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg p-3 transition-all duration-200"
+                    aria-label="Close expanded view"
+                  >
+                    <X className="w-6 h-6 text-white" />
+                  </button>
+                  <div className="max-w-[95vw] max-h-[90vh] overflow-auto" onClick={(e) => e.stopPropagation()}>
+                    <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                      <div className="p-6 pb-0">
+                        <h3 className="text-lg text-white" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                          MMV User Flow — Hiring Manager / Recruiter / Program Manager
+                        </h3>
+                        <p className="text-white/40 text-sm mt-1" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                          One conversation. Six entry points. A single hiring decision.
+                        </p>
+                      </div>
+                      <img
+                        src={mmvUserFlow}
+                        alt="MMV User Flow diagram — SmartMatch, RNA Conversation, Results Shell, conversational refinement, decision flow, and Status Log audit trail for federal hiring managers"
                         className="w-full h-auto"
                       />
                     </div>
@@ -839,6 +976,70 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                   </div>
                 </motion.div>
               )}
+            </div>
+          </motion.div>
+
+          {/* Interaction Architecture Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="lg:col-span-9 mt-16"
+            id="interaction-architecture"
+            style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
+          >
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-4xl" style={{ fontWeight: 500 }}>
+                  Interaction Architecture<span style={{ color: '#EB5097' }}>.</span>
+                </h2>
+                <p className="text-white/60 mt-2">From insight to system design</p>
+                <p
+                  className="text-white text-2xl mt-6"
+                  style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif', fontWeight: 500, lineHeight: '1.4' }}
+                >
+                  One conversation. Six entry points. A single hiring decision.
+                </p>
+                <p className="text-white/80 mt-4 italic" style={{ lineHeight: '1.8', fontSize: '1.125rem' }}>
+                  I collapsed what was previously four separate federal HR systems into a unified session — from intent to offer without leaving the screen.
+                </p>
+              </div>
+
+              <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <div className="p-6 pb-0">
+                  <h3 className="text-lg text-white" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                    MMV User Flow — Hiring Manager / Recruiter / Program Manager
+                  </h3>
+                  <p className="text-white/40 text-sm mt-1" style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                    SmartMatch, RNA Conversation, Results Shell, conversational refinement, decision flow, and Status Log audit trail.
+                  </p>
+                </div>
+                <div className="relative group p-6 pt-4">
+                  <button
+                    onClick={() => setIsMmvUserFlowExpanded(true)}
+                    className="absolute top-8 right-8 z-10 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 rounded-lg p-2 transition-all duration-200 flex items-center gap-2 group"
+                    aria-label="Expand interaction architecture diagram"
+                  >
+                    <Expand className="w-4 h-4 text-white" />
+                    <span className="text-white text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-200">Expand</span>
+                  </button>
+                  <img
+                    src={mmvUserFlow}
+                    alt="MMV User Flow diagram showing six entry points converging on SmartMatch, RNA Conversation, Results Shell, conversational refinement, decision actions, and federal compliance Status Log"
+                    className="w-full h-auto cursor-pointer rounded-lg"
+                    loading="lazy"
+                    onClick={() => setIsMmvUserFlowExpanded(true)}
+                  />
+                </div>
+              </div>
+
+              <p
+                className="text-white/80 italic"
+                style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif', lineHeight: '1.8', fontSize: '1.125rem' }}
+              >
+                Designed around one constraint: a hiring manager should never switch systems to make a hiring decision. Every entry point feeds the same results shell. The dual-state panel unifies SmartMatch assessment and pipeline workspace. The Status Log closes the loop for federal compliance. This wasn&apos;t a UI refresh — it was a structural replacement.
+              </p>
             </div>
           </motion.div>
 
