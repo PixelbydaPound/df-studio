@@ -9,7 +9,7 @@ function getAuthToken() {
 }
 
 function getSitePassword() {
-  return process.env.SITE_PASSWORD || process.env.VITE_SITE_PASSWORD || "";
+  return process.env.SITE_PASSWORD || "";
 }
 
 function validatePassword(password) {

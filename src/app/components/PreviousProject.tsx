@@ -1,5 +1,7 @@
 import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
+import { scrollRevealMotion } from "../lib/motionPresets";
+import { useReducedMotion } from "../lib/useReducedMotion";
 
 interface PreviousProjectProps {
   projectName: string;
@@ -7,49 +9,19 @@ interface PreviousProjectProps {
 }
 
 export function PreviousProject({ projectName, onNavigate }: PreviousProjectProps) {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      viewport={{ once: true }}
-      className="mt-16 mb-12"
-    >
+    <motion.div {...scrollRevealMotion(reducedMotion, 0)} className="mt-16 mb-12">
       <button
+        type="button"
         onClick={onNavigate}
-        className="group flex items-center gap-3 transition-all duration-300"
+        className="portfolio-nav-link portfolio-nav-link--previous group flex items-center gap-3 font-portfolio"
       >
-        <span
-          style={{
-            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-            fontSize: '14px',
-            fontWeight: '400',
-            color: 'rgba(255, 255, 255, 0.5)',
-            letterSpacing: '0.02em',
-            textTransform: 'uppercase',
-          }}
-        >
-          Previous
-        </span>
-        <div className="flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
-          <ArrowLeft
-            className="transition-all duration-300 group-hover:-translate-x-1 group-hover:text-[#EB5097]"
-            style={{
-              width: '16px',
-              height: '16px',
-              color: 'rgba(255, 255, 255, 0.5)',
-            }}
-          />
-          <span
-            className="border-b border-white/20 pb-0.5 transition-all duration-300 group-hover:border-[#EB5097] group-hover:text-white"
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              fontSize: '16px',
-              fontWeight: '400',
-              color: 'rgba(255, 255, 255, 0.7)',
-              letterSpacing: '-0.01em',
-            }}
-          >
+        <span className="text-sm uppercase tracking-wide text-white/50">Previous</span>
+        <div className="flex items-center gap-2">
+          <ArrowLeft className="portfolio-nav-link__arrow w-4 h-4 text-white/50" aria-hidden />
+          <span className="portfolio-nav-link__label pb-0.5 text-base text-white/70 tracking-tight">
             {projectName}
           </span>
         </div>

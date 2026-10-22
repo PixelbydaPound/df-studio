@@ -1,15 +1,45 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { ExternalLink } from "lucide-react";
 import avueLogo from "figma:asset/a70f169fa35e5f08a59d3ce042699d994202ee99.png";
 import mahaloLogo from "figma:asset/53a3832fe7428f6cc52caffe2850d2d69c72806c.png";
 import localfluxaiLogo from "figma:asset/df3c61c545a4c62614ed9f8f4355df8196b5eb3a.png";
+import modmedLotusM from "../../assets/modmed-lotus-m.png";
+import { ScrollReveal } from "./ScrollReveal";
+import { experienceSlideMotion } from "../lib/motionPresets";
+import { useReducedMotion } from "../lib/useReducedMotion";
 
 export function Experience() {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<HTMLDivElement>(null);
-  
+  const reducedMotion = useReducedMotion();
+
   const experiences = [
+    {
+      id: "localfluxai",
+      title: "Product Designer",
+      company: "Local Flux",
+      period: "Nov 2025 – Current",
+      logo: localfluxaiLogo,
+      color: "#8B5CF6",
+      responsibilities: [
+        "Product Strategy and UX execution for small businesses and B2C platforms.",
+        "UX strategy, conversion-focused experiences, digital product architecture, and end-to-end delivery from concept through launch.",
+      ],
+    },
+    {
+      id: "modmed",
+      title: "Senior Product Designer",
+      company: "Modernizing Medicine",
+      period: "Jul – Oct 2025",
+      logo: modmedLotusM,
+      color: "#FFFFFF",
+      logoClass: "w-14 h-14 object-contain",
+      responsibilities: [
+        "Enterprise UX on roles and permissions at the MSO admin layer, part of a multi-product unified authorization program.",
+        "Phase 0–1 design direction for read-only access proof-of-concept, area-level enforcement, and org-admin assignment flows.",
+        "Cross-functional partnership with product and engineering on compliance-oriented admin patterns; initiative ongoing at time of departure.",
+      ],
+    },
     {
       id: "avue",
       title: "Senior Product Designer",
@@ -25,8 +55,8 @@ export function Experience() {
         "Led the design and optimization of HR technology workflows, improving compliance with federal workforce taxonomies and regulations.",
         "Spearheaded the transition from legacy systems to AI-powered conversational experiences, reducing administrative workload by 30% and increasing user adoption by 40%.",
         "Developed role-based access and user journeys, streamlining operations and cutting onboarding time by 25%.",
-        "Created interactive interfaces that improved job matching accuracy and recruitment efficiency by 35%."
-      ]
+        "Created interactive interfaces that improved job matching accuracy and recruitment efficiency by 35%.",
+      ],
     },
     {
       id: "mahalo",
@@ -40,190 +70,100 @@ export function Experience() {
         "Created intuitive, polished UI while maintaining brand consistency and enhancing engagement.",
         "Developed user flows, wireframes, and prototypes, leveraging insights for data-driven decision-making.",
         "Built and maintained scalable design systems to optimize efficiency across projects.",
-        "Partnered with engineers to ensure UX accuracy, supporting a smooth transition from the legacy product to V2—driving a 15% increase in new partnerships in Q1 & Q2 of 2023."
-      ]
+        "Partnered with engineers to ensure UX accuracy, supporting a smooth transition from the legacy product to V2—driving a 15% increase in new partnerships in Q1 & Q2 of 2023.",
+      ],
     },
-    {
-      id: "localfluxai",
-      title: "Product Designer",
-      company: "Local Flux",
-      period: "Nov 2025 – Current",
-      logo: localfluxaiLogo,
-      color: "#8B5CF6",
-      responsibilities: [
-        "Product Strategy and UX execution for small businesses and B2C platforms.",
-        "UX strategy, conversion-focused experiences, digital product architecture, and end-to-end delivery from concept through launch."
-      ]
-    }
   ];
 
   const { scrollYProgress } = useScroll({
     target: timelineRef,
-    offset: ["start 0.6", "end 0.35"]
+    offset: ["start 0.6", "end 0.35"],
   });
 
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section className="mt-23 pt-8 px-6 md:px-12" id="experience" ref={containerRef}>
+    <section className="mt-23 pt-8 px-6 md:px-12 font-portfolio" id="experience" ref={containerRef}>
       <div className="max-w-6xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-4xl md:text-5xl mb-20"
-          style={{ 
-            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-            color: 'white'
-          }}
-        >
-          Experience<span style={{ color: '#EB5097' }}>.</span>
-        </motion.h2>
+        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-20 text-white">
+          Experience<span className="text-[#EB5097]">.</span>
+        </ScrollReveal>
 
         <div className="relative">
-          {/* Experience items */}
           <div className="space-y-24 md:space-y-32" ref={timelineRef}>
-            {/* Timeline container - connects through all icons */}
-            <div 
-              className="absolute left-1/2 hidden md:block pointer-events-none" 
-              style={{ 
-                top: 0, 
-                bottom: '2rem',
-                width: '2px',
-                marginLeft: '-1px'
+            <div
+              className="absolute left-1/2 hidden md:block pointer-events-none"
+              style={{
+                top: 0,
+                bottom: "2rem",
+                width: "2px",
+                marginLeft: "-1px",
               }}
             >
-              {/* Background line */}
-              <div 
-                className="absolute inset-0"
-                style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
-              />
-              {/* Animated stroke line */}
-              <motion.div 
-                className="absolute top-0 left-0 right-0"
-                style={{ 
-                  height: lineHeight,
-                  backgroundColor: 'rgba(255, 255, 255, 0.8)',
-                }}
+              <div className="absolute inset-0 bg-white/10" />
+              <motion.div
+                className="absolute top-0 left-0 right-0 bg-white/80"
+                style={
+                  reducedMotion
+                    ? { height: "100%" }
+                    : { height: lineHeight }
+                }
               />
             </div>
             {experiences.map((exp, index) => (
               <div key={exp.id} className="relative">
-                <div className={`flex flex-col md:flex-row gap-8 items-start ${
-                  index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                }`}>
-                  {/* Content card */}
+                <div
+                  className={`flex flex-col md:flex-row gap-8 items-start ${
+                    index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                  }`}
+                >
                   <motion.div
-                    initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
                     className="flex-1"
+                    {...experienceSlideMotion(reducedMotion, index, "content")}
                   >
-                    <div 
-                      className="border border-white/10 rounded-lg p-8 backdrop-blur-sm"
-                      style={{
-                        background: 'rgba(0, 0, 0, 0.3)'
-                      }}
-                    >
-                      <h3 
-                        className="text-2xl mb-2"
-                        style={{ 
-                          fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                          color: 'white'
-                        }}
-                      >
-                        {exp.title}
-                      </h3>
-                      
+                    <div className="border border-white/10 rounded-lg p-8 backdrop-blur-sm bg-black/30">
+                      <h3 className="text-2xl mb-2 text-white">{exp.title}</h3>
+
                       <ul className="space-y-3 mt-6">
                         {exp.responsibilities.map((resp, idx) => (
-                          <li 
+                          <li
                             key={idx}
-                            className="text-base pl-5 relative"
-                            style={{ 
-                              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                              color: 'rgba(255, 255, 255, 0.7)',
-                              lineHeight: '1.8'
-                            }}
+                            className="text-base pl-5 relative text-white/70 leading-relaxed"
                           >
-                            <span 
-                              className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full"
-                              style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}
-                            />
+                            <span className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-white/50" />
                             {resp}
                           </li>
                         ))}
                       </ul>
 
-                      {exp.link && (
-                        <a
-                          href={exp.link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 mt-6 transition-colors"
-                          style={{ 
-                            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                            color: 'rgba(255, 255, 255, 0.5)'
-                          }}
-                        >
-                          {exp.link.text}
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      )}
                     </div>
                   </motion.div>
 
-                  {/* Timeline icon */}
                   <motion.div
-                    initial={{ opacity: 0, scale: 0 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
                     className="relative z-10 flex-shrink-0 hidden md:flex"
+                    {...experienceSlideMotion(reducedMotion, index, "icon")}
                   >
-                    <div 
+                    <div
                       className="w-16 h-16 rounded-lg flex items-center justify-center overflow-hidden"
-                      style={{ 
+                      style={{
                         backgroundColor: exp.color,
-                        boxShadow: `0 0 0 4px rgba(0, 0, 0, 1), 0 0 0 5px ${exp.color}`
+                        boxShadow: `0 0 0 4px rgba(0, 0, 0, 1), 0 0 0 5px ${exp.color}`,
                       }}
                     >
-                      <img 
-                        src={exp.logo} 
+                      <img
+                        src={exp.logo}
                         alt={`${exp.company} logo`}
-                        className="w-12 h-12 object-contain"
+                        className={exp.logoClass ?? "w-12 h-12 object-contain"}
                       />
                     </div>
                   </motion.div>
 
-                  {/* Company info */}
                   <motion.div
-                    initial={{ opacity: 0, x: index % 2 === 0 ? 50 : -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}
-                    className={`flex-1 ${index % 2 === 0 ? 'md:text-left' : 'md:text-right'}`}
+                    className={`flex-1 ${index % 2 === 0 ? "md:text-left" : "md:text-right"}`}
+                    {...experienceSlideMotion(reducedMotion, index, "meta")}
                   >
-                    <h4 
-                      className="text-xl mb-1"
-                      style={{ 
-                        fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                        color: 'white'
-                      }}
-                    >
-                      {exp.company}
-                    </h4>
-                    <p 
-                      className="text-base"
-                      style={{ 
-                        fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                        color: 'rgba(255, 255, 255, 0.5)'
-                      }}
-                    >
-                      {exp.period}
-                    </p>
+                    <h4 className="text-xl mb-1 text-white">{exp.company}</h4>
+                    <p className="text-base text-white/50">{exp.period}</p>
                   </motion.div>
                 </div>
               </div>

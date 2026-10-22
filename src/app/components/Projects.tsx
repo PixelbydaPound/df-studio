@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ExternalLink, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import maiaImage from "figma:asset/3190ee252e430ddc0a37cd5af483a733ab0fed76.png";
 import hritImage from "figma:asset/fd4ed4ac951d5261c50bc5fcc23d06cca40ca2c0.png";
 import alliedCreditImage from "figma:asset/9daa1e8dfdbd5558b29cc13a81b8a7712ffc0276.png";
@@ -10,7 +10,12 @@ import plantAppImage from "figma:asset/c4ddb26665e31ada9c167dceb2f8a0b59bfb2fa3.
 import freshBarImage from "figma:asset/a510424c2b5d16a68616af145cba0e22c4ae1086.png";
 import appleSpatialImage from "figma:asset/2d4b851546795fc694b24751036686ba1e3e2676.png";
 import juiceUpImage from "figma:asset/ec5c9f654ffd53a331f6467ea48686a76c3c640d.png";
+import juiceUpAndroidPromo from "../../assets/juice-up-android-app-phones.png";
 import urcRecordsImage from "figma:asset/79d52d96b4f36b2e183f9c070df95eb2a06167d9.png";
+import { EnterpriseRolesProjectCardThumb } from "./EnterpriseRolesProjectCardThumb";
+import { ProjectCard } from "./ProjectCard";
+import { scrollRevealMotion } from "../lib/motionPresets";
+import { useReducedMotion } from "../lib/useReducedMotion";
 
 interface ProjectsProps {
   onNavigateToProject?: (projectId: string) => void;
@@ -20,15 +25,17 @@ interface ProjectData {
   id: string;
   title: string;
   description: string;
-  image: string;
+  image?: string;
   link: string;
   company?: string;
   readingTime?: string;
   inConstruction?: boolean;
   imageClassName?: string;
+  thumbnail?: ReactNode;
 }
 
 export function Projects({ onNavigateToProject }: ProjectsProps) {
+  const reducedMotion = useReducedMotion();
   const [isMoreProjectsExpanded, setIsMoreProjectsExpanded] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -58,6 +65,16 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
       readingTime: "10 min",
       image: alliedCreditImage,
       link: "#"
+    },
+    {
+      id: "enterprise-roles",
+      title: "Proactive access control for MSO-scale specialty care",
+      description:
+        "Three months on Phase 0–1 of a multi-year authorization program — org-admin IA, read-only PoC, password-gated prototype on the case study.",
+      company: "| Confidential · Enterprise healthtech |",
+      readingTime: "8 min",
+      thumbnail: <EnterpriseRolesProjectCardThumb />,
+      link: "#"
     }
   ];
 
@@ -65,9 +82,10 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
     {
       id: "juice-up",
       title: "Juice Up — Sip, Energize and Repeat",
-      description: "Rebranded ecommerce web experience",
+      description: "Rebrand, owned checkout & Android mobile app",
       readingTime: "10 min",
-      image: juiceUpImage,
+      image: juiceUpAndroidPromo,
+      imageClassName: "object-contain bg-black",
       link: "#"
     },
     {
@@ -135,242 +153,47 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
   };
 
   return (
-    <section className="pt-10 px-6 md:px-12" id="projects">
+    <section className="pt-10 px-6 md:px-12 font-portfolio" id="projects">
       <div className="max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mb-12"
-        >
-          <h2
-            className="text-4xl md:text-5xl mb-3"
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              color: 'white'
-            }}
-          >
-            Enterprise work<span style={{ color: '#EB5097' }}>.</span>
+        <motion.div {...scrollRevealMotion(reducedMotion, 0)} className="mb-12 font-portfolio">
+          <h2 className="text-4xl md:text-5xl mb-3 text-white">
+            Enterprise work<span style={{ color: "#EB5097" }}>.</span>
           </h2>
-          <p
-            className="text-lg"
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              color: 'rgba(255, 255, 255, 0.6)'
-            }}
-          >
+          <p className="text-lg text-white/60">
             Product design within cross-functional teams at scale
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
           {projects.map((project, index) => (
-            <motion.div
+            <ProjectCard
               key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              onClick={() => !project.inConstruction && onNavigateToProject?.(project.id)}
-              className={`group relative bg-black border border-white/10 rounded-2xl p-8 transition-all duration-300 ${project.inConstruction ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
-              style={{
-                transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                if (!project.inConstruction) {
-                  e.currentTarget.style.borderColor = '#EB5097';
-                  e.currentTarget.style.boxShadow = '0 0 20px rgba(235, 80, 151, 0.2)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!project.inConstruction) {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }
-              }}
-            >
-              {/* Phone Mockup */}
-              <div className="mb-6 flex justify-start group/image">
-                <div className="relative w-full h-64 rounded-3xl overflow-hidden bg-white shadow-2xl">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className={`w-full h-full ${project.imageClassName || 'object-cover'}`}
-                  />
-                </div>
-              </div>
-
-              {/* Content */}
-              <div>
-                <h3 
-                  className="text-2xl mb-3 flex items-center gap-2"
-                  style={{ 
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'white'
-                  }}
-                >
-                  {project.title}
-                  <ExternalLink className="w-5 h-5 text-white/60 group-hover:text-white transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </h3>
-                {('inConstruction' in project && project.inConstruction) && (
-                  <p 
-                    className="text-sm mb-2"
-                    style={{ 
-                      fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: '#EB5097'
-                    }}
-                  >
-                    In construction..
-                  </p>
-                )}
-                <p
-                  className="text-base"
-                  style={{
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'rgba(255, 255, 255, 0.6)'
-                  }}
-                >
-                  {project.description}
-                </p>
-                {project.company && (
-                  <p
-                    className="text-sm mt-2"
-                    style={{
-                      fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: 'rgba(255, 255, 255, 0.4)'
-                    }}
-                  >
-                    {project.company}
-                  </p>
-                )}
-                {project.readingTime && (
-                  <p
-                    className="text-sm mt-3"
-                    style={{
-                      fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: 'rgba(255, 255, 255, 0.4)'
-                    }}
-                  >
-                    Estimated reading time: {project.readingTime}
-                  </p>
-                )}
-              </div>
-            </motion.div>
+              project={project}
+              index={index}
+              onOpen={onNavigateToProject}
+            />
           ))}
         </div>
 
         {/* Solo builds Divider */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-          className="mt-24 mb-12"
+          {...scrollRevealMotion(reducedMotion, 0.2)}
+          className="mt-24 mb-12 font-portfolio"
         >
-          <h2
-            className="text-4xl md:text-5xl mb-3"
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              color: 'white'
-            }}
-          >
-            Solo builds<span style={{ color: '#EB5097' }}>.</span>
+          <h2 className="text-4xl md:text-5xl mb-3 text-white">
+            Solo builds<span style={{ color: "#EB5097" }}>.</span>
           </h2>
-          <p
-            className="text-lg"
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              color: 'rgba(255, 255, 255, 0.6)'
-            }}
-          >
-            Designed, architected, shipped — end to end
-          </p>
+          <p className="text-lg text-white/60">Designed, architected, shipped — end to end</p>
         </motion.div>
 
-        {/* Solo builds Projects Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {zeroToOneProjects.map((project, index) => (
-            <motion.div
+            <ProjectCard
               key={project.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              onClick={() => !project.inConstruction && onNavigateToProject?.(project.id)}
-              className={`group relative bg-black border border-white/10 rounded-2xl p-8 transition-all duration-300 ${project.inConstruction ? 'cursor-not-allowed opacity-70' : 'cursor-pointer'}`}
-              style={{
-                transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                if (!project.inConstruction) {
-                  e.currentTarget.style.borderColor = '#EB5097';
-                  e.currentTarget.style.boxShadow = '0 0 20px rgba(235, 80, 151, 0.2)';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!project.inConstruction) {
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-                  e.currentTarget.style.boxShadow = 'none';
-                }
-              }}
-            >
-              {/* Phone Mockup */}
-              <div className="mb-6 flex justify-start group/image">
-                <div className="relative w-full h-64 rounded-3xl overflow-hidden bg-white shadow-2xl">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className={`w-full h-full ${project.imageClassName || 'object-cover'}`}
-                  />
-                </div>
-              </div>
-
-              {/* Content */}
-              <div>
-                <h3 
-                  className="text-2xl mb-3 flex items-center gap-2"
-                  style={{ 
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'white'
-                  }}
-                >
-                  {project.title}
-                  <ExternalLink className="w-5 h-5 text-white/60 group-hover:text-white transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                </h3>
-                {('inConstruction' in project && project.inConstruction) && (
-                  <p 
-                    className="text-sm mb-2"
-                    style={{ 
-                      fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: '#EB5097'
-                    }}
-                  >
-                    In construction..
-                  </p>
-                )}
-                <p 
-                  className="text-base"
-                  style={{ 
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'rgba(255, 255, 255, 0.6)'
-                  }}
-                >
-                  {project.description}
-                </p>
-                {project.readingTime && (
-                  <p 
-                    className="text-sm mt-3"
-                    style={{ 
-                      fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                      color: 'rgba(255, 255, 255, 0.4)'
-                    }}
-                  >
-                    Estimated reading time: {project.readingTime}
-                  </p>
-                )}
-              </div>
-            </motion.div>
+              project={project}
+              index={index}
+              onOpen={onNavigateToProject}
+            />
           ))}
         </div>
 
@@ -382,44 +205,17 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
           viewport={{ once: true }}
           className="mt-6"
         >
-          <div 
-            className="relative bg-black border border-white/10 rounded-2xl overflow-hidden transition-all duration-300"
-            style={{
-              padding: '24px',
-              borderRadius: '16px',
-              transition: 'border-color 0.3s ease, box-shadow 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = '#EB5097';
-              e.currentTarget.style.boxShadow = '0 0 20px rgba(235, 80, 151, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
+          <div className="portfolio-card font-portfolio overflow-hidden p-6">
             {/* Title Row */}
             <div 
               className="flex items-center justify-between cursor-pointer"
               onClick={() => setIsMoreProjectsExpanded(!isMoreProjectsExpanded)}
             >
               <div>
-                <h3 
-                  className="text-2xl mb-1"
-                  style={{ 
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'white'
-                  }}
-                >
+                <h3 className="text-2xl mb-1 text-white">
                   More Projects
                 </h3>
-                <p 
-                  className="text-sm"
-                  style={{ 
-                    fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                    color: 'rgba(255, 255, 255, 0.4)'
-                  }}
-                >
+                <p className="text-sm text-white/40">
                   {isMoreProjectsExpanded ? 'Click to collapse' : 'Click to view additional work'}
                 </p>
               </div>
@@ -487,31 +283,13 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
 
                       {/* Project Info */}
                       <div className="mt-6 text-center">
-                        <h4
-                          className="text-xl mb-1"
-                          style={{ 
-                            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                            color: 'white'
-                          }}
-                        >
+                        <h4 className="text-xl mb-1 text-white">
                           {moreProjectsImages[currentSlide].title}
                         </h4>
-                        <p
-                          className="text-sm mb-2"
-                          style={{ 
-                            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                            color: '#EB5097'
-                          }}
-                        >
+                        <p className="text-sm mb-2 text-[#EB5097]">
                           {moreProjectsImages[currentSlide].subtitle}
                         </p>
-                        <p
-                          className="text-sm"
-                          style={{ 
-                            fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                            color: 'rgba(255, 255, 255, 0.6)'
-                          }}
-                        >
+                        <p className="text-sm text-white/60">
                           {moreProjectsImages[currentSlide].description}
                         </p>
                       </div>

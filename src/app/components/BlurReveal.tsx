@@ -1,15 +1,23 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
+import { blurRevealFilter } from "../lib/motionPresets";
+import { useReducedMotion } from "../lib/useReducedMotion";
 
 interface BlurRevealProps {
   children: React.ReactNode;
   className?: string;
 }
 
-export function BlurReveal({ children, className = '' }: BlurRevealProps) {
+export function BlurReveal({ children, className = "" }: BlurRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
-  const [blurAmount, setBlurAmount] = useState(0.5);
+  const [blurAmount, setBlurAmount] = useState(0);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
+    if (reducedMotion) {
+      setBlurAmount(0);
+      return;
+    }
+
     const handleScroll = () => {
       if (!elementRef.current) return;
 
@@ -48,16 +56,18 @@ export function BlurReveal({ children, className = '' }: BlurRevealProps) {
     // Listen to scroll events
     window.addEventListener('scroll', handleScroll, { passive: true });
     
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [reducedMotion]);
+
+  const filter = blurRevealFilter(reducedMotion, blurAmount);
 
   return (
     <div
       ref={elementRef}
       className={className}
       style={{
-        filter: `blur(${blurAmount}px)`,
-        transition: 'filter 0.3s ease-out',
+        filter,
+        transition: reducedMotion ? undefined : "filter 0.3s cubic-bezier(0.77, 0, 0.175, 1)",
       }}
     >
       {children}

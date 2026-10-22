@@ -1,9 +1,5 @@
 const AUTH_SESSION_KEY = "df_site_authenticated";
 
-function getClientPassword(): string {
-  return import.meta.env.VITE_SITE_PASSWORD || "";
-}
-
 function setClientSession(authenticated: boolean) {
   if (authenticated) {
     sessionStorage.setItem(AUTH_SESSION_KEY, "true");
@@ -11,15 +7,6 @@ function setClientSession(authenticated: boolean) {
   }
 
   sessionStorage.removeItem(AUTH_SESSION_KEY);
-}
-
-function hasClientSession(): boolean {
-  return sessionStorage.getItem(AUTH_SESSION_KEY) === "true";
-}
-
-function validateClientPassword(password: string): boolean {
-  const expected = getClientPassword();
-  return expected.length > 0 && password === expected;
 }
 
 async function tryServerAuth(
@@ -44,10 +31,7 @@ export async function checkAuth(): Promise<boolean> {
     return true;
   }
 
-  if (hasClientSession() && getClientPassword()) {
-    return true;
-  }
-
+  setClientSession(false);
   return false;
 }
 
@@ -65,11 +49,51 @@ export async function login(password: string): Promise<boolean> {
     return true;
   }
 
-  if (validateClientPassword(password)) {
-    setClientSession(true);
+  setClientSession(false);
+  return false;
+}
+
+const ENTERPRISE_ROLES_SESSION_KEY = "df_enterprise_roles_unlocked";
+
+function setEnterpriseRolesClientSession(authenticated: boolean) {
+  if (authenticated) {
+    sessionStorage.setItem(ENTERPRISE_ROLES_SESSION_KEY, "true");
+    return;
+  }
+
+  sessionStorage.removeItem(ENTERPRISE_ROLES_SESSION_KEY);
+}
+
+export function hasEnterpriseRolesClientSession(): boolean {
+  return sessionStorage.getItem(ENTERPRISE_ROLES_SESSION_KEY) === "true";
+}
+
+export async function checkEnterpriseRolesAuth(): Promise<boolean> {
+  const authResponse = await tryServerAuth("/api/enterprise-roles-auth");
+
+  if (authResponse?.ok) {
+    setEnterpriseRolesClientSession(true);
     return true;
   }
 
-  setClientSession(false);
+  setEnterpriseRolesClientSession(false);
+  return false;
+}
+
+export async function loginEnterpriseRoles(password: string): Promise<boolean> {
+  const loginResponse = await tryServerAuth("/api/enterprise-roles-login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ password }),
+  });
+
+  if (loginResponse?.ok) {
+    setEnterpriseRolesClientSession(true);
+    return true;
+  }
+
+  setEnterpriseRolesClientSession(false);
   return false;
 }

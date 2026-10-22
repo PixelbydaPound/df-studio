@@ -17,9 +17,7 @@ import {
   trackCaseStudyView,
   trackPortfolioSession,
 } from "./lib/analytics";
-import { AlliedCreditProject } from "./components/AlliedCreditProject";
-import { JuiceUpProject } from "./components/JuiceUpProject";
-import { UrcRecordsProject } from "./components/UrcRecordsProject";
+import { prefersReducedMotion } from "./lib/useReducedMotion";
 
 const MaiaProject = lazy(() =>
   import("./components/MaiaProject").then((module) => ({
@@ -33,15 +31,33 @@ const HritProject = lazy(() =>
   })),
 );
 
+const AlliedCreditProject = lazy(() =>
+  import("./components/AlliedCreditProject").then((module) => ({
+    default: module.AlliedCreditProject,
+  })),
+);
+
+const JuiceUpProject = lazy(() =>
+  import("./components/JuiceUpProject").then((module) => ({
+    default: module.JuiceUpProject,
+  })),
+);
+
+const UrcRecordsProject = lazy(() =>
+  import("./components/UrcRecordsProject").then((module) => ({
+    default: module.UrcRecordsProject,
+  })),
+);
+
+const EnterpriseRolesProject = lazy(() =>
+  import("./components/EnterpriseRolesProject").then((module) => ({
+    default: module.EnterpriseRolesProject,
+  })),
+);
+
 function ProjectLoading() {
   return (
-    <div
-      className="min-h-[50vh] flex items-center justify-center text-white/50"
-      style={{
-        fontFamily:
-          '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-      }}
-    >
+    <div className="min-h-[50vh] flex items-center justify-center text-white/50 font-portfolio">
       Loading case study...
     </div>
   );
@@ -63,7 +79,10 @@ export default function App() {
     trackCaseStudyView(projectId);
     setPageHistory((prev) => [...prev, projectId]);
     setCurrentPage(projectId);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
   }, []);
 
   useEffect(() => {
@@ -75,7 +94,10 @@ export default function App() {
   const handleBackToHome = () => {
     setPageHistory(["home"]);
     setCurrentPage("home");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+    });
   };
 
   useEffect(() => {
@@ -131,10 +153,26 @@ export default function App() {
     return (
       <>
         <Navigation showBackButton onBack={handleBackToHome} />
-        <AlliedCreditProject
-          onBack={handleBackToHome}
-          onNavigateToProject={handleNavigateToProject}
-        />
+        <Suspense fallback={<ProjectLoading />}>
+          <AlliedCreditProject
+            onBack={handleBackToHome}
+            onNavigateToProject={handleNavigateToProject}
+          />
+        </Suspense>
+      </>
+    );
+  }
+
+  if (currentPage === "enterprise-roles") {
+    return (
+      <>
+        <Navigation showBackButton onBack={handleBackToHome} />
+        <Suspense fallback={<ProjectLoading />}>
+          <EnterpriseRolesProject
+            onBack={handleBackToHome}
+            onNavigateToProject={handleNavigateToProject}
+          />
+        </Suspense>
       </>
     );
   }
@@ -143,10 +181,12 @@ export default function App() {
     return (
       <>
         <Navigation showBackButton onBack={handleBackToHome} />
-        <JuiceUpProject
-          onBack={handleBackToHome}
-          onNavigateToProject={handleNavigateToProject}
-        />
+        <Suspense fallback={<ProjectLoading />}>
+          <JuiceUpProject
+            onBack={handleBackToHome}
+            onNavigateToProject={handleNavigateToProject}
+          />
+        </Suspense>
       </>
     );
   }
@@ -155,10 +195,12 @@ export default function App() {
     return (
       <>
         <Navigation showBackButton onBack={handleBackToHome} />
-        <UrcRecordsProject
-          onBack={handleBackToHome}
-          onNavigateToProject={handleNavigateToProject}
-        />
+        <Suspense fallback={<ProjectLoading />}>
+          <UrcRecordsProject
+            onBack={handleBackToHome}
+            onNavigateToProject={handleNavigateToProject}
+          />
+        </Suspense>
       </>
     );
   }

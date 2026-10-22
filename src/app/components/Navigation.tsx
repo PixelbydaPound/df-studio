@@ -9,6 +9,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "./ui/sheet";
+import { prefersReducedMotion } from "../lib/useReducedMotion";
 
 interface NavigationProps {
   showBackButton?: boolean;
@@ -92,7 +93,10 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      element.scrollIntoView({
+        behavior: prefersReducedMotion() ? "auto" : "smooth",
+        block: "start",
+      });
     }
   };
 
@@ -114,7 +118,7 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
 
   return (
     <nav 
-      className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 flex items-center justify-between"
+      className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 flex items-center justify-between font-portfolio"
       style={{ 
         height: '64px',
         backgroundColor: 'rgba(0, 0, 0, 0.3)',
@@ -128,14 +132,10 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
         {showBackButton && onBack ? (
           <motion.button
             onClick={onBack}
-            className="flex items-center gap-2 hover:opacity-70 transition-opacity"
+            className="flex items-center gap-2 hover:opacity-70 transition-opacity text-white"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
-            style={{
-              fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-              color: 'white',
-            }}
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Home</span>
@@ -178,15 +178,10 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
                       key={link.name}
                       type="button"
                       onClick={(e) => handleNavClick(e, link.href, true)}
-                      className="hover:opacity-70 transition-opacity text-left bg-transparent border-0 p-0 cursor-pointer"
+                      className="hover:opacity-70 transition-opacity text-left bg-transparent border-0 p-0 cursor-pointer text-white text-xl"
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.05 }}
-                      style={{
-                        fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                        color: 'white',
-                        fontSize: '20px',
-                      }}
                     >
                       {link.name}
                     </motion.button>
@@ -206,13 +201,7 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
               key={link.name}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="hover:opacity-70 transition-opacity"
-              style={{
-                fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                color: 'white',
-                fontSize: '14px',
-                textDecoration: 'none'
-              }}
+              className="hover:opacity-70 transition-opacity text-white text-sm no-underline"
             >
               {link.name}
             </a>
@@ -221,15 +210,9 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
       )}
 
       {/* Right side - Location and Time Info */}
-      <div 
-        className="text-right"
-        style={{ 
-          fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-          fontSize: '12px'
-        }}
-      >
-        <div style={{ color: 'white' }}>Based in Coral Springs, Florida</div>
-        <div style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+      <div className="text-right text-xs">
+        <div className="text-white">Based in Coral Springs, Florida</div>
+        <div className="text-white/60">
           Local Time {formatTime()} GMT−4{temperature !== null && ` · ${temperature}°F`}
         </div>
       </div>

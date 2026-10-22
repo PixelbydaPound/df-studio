@@ -31,7 +31,7 @@ export function Footer() {
   }, []);
 
   return (
-    <footer className="relative py-12 px-6 md:px-12 border-t border-white/10">
+    <footer className="relative py-12 px-6 md:px-12 border-t border-white/10 font-portfolio">
       {/* Blur effect overlay */}
       <div 
         className="absolute inset-0 pointer-events-none"
@@ -56,22 +56,12 @@ export function Footer() {
                 href="https://df-studio.net" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="hover:opacity-70 transition-opacity"
-                style={{ 
-                  fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                  color: 'white'
-                }}
+                className="hover:opacity-70 transition-opacity text-white"
               >
                 df-studio.net
               </a>
             </div>
-            <p 
-              className="text-sm mb-4"
-              style={{ 
-                fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif',
-                color: 'rgba(255, 255, 255, 0.7)'
-              }}
-            >
+            <p className="text-sm mb-4 text-white/70">
               Design, code, and motion by me.
             </p>
             

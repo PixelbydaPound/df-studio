@@ -6,10 +6,18 @@ type ProtectedAppProps = {
   children: ReactNode;
 };
 
+const skipSiteGateInDev = import.meta.env.DEV;
+
 export function ProtectedApp({ children }: ProtectedAppProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(
+    skipSiteGateInDev ? true : null,
+  );
 
   useEffect(() => {
+    if (skipSiteGateInDev) {
+      return;
+    }
+
     let isMounted = true;
 
     checkAuth().then((authenticated) => {

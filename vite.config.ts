@@ -7,8 +7,11 @@ import react from '@vitejs/plugin-react'
 const require = createRequire(import.meta.url)
 const {
   buildAuthCookie,
+  buildEnterpriseRolesAuthCookie,
   isAuthenticatedCookie,
+  isEnterpriseRolesAuthenticatedCookie,
   readRequestPassword,
+  validateEnterpriseRolesPassword,
   validatePassword,
 } = require('./server/dev-auth-config.cjs')
 const {
@@ -67,7 +70,10 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
   return {
     name: 'auth-api-dev',
     configureServer(server) {
-      process.env.SITE_PASSWORD = env.SITE_PASSWORD || env.VITE_SITE_PASSWORD
+      process.env.SITE_PASSWORD = env.SITE_PASSWORD
+      if (env.ENTERPRISE_ROLES_PASSWORD) {
+        process.env.ENTERPRISE_ROLES_PASSWORD = env.ENTERPRISE_ROLES_PASSWORD
+      }
       process.env.AUTH_SECRET = env.AUTH_SECRET || env.VITE_AUTH_SECRET
       process.env.NODE_ENV = 'development'
 
@@ -83,6 +89,40 @@ function authApiDevPlugin(env: Record<string, string>): Plugin {
           res.statusCode = authenticated ? 200 : 401
           res.setHeader('Content-Type', 'application/json')
           res.end(JSON.stringify({ authenticated }))
+          return
+        }
+
+        if (req.url === '/api/enterprise-roles-auth' && req.method === 'GET') {
+          const authenticated = isEnterpriseRolesAuthenticatedCookie(req.headers.cookie)
+
+          res.statusCode = authenticated ? 200 : 401
+          res.setHeader('Content-Type', 'application/json')
+          res.end(JSON.stringify({ authenticated }))
+          return
+        }
+
+        if (req.url === '/api/enterprise-roles-login' && req.method === 'POST') {
+          try {
+            const body = (await readJsonBody(req)) as { password?: string }
+            const password = readRequestPassword(body)
+
+            if (!validateEnterpriseRolesPassword(password)) {
+              res.statusCode = 401
+              res.setHeader('Content-Type', 'application/json')
+              res.end(JSON.stringify({ error: 'Invalid password' }))
+              return
+            }
+
+            res.statusCode = 200
+            res.setHeader('Content-Type', 'application/json')
+            res.setHeader('Set-Cookie', buildEnterpriseRolesAuthCookie())
+            res.end(JSON.stringify({ ok: true }))
+          } catch {
+            res.statusCode = 400
+            res.setHeader('Content-Type', 'application/json')
+            res.end(JSON.stringify({ error: 'Invalid request' }))
+          }
+
           return
         }
 
