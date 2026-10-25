@@ -17,6 +17,7 @@ import {
   trackCaseStudyView,
   trackPortfolioSession,
 } from "./lib/analytics";
+import { SHOW_ENTERPRISE_ROLES_CASE_STUDY } from "./lib/featureFlags";
 import { prefersReducedMotion } from "./lib/useReducedMotion";
 
 const MaiaProject = lazy(() =>
@@ -88,6 +89,13 @@ export default function App() {
   useEffect(() => {
     if (currentPage === "home") {
       trackPortfolioSession();
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (currentPage === "enterprise-roles" && !SHOW_ENTERPRISE_ROLES_CASE_STUDY) {
+      setPageHistory(["home"]);
+      setCurrentPage("home");
     }
   }, [currentPage]);
 
@@ -163,15 +171,12 @@ export default function App() {
     );
   }
 
-  if (currentPage === "enterprise-roles") {
+  if (currentPage === "enterprise-roles" && SHOW_ENTERPRISE_ROLES_CASE_STUDY) {
     return (
       <>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
-          <EnterpriseRolesProject
-            onBack={handleBackToHome}
-            onNavigateToProject={handleNavigateToProject}
-          />
+          <EnterpriseRolesProject />
         </Suspense>
       </>
     );

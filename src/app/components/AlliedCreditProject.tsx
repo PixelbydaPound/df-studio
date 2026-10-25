@@ -780,8 +780,8 @@ export function AlliedCreditProject({ onBack, onNavigateToProject }: AlliedCredi
             onNavigate={() => onNavigateToProject?.('maia')}
           />
           <NextProject 
-            projectName="Proactive MSO access control (confidential)"
-            onNavigate={() => onNavigateToProject?.('enterprise-roles')}
+            projectName="Juice Up — E-Commerce & Android App"
+            onNavigate={() => onNavigateToProject?.("juice-up")}
           />
         </div>
       </div>

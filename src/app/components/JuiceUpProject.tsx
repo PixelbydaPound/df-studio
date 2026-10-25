@@ -989,8 +989,8 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
         <div className="mt-32 border-t border-white/10 pt-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <PreviousProject 
-              projectName="Proactive MSO access control"
-              onNavigate={() => onNavigateToProject?.("enterprise-roles")}
+              projectName="Allied Credit Union — Mobile Banking"
+              onNavigate={() => onNavigateToProject?.("project-3")}
             />
             <NextProject 
               projectName="Maia - AI native GovTech HRIT Solution"

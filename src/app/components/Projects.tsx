@@ -14,6 +14,7 @@ import juiceUpAndroidPromo from "../../assets/juice-up-android-app-phones.png";
 import urcRecordsImage from "figma:asset/79d52d96b4f36b2e183f9c070df95eb2a06167d9.png";
 import { EnterpriseRolesProjectCardThumb } from "./EnterpriseRolesProjectCardThumb";
 import { ProjectCard } from "./ProjectCard";
+import { SHOW_ENTERPRISE_ROLES_CASE_STUDY } from "../lib/featureFlags";
 import { scrollRevealMotion } from "../lib/motionPresets";
 import { useReducedMotion } from "../lib/useReducedMotion";
 
@@ -66,16 +67,20 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
       image: alliedCreditImage,
       link: "#"
     },
-    {
-      id: "enterprise-roles",
-      title: "Proactive access control for MSO-scale specialty care",
-      description:
-        "Three months on Phase 0–1 of a multi-year authorization program — org-admin IA, read-only PoC, password-gated prototype on the case study.",
-      company: "| Confidential · Enterprise healthtech |",
-      readingTime: "8 min",
-      thumbnail: <EnterpriseRolesProjectCardThumb />,
-      link: "#"
-    }
+    ...(SHOW_ENTERPRISE_ROLES_CASE_STUDY
+      ? [
+          {
+            id: "enterprise-roles",
+            title: "Proactive access control for MSO-scale specialty care",
+            description:
+              "Three months on Phase 0–1 of a multi-year authorization program — org-admin IA, read-only PoC, password-gated prototype on the case study.",
+            company: "| Confidential · Enterprise healthtech |",
+            readingTime: "8 min",
+            thumbnail: <EnterpriseRolesProjectCardThumb />,
+            link: "#",
+          } satisfies ProjectData,
+        ]
+      : []),
   ];
 
   const zeroToOneProjects: ProjectData[] = [
