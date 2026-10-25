@@ -207,6 +207,13 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                 Research
               </button>
               <button 
+                onClick={() => handleScrollToSection('measurement')}
+                className="block text-left w-full text-white/60 hover:text-white transition-colors cursor-pointer text-sm"
+                style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
+              >
+                Measurement &amp; MUGs
+              </button>
+              <button 
                 onClick={() => handleScrollToSection('interaction-architecture')}
                 className="block text-left w-full text-white/60 hover:text-white transition-colors cursor-pointer text-sm"
                 style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
@@ -979,6 +986,192 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
             </div>
           </motion.div>
 
+          {/* Measurement & MUGs */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="lg:col-span-9 mt-16"
+            id="measurement"
+            style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
+          >
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-4xl" style={{ fontWeight: 500 }}>
+                  Measurement &amp; MUGs<span style={{ color: '#EB5097' }}>.</span>
+                </h2>
+                <p className="text-white/60 mt-2">Gathering data &amp; measuring success</p>
+              </div>
+
+              <p className="text-white/80 max-w-3xl" style={{ lineHeight: '1.8' }}>
+                MAIA followed a structured discovery-to-validation loop: brief and insight, hypothesis and prototype,
+                proof-of-concept with engineering, then pilot review. Under federal access constraints we could not
+                always run classic end-user studies at scale — so we defined{' '}
+                <span className="text-white">Measurable Usability Goals (MUGs)</span> upfront and triangulated across
+                stakeholder research, moderated task tests, ML output auditing, and pilot telemetry.
+              </p>
+
+              <div className="bg-white/5 border-l-4 rounded-r-lg p-6" style={{ borderLeftColor: '#EB5097' }}>
+                <p className="text-white/80 text-sm" style={{ lineHeight: '1.8' }}>
+                  <span className="text-white font-medium">How to read the scorecard:</span> targets reflect the
+                  usability bar we designed toward (effectiveness, efficiency, satisfaction). Formative columns capture
+                  pre-pilot prototype testing; pilot columns combine in-platform analytics and structured feedback from
+                  the U.S. Air Force rollout unless noted as program-level estimates.
+                </p>
+              </div>
+
+              <h3 className="text-2xl text-white flex items-center gap-3" style={{ fontWeight: 600 }}>
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: '#EB5097' }}></span>
+                Research &amp; instrumentation
+              </h3>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm border border-white/10 rounded-xl overflow-hidden">
+                  <thead>
+                    <tr className="bg-white/5 text-white/70">
+                      <th className="px-4 py-3 font-medium">Layer</th>
+                      <th className="px-4 py-3 font-medium">Methods &amp; tools</th>
+                      <th className="px-4 py-3 font-medium">Use</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-white/60 divide-y divide-white/10">
+                    <tr>
+                      <td className="px-4 py-3 text-white">Qualitative discovery</td>
+                      <td className="px-4 py-3">Stakeholder interviews, recruiter-side interviews, client workshops (mediated)</td>
+                      <td className="px-4 py-3">Problems, mental models, trust barriers when direct DoD HM access was limited</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 text-white">Legacy baseline</td>
+                      <td className="px-4 py-3">Heuristic evaluation, cognitive walkthroughs on Avue M-Class</td>
+                      <td className="px-4 py-3">Fragmentation, compliance-step errors, navigation cost vs. MMV shell</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 text-white">Formative usability</td>
+                      <td className="px-4 py-3">Moderated task tests, think-aloud, SEQ (1–7) post-task</td>
+                      <td className="px-4 py-3">SmartMatch explainability, RNA entry, results shell — small-n, proxy HMs</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 text-white">AI calibration</td>
+                      <td className="px-4 py-3">Eval scenarios, sampled output audit, edit distance on AI-generated copy</td>
+                      <td className="px-4 py-3">Trust deficit — how much users rewrite before a recommendation is defensible</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 text-white">Pilot (quant)</td>
+                      <td className="px-4 py-3">In-platform telemetry, time-to-action, onboarding duration vs. legacy</td>
+                      <td className="px-4 py-3">Adoption, matching workflow efficiency, administrative time (with program partners)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-4 py-3 text-white">Accessibility</td>
+                      <td className="px-4 py-3">WCAG 2.1 AA design review + system checks (contrast, labels, keyboard paths)</td>
+                      <td className="px-4 py-3">Federal accessibility expectations alongside FedRAMP-bound deployment</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-2xl text-white flex items-center gap-3 mt-12" style={{ fontWeight: 600 }}>
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: '#EB5097' }}></span>
+                MUG scorecard — critical hiring tasks
+              </h3>
+
+              <div className="overflow-x-auto">
+                <table className="w-full min-w-[720px] text-left text-sm border border-white/10 rounded-xl overflow-hidden">
+                  <thead>
+                    <tr className="bg-white/5 text-white/70">
+                      <th className="px-3 py-3 font-medium">Task</th>
+                      <th className="px-3 py-3 font-medium">MUG</th>
+                      <th className="px-3 py-3 font-medium">Target</th>
+                      <th className="px-3 py-3 font-medium">Formative</th>
+                      <th className="px-3 py-3 font-medium">Pilot / program</th>
+                    </tr>
+                  </thead>
+                  <tbody className="text-white/60 divide-y divide-white/10">
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T1 — Shortlist defensible candidates (SmartMatch)</td>
+                      <td className="px-3 py-3 align-top">Task success</td>
+                      <td className="px-3 py-3 align-top">≥90% pass without assist</td>
+                      <td className="px-3 py-3 align-top">Higher pass vs. legacy ranked list; users could articulate a defense to a review panel</td>
+                      <td className="px-3 py-3 align-top">Pilot HM feedback + telemetry on time-to-first action in matching workflow</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T1 — Same</td>
+                      <td className="px-3 py-3 align-top">Time-on-task</td>
+                      <td className="px-3 py-3 align-top">Beat M-Class walkthrough baseline</td>
+                      <td className="px-3 py-3 align-top">Observed reduction on conversational entry vs. modular navigator (moderated)</td>
+                      <td className="px-3 py-3 align-top">Onboarding / workflow duration vs. legacy baseline (pilot analytics)</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T2 — Explain why candidate A ranks above B</td>
+                      <td className="px-3 py-3 align-top">Effectiveness + SEQ</td>
+                      <td className="px-3 py-3 align-top">Pass uses on-screen reasoning; SEQ ≥5/7</td>
+                      <td className="px-3 py-3 align-top">Inline reasoning beat confidence-only UI in trust calibration tests</td>
+                      <td className="px-3 py-3 align-top">Qual themes from pilot: fewer “black box” escalations to program contacts</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T3 — RNA intent → unified results shell</td>
+                      <td className="px-3 py-3 align-top">Navigation path</td>
+                      <td className="px-3 py-3 align-top">Fewer steps than multi-module legacy path</td>
+                      <td className="px-3 py-3 align-top">Single-shell architecture validated in walkthroughs and proto tests</td>
+                      <td className="px-3 py-3 align-top">Directional: reduced context-switching reported in pilot syncs</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T4 — Federal Status Log audit trail</td>
+                      <td className="px-3 py-3 align-top">Task success</td>
+                      <td className="px-3 py-3 align-top">100% locate correct log entry after action</td>
+                      <td className="px-3 py-3 align-top">Scenario-based tests on decision → log linkage</td>
+                      <td className="px-3 py-3 align-top">Compliance narrative supported procurement / security review</td>
+                    </tr>
+                    <tr>
+                      <td className="px-3 py-3 text-white align-top">T5 — Candidate profile slice (AI-assisted onboarding)</td>
+                      <td className="px-3 py-3 align-top">Efficiency + errors</td>
+                      <td className="px-3 py-3 align-top">Fewer manual parsing errors vs. legacy upload flows</td>
+                      <td className="px-3 py-3 align-top">Career Story flow reduced perceived data-entry load in moderated sessions</td>
+                      <td className="px-3 py-3 align-top">Program-level estimates: ~30% admin workload reduction, ~40% adoption (pilot + leadership reporting)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h3 className="text-2xl text-white flex items-center gap-3 mt-12" style={{ fontWeight: 600 }}>
+                <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: '#EB5097' }}></span>
+                Satisfaction &amp; qualitative synthesis
+              </h3>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-3">
+                  <h4 className="text-white font-medium">Quantitative satisfaction</h4>
+                  <p className="text-white/70 text-sm" style={{ lineHeight: '1.7' }}>
+                    Formative work prioritized <span className="text-white">SEQ (1–7)</span> after critical tasks and
+                    binary task success. A full <span className="text-white">System Usability Scale (SUS)</span>{' '}
+                    baseline/end pair was scoped for extended beta — not all pilot cohorts completed a formal SUS run
+                    inside the first Air Force evaluation window.
+                  </p>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-xl p-6 space-y-3">
+                  <h4 className="text-white font-medium">Qualitative themes → design</h4>
+                  <ul className="text-white/70 text-sm space-y-2" style={{ lineHeight: '1.7' }}>
+                    <li>
+                      <span className="text-white">Trust deficit</span> → progressive disclosure on SmartMatch assessment
+                    </li>
+                    <li>
+                      <span className="text-white">Cognitive overload</span> → conversational RNA + single results shell
+                    </li>
+                    <li>
+                      <span className="text-white">Compliance anxiety</span> → Status Log and explicit decision audit path
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <p className="text-white/50 text-sm max-w-3xl">
+                Cadence: insights and initial MUGs in discovery → formative tests on prototype → PoC with ML/architecture
+                → pilot telemetry and program review (go/no-go). Headline outcome metrics in Outcomes &amp; Impact combine
+                measured pilot signals with stakeholder estimates — see that section for the three-layer read.
+              </p>
+            </div>
+          </motion.div>
+
           {/* Interaction Architecture Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -1561,7 +1754,15 @@ export function HritProject({ onBack, onNavigateToProject }: HritProjectProps) {
                 </h3>
 
                 <p className="text-white/80" style={{ lineHeight: '1.8' }}>
-                  Impact in regulated enterprise platforms is rarely clean. Most outcomes show up across telemetry, stakeholder reporting, and qualitative observation, and rarely all at once. The numbers above reflect a combination of measured pilot data and stakeholder estimates from the Avue leadership team and DoD program partners, captured during the U.S. Air Force pilot rollout.
+                  Impact in regulated enterprise platforms is rarely clean. Most outcomes show up across telemetry, stakeholder reporting, and qualitative observation, and rarely all at once. The numbers above reflect a combination of measured pilot data and stakeholder estimates from the Avue leadership team and DoD program partners, captured during the U.S. Air Force pilot rollout. Task-level{' '}
+                  <button
+                    type="button"
+                    onClick={() => handleScrollToSection('measurement')}
+                    className="text-white underline underline-offset-2 hover:text-[#EB5097] transition-colors"
+                  >
+                    MUGs and methods
+                  </button>{' '}
+                  are documented in Measurement &amp; MUGs.
                 </p>
 
                 <p className="text-white/80" style={{ lineHeight: '1.8' }}>
