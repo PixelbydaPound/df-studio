@@ -85,10 +85,9 @@ export function Hero() {
               className="text-base md:text-lg max-w-2xl mx-auto text-white/70 mb-8"
               {...heroEntranceMotion(reducedMotion, 0.5)}
             >
-              B2C, B2B, and SaaS product design: AI-native flows with human judgment at the
-              center—not automation for its own sake. Owned checkout, mobile apps, FinTech,
-              enterprise admin, healthtech, and GovTech—fast launches when the product allows, regulated depth
-              when trust requires it—always balancing speed, clarity, and trust.
+              I design AI-native and enterprise systems in regulated environments. My work focuses
+              on transforming complex workflows into scalable, accessible, and high-performing
+              product experiences — balancing innovation, compliance, and operational efficiency.
             </motion.p>
           </div>
         </div>
