@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import {
   Dialog,
@@ -6,6 +8,7 @@ import {
   DialogDescription,
   DialogTitle,
 } from "./ui/dialog";
+import { useReducedMotion } from "../lib/useReducedMotion";
 import amsterdamCanal from "../../assets/photography/amsterdam-canal.jpg";
 import amsterdam750 from "../../assets/photography/amsterdam-750.jpg";
 import archedShops from "../../assets/photography/arched-shops.jpg";
@@ -115,7 +118,31 @@ const photos: Photo[] = [
 ];
 
 export function Photography() {
-  const [active, setActive] = useState<Photo | null>(null);
+  const reducedMotion = useReducedMotion();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const current = photos[currentIndex];
+
+  const goToSlide = useCallback((index: number) => {
+    setCurrentIndex((index + photos.length) % photos.length);
+  }, []);
+
+  const goToPrev = useCallback(() => {
+    goToSlide(currentIndex - 1);
+  }, [currentIndex, goToSlide]);
+
+  const goToNext = useCallback(() => {
+    goToSlide(currentIndex + 1);
+  }, [currentIndex, goToSlide]);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    const interval = window.setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % photos.length);
+    }, 6000);
+    return () => window.clearInterval(interval);
+  }, [reducedMotion]);
 
   return (
     <section className="pt-8 mt-23 px-6 md:px-12 font-portfolio pb-20" id="photography">
@@ -133,43 +160,106 @@ export function Photography() {
           </p>
         </ScrollReveal>
 
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-          {photos.map((photo, index) => (
-            <ScrollReveal key={photo.id} delay={Math.min(index * 0.05, 0.4)} className="break-inside-avoid mb-4">
+        <ScrollReveal delay={0.15}>
+          <div
+            className="relative"
+            aria-roledescription="carousel"
+            aria-label="Photography gallery"
+          >
+            <div
+              className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5"
+              style={{ height: "min(70vh, 560px)" }}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={current.id}
+                  initial={reducedMotion ? false : { opacity: 0, x: 48 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={reducedMotion ? undefined : { opacity: 0, x: -48 }}
+                  transition={{ duration: reducedMotion ? 0 : 0.45, ease: "easeInOut" }}
+                  className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setLightboxOpen(true)}
+                    className="w-full h-full flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                    aria-label={`View full size: ${current.caption}`}
+                  >
+                    <img
+                      src={current.src}
+                      alt={current.alt}
+                      className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
+                    />
+                  </button>
+                </motion.div>
+              </AnimatePresence>
+
               <button
                 type="button"
-                onClick={() => setActive(photo)}
-                className="group w-full text-left rounded-xl overflow-hidden border border-white/10 bg-white/5 portfolio-card--interactive focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                onClick={goToPrev}
+                className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 z-10"
+                aria-label="Previous photo"
               >
-                <img
-                  src={photo.src}
-                  alt={photo.alt}
-                  loading="lazy"
-                  className="w-full h-auto block transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-                <div className="px-4 py-3 flex items-center justify-between gap-2 border-t border-white/10">
-                  <span className="text-sm text-white/70">{photo.caption}</span>
-                  <span className="text-xs uppercase tracking-wide text-white/40">{photo.medium}</span>
-                </div>
+                <ChevronLeft className="w-6 h-6 text-white" />
               </button>
-            </ScrollReveal>
-          ))}
-        </div>
+              <button
+                type="button"
+                onClick={goToNext}
+                className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 z-10"
+                aria-label="Next photo"
+              >
+                <ChevronRight className="w-6 h-6 text-white" />
+              </button>
+            </div>
+
+            <div className="mt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-1">
+              <div>
+                <p className="text-white text-lg">{current.caption}</p>
+                <p className="text-white/50 text-sm mt-1">
+                  {currentIndex + 1} / {photos.length}
+                  <span className="mx-2 text-white/30" aria-hidden>
+                    ·
+                  </span>
+                  <span className="uppercase tracking-wide text-xs">{current.medium}</span>
+                </p>
+              </div>
+              <p className="text-white/40 text-sm">Click image to enlarge</p>
+            </div>
+
+            <div className="flex justify-center flex-wrap gap-2 mt-6">
+              {photos.map((photo, index) => (
+                <button
+                  key={photo.id}
+                  type="button"
+                  onClick={() => goToSlide(index)}
+                  className="w-2.5 h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]"
+                  style={{
+                    backgroundColor:
+                      index === currentIndex ? "#EB5097" : "rgba(255, 255, 255, 0.3)",
+                    transform: index === currentIndex ? "scale(1.15)" : "scale(1)",
+                  }}
+                  aria-label={`Go to photo ${index + 1}: ${photo.caption}`}
+                  aria-current={index === currentIndex ? "true" : undefined}
+                />
+              ))}
+            </div>
+          </div>
+        </ScrollReveal>
       </div>
 
-      <Dialog open={active !== null} onOpenChange={(open) => !open && setActive(null)}>
-        <DialogContent className="sm:max-w-4xl bg-black border-white/15 p-0 overflow-hidden gap-0">
-          {active && (
-            <>
-              <DialogTitle className="sr-only">{active.caption}</DialogTitle>
-              <DialogDescription className="sr-only">{active.alt}</DialogDescription>
-              <img src={active.src} alt={active.alt} className="w-full h-auto max-h-[75vh] object-contain bg-black" />
-              <div className="px-6 py-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
-                <p className="text-white text-sm">{active.caption}</p>
-                <p className="text-white/50 text-xs uppercase tracking-wide">{active.medium}</p>
-              </div>
-            </>
-          )}
+      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+        <DialogContent className="sm:max-w-5xl bg-black border-white/15 p-0 overflow-hidden gap-0">
+          <DialogTitle className="sr-only">{current.caption}</DialogTitle>
+          <DialogDescription className="sr-only">{current.alt}</DialogDescription>
+          <img
+            src={current.src}
+            alt={current.alt}
+            className="w-full h-auto max-h-[80vh] object-contain bg-black"
+          />
+          <div className="px-6 py-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
+            <p className="text-white text-sm">{current.caption}</p>
+            <p className="text-white/50 text-xs uppercase tracking-wide">{current.medium}</p>
+          </div>
         </DialogContent>
       </Dialog>
     </section>
