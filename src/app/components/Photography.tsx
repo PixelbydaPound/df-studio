@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
@@ -9,118 +9,13 @@ import {
   DialogTitle,
 } from "./ui/dialog";
 import { useReducedMotion } from "../lib/useReducedMotion";
-import amsterdamCanal from "../../assets/photography/amsterdam-canal.jpg";
-import amsterdam750 from "../../assets/photography/amsterdam-750.jpg";
-import archedShops from "../../assets/photography/arched-shops.jpg";
-import beachSwimmers from "../../assets/photography/beach-swimmers.jpg";
-import bikeRentalSign from "../../assets/photography/bike-rental-sign.jpg";
-import musicLovers from "../../assets/photography/music-lovers.jpg";
-import recklessRecords from "../../assets/photography/reckless-records.jpg";
-import rotterdamLyceum from "../../assets/photography/rotterdam-lyceum.jpg";
-import soundsOfTheUniverse from "../../assets/photography/sounds-of-the-universe.jpg";
-import streetCafe from "../../assets/photography/street-cafe.jpg";
-import vaticanSquare from "../../assets/photography/vatican-square.jpg";
-import windshieldDrive from "../../assets/photography/windshield-drive.jpg";
-
-type Photo = {
-  id: string;
-  src: string;
-  alt: string;
-  caption: string;
-  medium: "Analog" | "Digital";
-};
-
-const photos: Photo[] = [
-  {
-    id: "amsterdam-canal",
-    src: amsterdamCanal,
-    alt: "Tour boat on an Amsterdam canal in bright sunlight, film grain",
-    caption: "Amsterdam",
-    medium: "Analog",
-  },
-  {
-    id: "sounds-of-the-universe",
-    src: soundsOfTheUniverse,
-    alt: "Sounds of the Universe record shop on a London corner at dusk",
-    caption: "London — Soho",
-    medium: "Analog",
-  },
-  {
-    id: "vatican-square",
-    src: vaticanSquare,
-    alt: "St. Peter's Square with basilica dome, candid family moment, light leak",
-    caption: "Vatican City",
-    medium: "Digital",
-  },
-  {
-    id: "amsterdam-750",
-    src: amsterdam750,
-    alt: "Amsterdam 750 celebration banners on a circular building beside the water",
-    caption: "Amsterdam",
-    medium: "Analog",
-  },
-  {
-    id: "reckless-records",
-    src: recklessRecords,
-    alt: "Reckless Records storefront with orange facade and vinyl signage",
-    caption: "London",
-    medium: "Analog",
-  },
-  {
-    id: "arched-shops",
-    src: archedShops,
-    alt: "Stone arch shopfronts with outdoor seating and film texture",
-    caption: "Arched shopfronts",
-    medium: "Analog",
-  },
-  {
-    id: "rotterdam-lyceum",
-    src: rotterdamLyceum,
-    alt: "Grafisch Lyceum Rotterdam building, grainy film look",
-    caption: "Rotterdam",
-    medium: "Analog",
-  },
-  {
-    id: "street-cafe",
-    src: streetCafe,
-    alt: "European street café with white umbrellas and red tablecloths",
-    caption: "Street café",
-    medium: "Analog",
-  },
-  {
-    id: "beach-swimmers",
-    src: beachSwimmers,
-    alt: "Beach with swimmers in the distance, washed film colors",
-    caption: "Shoreline",
-    medium: "Analog",
-  },
-  {
-    id: "windshield-drive",
-    src: windshieldDrive,
-    alt: "View through a car windshield on a sunny road, analog light leak",
-    caption: "Through the windshield",
-    medium: "Analog",
-  },
-  {
-    id: "bike-rental-sign",
-    src: bikeRentalSign,
-    alt: "Bike rental and ATM sign with street stickers",
-    caption: "Street signage",
-    medium: "Digital",
-  },
-  {
-    id: "music-lovers",
-    src: musicLovers,
-    alt: "Red hashtag musicLovers typography on textured dark background",
-    caption: "Digital — #musicLovers",
-    medium: "Digital",
-  },
-];
+import { photos } from "../lib/photographyManifest";
 
 export function Photography() {
   const reducedMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const thumbStripRef = useRef<HTMLDivElement>(null);
 
   const current = photos[currentIndex];
 
@@ -143,6 +38,21 @@ export function Photography() {
     }, 6000);
     return () => window.clearInterval(interval);
   }, [reducedMotion]);
+
+  useEffect(() => {
+    const strip = thumbStripRef.current;
+    if (!strip) return;
+    const active = strip.querySelector<HTMLButtonElement>(`[data-index="${currentIndex}"]`);
+    active?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [currentIndex, reducedMotion]);
+
+  if (photos.length === 0) {
+    return null;
+  }
 
   return (
     <section className="pt-8 mt-23 px-6 md:px-12 font-portfolio pb-20" id="photography">
@@ -226,21 +136,32 @@ export function Photography() {
               <p className="text-white/40 text-sm">Click image to enlarge</p>
             </div>
 
-            <div className="flex justify-center flex-wrap gap-2 mt-6">
+            <div
+              ref={thumbStripRef}
+              className="mt-6 flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin"
+              aria-label="All photos"
+            >
               {photos.map((photo, index) => (
                 <button
                   key={photo.id}
                   type="button"
+                  data-index={index}
                   onClick={() => goToSlide(index)}
-                  className="w-2.5 h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]"
-                  style={{
-                    backgroundColor:
-                      index === currentIndex ? "#EB5097" : "rgba(255, 255, 255, 0.3)",
-                    transform: index === currentIndex ? "scale(1.15)" : "scale(1)",
-                  }}
+                  className={`flex-shrink-0 snap-center rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] ${
+                    index === currentIndex
+                      ? "border-[#EB5097] opacity-100 scale-105"
+                      : "border-white/10 opacity-60 hover:opacity-90"
+                  }`}
                   aria-label={`Go to photo ${index + 1}: ${photo.caption}`}
                   aria-current={index === currentIndex ? "true" : undefined}
-                />
+                >
+                  <img
+                    src={photo.src}
+                    alt=""
+                    loading="lazy"
+                    className="w-16 h-16 md:w-20 md:h-20 object-cover"
+                  />
+                </button>
               ))}
             </div>
           </div>
