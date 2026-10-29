@@ -17,6 +17,7 @@ export function Readings() {
       { title: "Crossing the chasm", checked: true },
     ],
     [
+      { title: "The Politics of Design - Ruben Pater", checked: true },
       { title: "Design for the Real World - Papanek", checked: true },
       { title: "The 80/20 Principle", checked: true },
       { title: "Lean UX", checked: true },
@@ -48,7 +49,7 @@ export function Readings() {
           <h2 className="text-4xl md:text-5xl mb-2 text-white">
             Readings<span className="text-[#EB5097]">.</span>
           </h2>
-          <p className="mb-12 text-white/50 text-sm">Updated - 03/13/2026</p>
+          <p className="mb-12 text-white/50 text-sm">Updated - 10/28/2026</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {readingsList.map((column, colIndex) => (
