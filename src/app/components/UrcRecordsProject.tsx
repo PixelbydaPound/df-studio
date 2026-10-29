@@ -1,11 +1,9 @@
 import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { useState, useEffect } from "react";
-import urcRecordsImage from "figma:asset/79d52d96b4f36b2e183f9c070df95eb2a06167d9.png";
 import podcastPlayerImage from "figma:asset/acf8263f6fdb24ab82acd7482f99b0046a87dde3.png";
 import urcLogoImage from "figma:asset/847960ff71513ca86445dcf07cf66544d0ad20e0.png";
 import recordPlayerImage from "figma:asset/acafce035f536518572ce06a1296752fb8dcffad.png";
-import zineImage from "figma:asset/c928ee8f6b3a134edf9da52d96d5dc1fbaefdc42.png";
 import tshirtImage from "figma:asset/4a65fcbd4eaee19cd1ac2f826898bbb82d9b4d55.png";
 import { ScrollToTop } from "./ScrollToTop";
 import { Footer } from "./Footer";
@@ -231,7 +229,11 @@ export function UrcRecordsProject({ onBack, onNavigateToProject }: UrcRecordsPro
                 </a> is an underground dance music vinyl label specializing in raw, genre-bending electronic music. I designed and built the entire e-commerce platform from the ground up — a direct-to-collector storefront that prioritizes authenticity, fair pricing, and label-to-listener connection.
               </p>
               <p className="text-white/60 text-lg leading-relaxed mb-4">
-                The platform handles vinyl sales, zine distribution, merchandise, and features an integrated podcast player with BPM/pitch controls for DJs. Built in <strong className="text-white">1 week</strong> as a UX Engineer.
+                The platform handles vinyl sales, zine distribution, merchandise, and features an integrated podcast player with BPM/pitch controls for DJs. Built in <strong className="text-white">1 week</strong> as a UX Engineer. Westenia zine (print + digital) is on the{" "}
+                <a href="/#print" className="text-white underline underline-offset-2 hover:text-[#EB5097] transition-colors">
+                  homepage Print section
+                </a>
+                .
               </p>
               <p className="text-white/60 text-lg leading-relaxed">
                 URC releases are distributed worldwide via <a href="https://www.kma60.com/" target="_blank" rel="noopener noreferrer" className="text-white hover:text-[#EB5097] transition-colors underline">KMA60 Distribution</a> — a subsidiary owned by the Kunoreko media group Berlin.
@@ -474,19 +476,23 @@ export function UrcRecordsProject({ onBack, onNavigateToProject }: UrcRecordsPro
                   <p className="text-white/60 text-lg leading-relaxed mb-4">
                     <strong className="text-white">Decision:</strong> Stripe checkout with webhook-driven inventory updates.
                   </p>
-                  <p className="text-white/60 text-lg leading-relaxed mb-4">
+                  <p className="text-white/60 text-lg leading-relaxed">
                     <strong className="text-white">Why:</strong> Small pressing runs mean inventory must be accurate in real-time. Stripe webhooks trigger Supabase updates, preventing overselling. This was critical for maintaining trust — collectors hate "sold out" surprises after checkout.
                   </p>
+                </div>
 
-                  {/* Zine Image */}
-                  <div className="w-full rounded-2xl overflow-hidden bg-white/5 border border-white/10 mt-6">
-                    <img 
-                      src={zineImage} 
-                      alt="URC Records Zine - Westenia Chronicle" 
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <p className="text-white/60 text-sm text-center mt-4">Westenia zine — A Chronicle of Collapse & Becoming, available for purchase alongside vinyl releases</p>
+                <div>
+                  <h3 className="text-white/60 text-2xl mb-4">6. Print + Digital Zine</h3>
+                  <p className="text-white/60 text-lg leading-relaxed mb-4">
+                    <strong className="text-white">Decision:</strong> One editorial product, two formats — limited risograph-style print and a paid digital edition when the run sells out.
+                  </p>
+                  <p className="text-white/60 text-lg leading-relaxed">
+                    <strong className="text-white">Why:</strong> Collectors want the object; readers who missed the drop still get the story. The shop exposes explicit PRINT / DIGITAL states instead of hiding format behind a generic SKU. Editorial detail lives on the{" "}
+                    <a href="/#print" className="text-white underline underline-offset-2 hover:text-[#EB5097] transition-colors">
+                      homepage Print section
+                    </a>
+                    .
+                  </p>
                 </div>
               </div>
             </section>

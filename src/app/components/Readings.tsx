@@ -4,7 +4,7 @@ import { ScrollReveal } from "./ScrollReveal";
 export function Readings() {
   const readingsList = [
     [
-      { title: "Cybersecurity and Cyberwar - What Everyone Needs to Know - P.W. Singer (in progress)", checked: false },
+      { title: "Cybersecurity and Cyberwar - What Everyone Needs to Know - P.W. Singer", checked: true },
       { title: "The Art of Shaolin Kung Fu - Wong Kiew Kit", checked: true },
       { title: "IKIGAI - Hector Garcia & Frances Miralles", checked: true },
       { title: "Emotional Intelligence - Daniel Goleman", checked: true },
