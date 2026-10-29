@@ -84,10 +84,10 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
     { name: "Recent work", href: "#projects" },
     { name: "Writing", href: "#writing" },
     { name: "My Story", href: "#story" },
-    { name: "Photography", href: "#photography" },
     { name: "Education", href: "#education" },
     { name: "Experience", href: "#experience" },
     { name: "Readings", href: "#readings" },
+    { name: "Photography", href: "#photography" },
     { name: "Contact Me", href: "#contact" }
   ];
 

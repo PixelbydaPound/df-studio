@@ -239,9 +239,6 @@ export default function App() {
           <Story />
         </BlurReveal>
         <BlurReveal>
-          <Photography />
-        </BlurReveal>
-        <BlurReveal>
           <Education />
         </BlurReveal>
         <BlurReveal>
@@ -249,6 +246,9 @@ export default function App() {
         </BlurReveal>
         <BlurReveal>
           <Readings />
+        </BlurReveal>
+        <BlurReveal>
+          <Photography />
         </BlurReveal>
         <BlurReveal>
           <Contact />
