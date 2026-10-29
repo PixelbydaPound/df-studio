@@ -39,7 +39,16 @@ export function Print() {
                 A Chronicle of Collapse &amp; Becoming
               </span>
               . The print piece is the object; the reader is the same layout and story in screen form — both
-              designed as one editorial system, not a separate “buy page.”
+              designed as one editorial system for{" "}
+              <a
+                href="https://www.urc-records.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="not-italic font-normal text-white underline underline-offset-2 hover:text-[#EB5097] transition-colors"
+              >
+                URC Records
+              </a>
+              .
             </p>
           </blockquote>
 
