@@ -84,6 +84,7 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
     { name: "Recent work", href: "#projects" },
     { name: "Writing", href: "#writing" },
     { name: "My Story", href: "#story" },
+    { name: "Photography", href: "#photography" },
     { name: "Education", href: "#education" },
     { name: "Experience", href: "#experience" },
     { name: "Readings", href: "#readings" },
@@ -209,13 +210,15 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
         </div>
       )}
 
-      {/* Right side - Location and Time Info */}
-      <div className="text-right text-xs">
-        <div className="text-white">Based in Coral Springs, Florida</div>
-        <div className="text-white/60">
-          Local Time {formatTime()} GMT−4{temperature !== null && ` · ${temperature}°F`}
+      {/* Right side - Location and Time Info (hidden on case-study pages) */}
+      {!showBackButton && (
+        <div className="text-right text-xs">
+          <div className="text-white">Based in Coral Springs, Florida</div>
+          <div className="text-white/60">
+            Local Time {formatTime()} GMT−4{temperature !== null && ` · ${temperature}°F`}
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }

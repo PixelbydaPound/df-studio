@@ -4,6 +4,7 @@ import { Hero } from "./components/Hero";
 import { Projects } from "./components/Projects";
 import { Writing } from "./components/Writing";
 import { Story } from "./components/Story";
+import { Photography } from "./components/Photography";
 import { Education } from "./components/Education";
 import { Experience } from "./components/Experience";
 import { Readings } from "./components/Readings";
@@ -236,6 +237,9 @@ export default function App() {
         </BlurReveal>
         <BlurReveal>
           <Story />
+        </BlurReveal>
+        <BlurReveal>
+          <Photography />
         </BlurReveal>
         <BlurReveal>
           <Education />
