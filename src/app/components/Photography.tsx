@@ -125,6 +125,7 @@ export function Photography() {
             <div className="mt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-1">
               <div>
                 <p className="text-white text-lg">{current.caption}</p>
+                <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
                 <p className="text-white/50 text-sm mt-1">
                   {currentIndex + 1} / {photos.length}
                   <span className="mx-2 text-white/30" aria-hidden>
@@ -177,8 +178,11 @@ export function Photography() {
             alt={current.alt}
             className="w-full h-auto max-h-[80vh] object-contain bg-black"
           />
-          <div className="px-6 py-4 border-t border-white/10 flex flex-wrap items-center justify-between gap-2">
-            <p className="text-white text-sm">{current.caption}</p>
+          <div className="px-6 py-4 border-t border-white/10 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-white text-sm">{current.caption}</p>
+              <p className="text-[#EB5097]/90 text-xs mt-0.5">{current.technical}</p>
+            </div>
             <p className="text-white/50 text-xs uppercase tracking-wide">{current.medium}</p>
           </div>
         </DialogContent>
