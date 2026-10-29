@@ -32,12 +32,16 @@ export function Photography() {
   }, [currentIndex, goToSlide]);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    setCurrentIndex((prev) => (photos.length ? prev % photos.length : 0));
+  }, [photos.length]);
+
+  useEffect(() => {
+    if (reducedMotion || photos.length === 0) return;
     const interval = window.setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % photos.length);
     }, 6000);
     return () => window.clearInterval(interval);
-  }, [reducedMotion]);
+  }, [reducedMotion, photos.length]);
 
   useEffect(() => {
     const strip = thumbStripRef.current;

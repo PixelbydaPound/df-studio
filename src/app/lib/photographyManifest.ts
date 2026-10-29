@@ -13,6 +13,19 @@ const modules = import.meta.glob<string>("../../assets/photography/*.{jpg,jpeg,J
   import: "default",
 });
 
+/** Omitted from the public carousel (privacy / subject request) */
+const EXCLUDED_PHOTO_FILES = new Set([
+  "digital-sounds-of-the-universe.jpg",
+  "roll-danielf004951-r1-016-6a.jpg",
+  "roll-danielf004951-r1-018-7a.jpg",
+  "roll-danielf004951-r1-020-8a.jpg",
+  "roll-danielf004951-r1-024-10a.jpg",
+  "roll-danielf004951-r1-026-11a.jpg",
+  "roll-danielf004951-r1-028-12a.jpg",
+  "roll-danielf004951-r1-050-23a.jpg",
+  "roll-danielf004951-r1-052-24a.jpg",
+]);
+
 /** Roll suffix 0 = 950, 1 = 951 — two different Ilford stocks on the Euro trip */
 const ILFORD_BY_ROLL: Record<string, string> = {
   "0": "ILFORD HP5 Plus · ISO 400",
@@ -50,11 +63,6 @@ const digitalMeta: Record<
     caption: "London — Reckless Records",
     alt: "Reckless Records storefront with orange facade and vinyl signage",
     technical: "iPhone 15 Pro · Daylight · high contrast",
-  },
-  "digital-sounds-of-the-universe.jpg": {
-    caption: "London — Soho",
-    alt: "Sounds of the Universe record shop on a London corner at dusk",
-    technical: "iPhone 15 Pro · Dusk · mixed tungsten + ambient",
   },
   "digital-street-cafe.jpg": {
     caption: "Street café",
@@ -109,6 +117,10 @@ function metaForFile(filename: string): Omit<Photo, "id" | "src"> {
 }
 
 export const photos: Photo[] = Object.entries(modules)
+  .filter(([path]) => {
+    const filename = path.split("/").pop() ?? "";
+    return !EXCLUDED_PHOTO_FILES.has(filename);
+  })
   .sort(([pathA], [pathB]) => sortPhotos(pathA, pathB))
   .map(([path, src]) => {
     const filename = path.split("/").pop() ?? "photo.jpg";
