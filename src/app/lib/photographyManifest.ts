@@ -2,7 +2,6 @@ import amsterdamCanal from "../../assets/photography/amsterdam-canal.jpg";
 import amsterdam750 from "../../assets/photography/amsterdam-750.jpg";
 import amsterdamBicycles from "../../assets/photography/amsterdam-bicycles.jpg";
 import amsterdamFacade from "../../assets/photography/amsterdam-facade.jpg";
-import amsterdamTrees from "../../assets/photography/amsterdam-trees.jpg";
 import amsterdamWaterfront from "../../assets/photography/amsterdam-waterfront.jpg";
 import archedShops from "../../assets/photography/arched-shops.jpg";
 import beachSwimmers from "../../assets/photography/beach-swimmers.jpg";
@@ -13,7 +12,6 @@ import thumbAmsterdamCanal from "../../assets/photography/thumbs/amsterdam-canal
 import thumbAmsterdam750 from "../../assets/photography/thumbs/amsterdam-750.jpg";
 import thumbAmsterdamBicycles from "../../assets/photography/thumbs/amsterdam-bicycles.jpg";
 import thumbAmsterdamFacade from "../../assets/photography/thumbs/amsterdam-facade.jpg";
-import thumbAmsterdamTrees from "../../assets/photography/thumbs/amsterdam-trees.jpg";
 import thumbAmsterdamWaterfront from "../../assets/photography/thumbs/amsterdam-waterfront.jpg";
 import thumbArchedShops from "../../assets/photography/thumbs/arched-shops.jpg";
 import thumbBeachSwimmers from "../../assets/photography/thumbs/beach-swimmers.jpg";
@@ -69,15 +67,6 @@ export const photos: Photo[] = [
     thumbSrc: thumbAmsterdamWaterfront,
     alt: "Amsterdam waterfront and boats, washed film tones",
     caption: "Amsterdam — waterfront",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "amsterdam-trees",
-    src: amsterdamTrees,
-    thumbSrc: thumbAmsterdamTrees,
-    alt: "Trees and canal edge in Amsterdam, soft analog focus",
-    caption: "Amsterdam — canal edge",
     medium: "Analog",
     technical: HP5,
   },
