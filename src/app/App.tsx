@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect, useCallback } from "react";
+import { lazy, Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Projects } from "./components/Projects";
@@ -73,6 +73,7 @@ export default function App() {
   const [showAnalyticsDashboard, setShowAnalyticsDashboard] = useState(
     () => isAnalyticsDashboardEnabled(),
   );
+  const homeShellRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setShowAnalyticsDashboard(isAnalyticsDashboardEnabled());
@@ -111,7 +112,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScrollBlur = () => {
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY;
       const clientHeight = window.innerHeight;
@@ -125,10 +126,51 @@ export default function App() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
+    window.addEventListener("scroll", handleScrollBlur, { passive: true });
+    handleScrollBlur();
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScrollBlur);
+  }, [currentPage]);
+
+  useEffect(() => {
+    if (currentPage !== "home") return;
+
+    const el = homeShellRef.current;
+    if (!el) return;
+
+    const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const updateStoryProgress = () => {
+      const scrollHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY;
+      const clientHeight = window.innerHeight;
+      const maxScroll = Math.max(1, scrollHeight - clientHeight);
+      const storyT = reducedMotionQuery.matches
+        ? 0
+        : Math.min(1, Math.max(0, scrollTop / maxScroll));
+      el.style.setProperty("--portfolio-scroll-story", String(storyT));
+    };
+
+    const onReducedMotionChange = () => updateStoryProgress();
+
+    window.addEventListener("scroll", updateStoryProgress, { passive: true });
+    window.addEventListener("resize", updateStoryProgress, { passive: true });
+    if (typeof reducedMotionQuery.addEventListener === "function") {
+      reducedMotionQuery.addEventListener("change", onReducedMotionChange);
+    } else {
+      reducedMotionQuery.addListener(onReducedMotionChange);
+    }
+    updateStoryProgress();
+
+    return () => {
+      window.removeEventListener("scroll", updateStoryProgress);
+      window.removeEventListener("resize", updateStoryProgress);
+      if (typeof reducedMotionQuery.removeEventListener === "function") {
+        reducedMotionQuery.removeEventListener("change", onReducedMotionChange);
+      } else {
+        reducedMotionQuery.removeListener(onReducedMotionChange);
+      }
+    };
   }, [currentPage]);
 
   if (currentPage === "maia") {
@@ -210,7 +252,10 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background dark relative">
+    <div
+      ref={homeShellRef}
+      className="portfolio-scroll-story min-h-screen dark relative"
+    >
       <div
         className="fixed bottom-0 left-0 right-0 pointer-events-none z-40 transition-opacity duration-300"
         style={{

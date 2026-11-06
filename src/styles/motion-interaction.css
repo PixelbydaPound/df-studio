@@ -4,12 +4,18 @@
   --portfolio-accent-glow: rgba(235, 80, 151, 0.2);
   --portfolio-font-sans: "Geist Variable", "Helvetica Now Display", -apple-system,
     BlinkMacSystemFont, sans-serif;
+  --portfolio-font-serif: "DM Serif Text", ui-serif, "Iowan Old Style", "Apple Garamond",
+    Baskerville, "Times New Roman", serif;
   --portfolio-font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, monospace;
 }
 
 .font-portfolio {
   font-family: var(--portfolio-font-sans);
+}
+
+.font-portfolio-serif {
+  font-family: var(--portfolio-font-serif);
 }
 
 .font-portfolio-mono {

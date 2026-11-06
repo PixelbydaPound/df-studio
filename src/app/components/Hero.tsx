@@ -75,19 +75,25 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              className="text-xl md:text-2xl mb-8 mt-8 text-white"
+              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-8 mt-8 text-white max-w-2xl mx-auto text-left"
               {...heroEntranceMotion(reducedMotion, 0.3)}
             >
               Product Designer — B2C, B2B & SaaS · Human-in-the-Loop AI
             </motion.p>
 
             <motion.p
-              className="text-base md:text-lg max-w-2xl mx-auto text-white/70 mb-8"
+              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] max-w-2xl mx-auto mb-8 text-left"
               {...heroEntranceMotion(reducedMotion, 0.5)}
             >
-              I design AI-native and enterprise systems in regulated environments. My work focuses
-              on transforming complex workflows into scalable, accessible, and high-performing
-              product experiences — balancing innovation, compliance, and operational efficiency.
+              <span className="text-white">
+                I design AI-native and enterprise systems in regulated environments. My work
+                focuses on transforming complex workflows into scalable, accessible, and
+                high-performing product experiences
+              </span>
+              <span className="text-zinc-300">
+                {" "}
+                — balancing innovation, compliance, and operational efficiency.
+              </span>
             </motion.p>
           </div>
         </div>

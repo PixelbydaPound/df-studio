@@ -4,6 +4,9 @@
   --font-size: 16px;
   --portfolio-font-sans: "Geist Variable", "Helvetica Now Display", -apple-system,
     BlinkMacSystemFont, sans-serif;
+  /* Editorial serif: aligns with Collins “Portrait Text” role; they use a custom cut — DM Serif Text is the legal analog */
+  --portfolio-font-serif: "DM Serif Text", ui-serif, "Iowan Old Style", "Apple Garamond",
+    Baskerville, "Times New Roman", serif;
   --portfolio-font-mono: "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco,
     Consolas, monospace;
   --background: #ffffff;
@@ -131,6 +134,20 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--portfolio-font-sans);
+  }
+
+  /**
+   * Home scroll “story”: interpolates page background from neutral dark toward a warm brown (Collins-style progression).
+   * --portfolio-scroll-story: 0 → 1 driven by scroll on the home shell only.
+   */
+  .portfolio-scroll-story {
+    --portfolio-story-warm: #241c18;
+    --portfolio-scroll-story: 0;
+    background-color: color-mix(
+      in oklch,
+      oklch(0.145 0 0) calc((1 - var(--portfolio-scroll-story)) * 100%),
+      var(--portfolio-story-warm) calc(var(--portfolio-scroll-story) * 100%)
+    );
   }
 }
 
