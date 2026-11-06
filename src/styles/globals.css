@@ -137,9 +137,9 @@
   }
 
   /**
-   * Home scroll “story” (Collins-style): off-white → warm near-black as you scroll.
+   * Home scroll “story” (Collins-style): off-white until Experience, then → warm near-black.
    * Hues from wearecollins.com CSS tokens (--color-off-white #f8f8f7, --color-off-black #140700, --color-mid-black #5e5855, --color-mid-white #d0d0c8).
-   * --portfolio-scroll-story: 0 → 1 driven by scroll on the home shell only.
+   * --portfolio-scroll-story: 0 (light) until #experience enters the viewport, then 0→1 for the rest of the page (see App.tsx).
    */
   .portfolio-scroll-story {
     --portfolio-scroll-story: 0;

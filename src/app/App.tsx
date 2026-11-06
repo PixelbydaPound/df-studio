@@ -152,10 +152,30 @@ export default function App() {
       const scrollHeight = document.documentElement.scrollHeight;
       const scrollTop = window.scrollY;
       const clientHeight = window.innerHeight;
-      const maxScroll = Math.max(1, scrollHeight - clientHeight);
-      const storyT = reducedMotionQuery.matches
-        ? 1
-        : Math.min(1, Math.max(0, scrollTop / maxScroll));
+      const maxScroll = Math.max(0, scrollHeight - clientHeight);
+
+      const experienceEl = document.getElementById("experience");
+      let storyT = 0;
+
+      if (experienceEl) {
+        const expTop = experienceEl.getBoundingClientRect().top + scrollTop;
+        const transitionStart = Math.max(0, expTop - clientHeight);
+
+        if (scrollTop < transitionStart) {
+          storyT = 0;
+        } else if (maxScroll <= transitionStart) {
+          storyT = 1;
+        } else {
+          const range = maxScroll - transitionStart;
+          storyT = (scrollTop - transitionStart) / range;
+          storyT = Math.min(1, Math.max(0, storyT));
+        }
+      }
+
+      if (reducedMotionQuery.matches) {
+        storyT = storyT > 0 ? 1 : 0;
+      }
+
       el.style.setProperty("--portfolio-scroll-story", String(storyT));
     };
 
