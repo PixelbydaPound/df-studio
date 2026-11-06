@@ -121,16 +121,16 @@ export function Experience() {
                     className="flex-1"
                     {...experienceSlideMotion(reducedMotion, index, "content")}
                   >
-                    <div className="border border-white/10 rounded-lg p-8 backdrop-blur-sm bg-black/30">
+                    <div className="border border-white/10 rounded-lg p-8 bg-black">
                       <h3 className="text-2xl mb-2 text-white">{exp.title}</h3>
 
                       <ul className="space-y-3 mt-6">
                         {exp.responsibilities.map((resp, idx) => (
                           <li
                             key={idx}
-                            className="text-base pl-5 relative text-white/80 leading-relaxed"
+                            className="text-base pl-5 relative text-white/85 leading-relaxed"
                           >
-                            <span className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-white/40" />
+                            <span className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-white/50" />
                             {resp}
                           </li>
                         ))}

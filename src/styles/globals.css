@@ -140,7 +140,7 @@
    * Home scroll “story” (Collins-style): off-white through most of the page, then → warm near-black.
    * Hues from wearecollins.com CSS tokens (--color-off-white #f8f8f7, --color-off-black #140700).
    * Mid/soft are tuned for ~WCAG 2.2 AA contrast on --story-bg for body/small text (stronger than Collins “mid” grays alone).
-   * --portfolio-scroll-story: 0 (light) until #print enters the viewport, then 0→1 for the rest of the page (see App.tsx).
+   * --portfolio-scroll-story: 0 (light) until #contact enters the viewport, then 0→1 for the rest of the page (see App.tsx).
    */
   .portfolio-scroll-story {
     --portfolio-scroll-story: 0;
