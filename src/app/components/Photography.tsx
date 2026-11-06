@@ -212,13 +212,13 @@ export function Photography() {
     >
       <div className="max-w-6xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-4xl md:text-5xl mb-4 text-white">
+          <h2 className="text-4xl md:text-5xl mb-4 text-story">
             Photography<span className="text-[#EB5097]">.</span>
           </h2>
-          <p className="text-lg md:text-xl text-white/80 max-w-2xl mb-3">
+          <p className="text-lg md:text-xl text-story max-w-2xl mb-3 opacity-90">
             Reminiscence — memories in analog and digital light.
           </p>
-          <p className="text-base text-white/50 max-w-2xl mb-12">
+          <p className="text-base text-story-mid max-w-2xl mb-12">
             Not assignment work: places, weather, and scenes I didn&apos;t want to forget. Grain,
             flare, and soft focus.
           </p>
@@ -239,7 +239,7 @@ export function Photography() {
                   scroll-smooth overscroll-x-contain
                   pl-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
                   pr-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-xl"
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--story-bg,#000)] rounded-xl"
                 style={{
                   scrollBehavior: reducedMotion ? "auto" : undefined,
                 }}
@@ -268,7 +268,7 @@ export function Photography() {
                           setCurrentIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="relative z-[2] w-full h-full min-h-[200px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                        className="relative z-[2] w-full h-full min-h-[200px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--story-bg,#000)]"
                         aria-label={`View full size: ${photo.caption}`}
                       >
                         <img
@@ -284,14 +284,14 @@ export function Photography() {
                       </button>
                     </div>
                     <div className="border-t border-white/10 px-4 py-3 flex items-center justify-between gap-2 bg-black/25">
-                      <p className="text-white/60 text-xs md:text-sm truncate">View full size</p>
+                      <p className="text-white/70 text-xs md:text-sm truncate">View full size</p>
                       <button
                         type="button"
                         onClick={() => {
                           setCurrentIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="text-white/80 text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
+                        className="text-white text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
                       >
                         Open
                       </button>
@@ -303,17 +303,17 @@ export function Photography() {
 
             <div className="mt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-1">
               <div>
-                <p className="text-white text-lg">{current.caption}</p>
+                <p className="text-story text-lg">{current.caption}</p>
                 <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
-                <p className="text-white/50 text-sm mt-1">
+                <p className="text-story-mid text-sm mt-1">
                   {currentIndex + 1} / {length}
-                  <span className="mx-2 text-white/30" aria-hidden>
+                  <span className="mx-2 text-story-soft" aria-hidden>
                     ·
                   </span>
                   <span className="uppercase tracking-wide text-xs">{current.medium}</span>
                 </p>
               </div>
-              <p className="text-white/40 text-sm">
+              <p className="text-story-soft text-sm">
                 Scroll or mouse wheel to browse · tap Open or image to enlarge
               </p>
             </div>

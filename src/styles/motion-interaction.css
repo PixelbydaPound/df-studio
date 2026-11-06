@@ -34,6 +34,11 @@
     box-shadow 300ms var(--portfolio-ease);
 }
 
+/* Home scroll story: in-page cards stay dark; section chrome uses Collins-style light→dark */
+.portfolio-scroll-story .portfolio-card {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 .portfolio-card--interactive {
   cursor: pointer;
 }
@@ -66,7 +71,7 @@ a.portfolio-card {
   }
 
   .portfolio-card--interactive:hover:not(:active) .portfolio-card__link-icon {
-    color: rgb(255 255 255);
+    color: #fff;
     translate: 2px -2px;
   }
 }
@@ -96,8 +101,12 @@ a.portfolio-card {
 
   .portfolio-nav-link:hover .portfolio-nav-link__label {
     border-color: var(--portfolio-accent);
-    color: rgb(255 255 255);
+    color: #fff;
   }
+}
+
+.portfolio-scroll-story .portfolio-nav-link__label {
+  border-bottom-color: var(--story-line);
 }
 
 .portfolio-nav-link__arrow {
@@ -111,6 +120,18 @@ a.portfolio-card {
   transition:
     border-color 300ms var(--portfolio-ease),
     color 300ms var(--portfolio-ease);
+}
+
+.portfolio-nav-bar {
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.portfolio-scroll-story .portfolio-nav-bar {
+  background-color: var(--story-nav-bg);
+  border-bottom-color: var(--story-line);
 }
 
 .portfolio-cta {

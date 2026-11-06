@@ -11,11 +11,11 @@ export function Contact() {
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row gap-12 items-start">
           <div className="flex-1">
-            <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-6 text-white">
+            <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-6 text-story">
               Contact Me<span className="text-[#EB5097]">.</span>
             </ScrollReveal>
 
-            <ScrollReveal as="p" delay={0.1} className="text-lg max-w-xl text-white/70 leading-relaxed">
+            <ScrollReveal as="p" delay={0.1} className="text-lg max-w-xl text-story-mid leading-relaxed">
               Let's build something exceptional. I'm open to connecting about design roles,
               systems, and opportunities where strategy meets creativity.
             </ScrollReveal>
@@ -43,7 +43,10 @@ export function Contact() {
             <ScrollReveal delay={0.3}>
               <a
                 href="mailto:danielfornicauxui@gmail.com"
-                className="portfolio-cta group relative overflow-hidden rounded-xl flex items-center justify-center gap-3 px-6 py-4 w-full bg-white/[0.03] border border-white/10 text-white"
+                className="portfolio-cta group relative overflow-hidden rounded-xl flex items-center justify-center gap-3 px-6 py-4 w-full border border-story text-story"
+                style={{
+                  background: "color-mix(in oklch, var(--story-fg) 5%, transparent)",
+                }}
               >
                 <Mail className="w-5 h-5 text-[#EB5097]" aria-hidden />
                 <span>Email Me</span>

@@ -49,13 +49,13 @@ export function Hero() {
       >
         <div className="flex flex-col items-center gap-12">
           <div className="flex-1 relative">
-            <motion.h1 className="mb-6 text-6xl md:text-8xl lg:text-9xl leading-none overflow-hidden text-white relative">
+            <motion.h1 className="mb-6 text-6xl md:text-8xl lg:text-9xl leading-none overflow-hidden relative">
               <motion.span
                 className="flex items-center justify-center gap-4 relative font-bold"
                 {...heroEntranceMotion(reducedMotion, 0)}
                 style={{
                   background:
-                    "linear-gradient(180deg, #FFFFFF 0%, #E0E0E0 60%, #999999 85%, #3D3D3D 100%)",
+                    "linear-gradient(180deg, var(--story-fg, #fff) 0%, var(--story-mid, #999) 55%, var(--story-soft, #666) 100%)",
                   WebkitBackgroundClip: "text",
                   backgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -66,7 +66,7 @@ export function Hero() {
                 <HalftonePortrait />
               </motion.span>
               <motion.span
-                className="block text-center font-light"
+                className="block text-center font-light text-story"
                 {...heroEntranceMotion(reducedMotion, 0.1)}
               >
                 I am <span className="font-bold">Daniel</span>
@@ -75,22 +75,22 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-8 mt-8 text-white max-w-2xl mx-auto text-left"
+              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-8 mt-8 text-story max-w-2xl mx-auto text-left"
               {...heroEntranceMotion(reducedMotion, 0.3)}
             >
               Product Designer — B2C, B2B & SaaS · Human-in-the-Loop AI
             </motion.p>
 
             <motion.p
-              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] max-w-2xl mx-auto mb-8 text-left"
+              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] max-w-2xl mx-auto mb-8 text-left text-story"
               {...heroEntranceMotion(reducedMotion, 0.5)}
             >
-              <span className="text-white">
+              <span className="text-story">
                 I design AI-native and enterprise systems in regulated environments. My work
                 focuses on transforming complex workflows into scalable, accessible, and
                 high-performing product experiences
               </span>
-              <span className="text-zinc-300">
+              <span className="text-story-mid">
                 {" "}
                 — balancing innovation, compliance, and operational efficiency.
               </span>
@@ -101,13 +101,13 @@ export function Hero() {
 
       <motion.div className="absolute bottom-12" {...heroFadeMotion(reducedMotion, 1)}>
         {reducedMotion ? (
-          <ArrowDown className="w-6 h-6 text-muted-foreground" aria-hidden />
+          <ArrowDown className="w-6 h-6 text-story-mid" aria-hidden />
         ) : (
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           >
-            <ArrowDown className="w-6 h-6 text-muted-foreground" aria-hidden />
+            <ArrowDown className="w-6 h-6 text-story-mid" aria-hidden />
           </motion.div>
         )}
       </motion.div>

@@ -122,7 +122,7 @@ export function Education() {
   return (
     <section className="pt-8 mt-23 px-6 md:px-12 font-portfolio" id="education">
       <div className="max-w-6xl mx-auto">
-        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-white">
+        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-story">
           Education<span className="text-[#EB5097]">.</span>
         </ScrollReveal>
 
@@ -131,14 +131,14 @@ export function Education() {
             <ScrollReveal
               key={item.id}
               delay={Math.min(index * 0.03, 0.4)}
-              className="border-b border-white/10 pb-8"
+              className="border-b border-story pb-8"
             >
               <div className="flex justify-between items-start gap-4">
                 <div className="flex-1">
-                  <h3 className="text-lg mb-2 text-white">{item.title}</h3>
-                  <p className="text-base text-white/50">{item.institution}</p>
+                  <h3 className="text-lg mb-2 text-story">{item.title}</h3>
+                  <p className="text-base text-story-mid">{item.institution}</p>
                 </div>
-                <div className="text-base flex-shrink-0 text-white/40">{item.year}</div>
+                <div className="text-base flex-shrink-0 text-story-soft">{item.year}</div>
               </div>
             </ScrollReveal>
           ))}

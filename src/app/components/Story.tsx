@@ -10,7 +10,7 @@ const paragraphs = [
       href="https://localfluxai.com/"
       target="_blank"
       rel="noopener noreferrer"
-      className="text-[#EB5097] no-underline transition-colors duration-300 hover:text-white"
+      className="text-[#EB5097] no-underline transition-colors duration-300 hover:text-story"
     >
       Local Flux
     </a>
@@ -23,7 +23,7 @@ export function Story() {
   return (
     <section className="pt-8 mt-23 px-6 md:px-12 font-portfolio" id="story">
       <div className="max-w-6xl mx-auto">
-        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-white">
+        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-story">
           My story<span className="text-[#EB5097]">.</span>
         </ScrollReveal>
 
@@ -33,7 +33,7 @@ export function Story() {
               key={index}
               as="p"
               delay={0.1 + index * 0.08}
-              className="text-lg mb-6 text-white/80 leading-relaxed last:mb-0"
+              className="text-lg mb-6 text-story-mid leading-relaxed last:mb-0"
             >
               {content}
             </ScrollReveal>

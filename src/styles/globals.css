@@ -137,17 +137,60 @@
   }
 
   /**
-   * Home scroll “story”: interpolates page background from neutral dark toward a warm brown (Collins-style progression).
+   * Home scroll “story” (Collins-style): off-white → warm near-black as you scroll.
+   * Hues from wearecollins.com CSS tokens (--color-off-white #f8f8f7, --color-off-black #140700, --color-mid-black #5e5855, --color-mid-white #d0d0c8).
    * --portfolio-scroll-story: 0 → 1 driven by scroll on the home shell only.
    */
   .portfolio-scroll-story {
-    --portfolio-story-warm: #241c18;
     --portfolio-scroll-story: 0;
-    background-color: color-mix(
+    --story-bg: color-mix(
       in oklch,
-      oklch(0.145 0 0) calc((1 - var(--portfolio-scroll-story)) * 100%),
-      var(--portfolio-story-warm) calc(var(--portfolio-scroll-story) * 100%)
+      #f8f8f7 calc((1 - var(--portfolio-scroll-story)) * 100%),
+      #140700 calc(var(--portfolio-scroll-story) * 100%)
     );
+    --story-fg: color-mix(
+      in oklch,
+      #140700 calc((1 - var(--portfolio-scroll-story)) * 100%),
+      #f8f8f7 calc(var(--portfolio-scroll-story) * 100%)
+    );
+    --story-mid: color-mix(
+      in oklch,
+      #5e5855 calc((1 - var(--portfolio-scroll-story)) * 100%),
+      #d0d0c8 calc(var(--portfolio-scroll-story) * 100%)
+    );
+    --story-soft: color-mix(
+      in oklch,
+      #7a726e calc((1 - var(--portfolio-scroll-story)) * 100%),
+      #b8b4ad calc(var(--portfolio-scroll-story) * 100%)
+    );
+    --story-line: color-mix(
+      in oklch,
+      #140700 calc((1 - var(--portfolio-scroll-story)) * 14%),
+      #f8f8f7 calc(var(--portfolio-scroll-story) * 14%)
+    );
+    --story-nav-bg: color-mix(
+      in oklch,
+      rgb(248 248 247 / 0.82) calc((1 - var(--portfolio-scroll-story)) * 100%),
+      rgb(20 7 0 / 0.78) calc(var(--portfolio-scroll-story) * 100%)
+    );
+    background-color: var(--story-bg);
+    color: var(--story-fg);
+  }
+
+  .text-story {
+    color: var(--story-fg, #ffffff);
+  }
+
+  .text-story-mid {
+    color: var(--story-mid, oklch(0.708 0 0));
+  }
+
+  .text-story-soft {
+    color: var(--story-soft, oklch(0.556 0 0));
+  }
+
+  .border-story {
+    border-color: var(--story-line, rgba(255, 255, 255, 0.1));
   }
 }
 

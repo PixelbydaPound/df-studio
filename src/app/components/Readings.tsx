@@ -46,10 +46,10 @@ export function Readings() {
     <section className="mt-23 pt-8 pb-20 px-6 md:px-12 font-portfolio" id="readings">
       <div className="max-w-6xl mx-auto">
         <ScrollReveal>
-          <h2 className="text-4xl md:text-5xl mb-2 text-white">
+          <h2 className="text-4xl md:text-5xl mb-2 text-story">
             Readings<span className="text-[#EB5097]">.</span>
           </h2>
-          <p className="mb-12 text-white/50 text-sm">Updated - 10/28/2026</p>
+          <p className="mb-12 text-story-mid text-sm">Updated - 10/28/2026</p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
             {readingsList.map((column, colIndex) => (
@@ -57,19 +57,22 @@ export function Readings() {
                 {column.map((reading, idx) => (
                   <div key={idx} className="flex items-start gap-3">
                     <div
-                      className="flex-shrink-0 mt-0.5 w-[18px] h-[18px] border-2 border-white/30 rounded-sm flex items-center justify-center"
+                      className="flex-shrink-0 mt-0.5 w-[18px] h-[18px] border-2 rounded-sm flex items-center justify-center border-story"
                       style={{
-                        backgroundColor: reading.checked ? "rgba(255, 255, 255, 0.15)" : "transparent",
+                        borderColor: "color-mix(in oklch, var(--story-fg) 28%, transparent)",
+                        backgroundColor: reading.checked
+                          ? "color-mix(in oklch, var(--story-fg) 12%, transparent)"
+                          : "transparent",
                       }}
                       aria-hidden
                     >
                       {reading.checked && (
-                        <Check className="w-3 h-3 text-white/70" />
+                        <Check className="w-3 h-3 text-story-mid" />
                       )}
                     </div>
                     <span
                       className={`text-[15px] leading-normal ${
-                        reading.checked ? "text-white/50" : "text-white/70"
+                        reading.checked ? "text-story-mid" : "text-story"
                       }`}
                     >
                       {reading.title}

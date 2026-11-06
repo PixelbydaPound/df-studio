@@ -20,7 +20,7 @@ export function Writing() {
   return (
     <section className="pt-8 mt-8 px-6 md:px-12 font-portfolio" id="writing">
       <div className="max-w-6xl mx-auto">
-        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-white">
+        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-12 text-story">
           Writing<span className="text-[#EB5097]">.</span>
         </ScrollReveal>
 
@@ -36,11 +36,11 @@ export function Writing() {
               className="group portfolio-card portfolio-card--interactive p-8 min-h-[240px] justify-between"
             >
               <div>
-                <h3 className="text-xl mb-4 text-white">{article.title}</h3>
-                <p className="text-base mb-6 text-white/60">{article.description}</p>
+                <h3 className="text-xl mb-4 text-story">{article.title}</h3>
+                <p className="text-base mb-6 text-story-mid">{article.description}</p>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-white/40 group-hover:text-white/60 transition-colors">
+              <div className="flex items-center gap-2 text-sm text-story-soft group-hover:text-story-mid transition-colors">
                 Read article on Medium
                 <ArrowUpRight className="portfolio-card__link-icon w-4 h-4" aria-hidden />
               </div>
@@ -55,11 +55,11 @@ export function Writing() {
             delay={0.2}
             className="group portfolio-card portfolio-card--interactive p-8 min-h-[240px] items-center justify-center text-center"
           >
-            <p className="text-sm mb-4 text-white/40">Read all my articles on</p>
-            <div className="text-5xl mb-6 text-white font-normal" style={{ fontFamily: "Georgia, serif" }}>
+            <p className="text-sm mb-4 text-story-soft">Read all my articles on</p>
+            <div className="text-5xl mb-6 text-story font-normal" style={{ fontFamily: "Georgia, serif" }}>
               Medium
             </div>
-            <ArrowUpRight className="portfolio-card__link-icon w-8 h-8 text-white/60 mx-auto" aria-hidden />
+            <ArrowUpRight className="portfolio-card__link-icon w-8 h-8 text-story-mid mx-auto" aria-hidden />
           </ScrollReveal>
         </div>
       </div>

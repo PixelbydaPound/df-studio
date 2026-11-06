@@ -85,14 +85,14 @@ export function Experience() {
   return (
     <section className="mt-23 pt-8 px-6 md:px-12 font-portfolio" id="experience" ref={containerRef}>
       <div className="max-w-6xl mx-auto">
-        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-20 text-white">
+        <ScrollReveal as="h2" className="text-4xl md:text-5xl mb-20 text-story">
           Experience<span className="text-[#EB5097]">.</span>
         </ScrollReveal>
 
         <div className="relative">
           <div className="space-y-24 md:space-y-32" ref={timelineRef}>
             <div
-              className="absolute left-1/2 hidden md:block pointer-events-none"
+              className="absolute left-1/2 hidden md:block pointer-events-none text-story"
               style={{
                 top: 0,
                 bottom: "2rem",
@@ -100,9 +100,9 @@ export function Experience() {
                 marginLeft: "-1px",
               }}
             >
-              <div className="absolute inset-0 bg-white/10" />
+              <div className="absolute inset-0 bg-current/12" />
               <motion.div
-                className="absolute top-0 left-0 right-0 bg-white/80"
+                className="absolute top-0 left-0 right-0 bg-current/75"
                 style={
                   reducedMotion
                     ? { height: "100%" }
@@ -128,9 +128,9 @@ export function Experience() {
                         {exp.responsibilities.map((resp, idx) => (
                           <li
                             key={idx}
-                            className="text-base pl-5 relative text-white/70 leading-relaxed"
+                            className="text-base pl-5 relative text-white/80 leading-relaxed"
                           >
-                            <span className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-white/50" />
+                            <span className="absolute left-0 top-2 w-1.5 h-1.5 rounded-full bg-white/40" />
                             {resp}
                           </li>
                         ))}
@@ -162,8 +162,8 @@ export function Experience() {
                     className={`flex-1 ${index % 2 === 0 ? "md:text-left" : "md:text-right"}`}
                     {...experienceSlideMotion(reducedMotion, index, "meta")}
                   >
-                    <h4 className="text-xl mb-1 text-white">{exp.company}</h4>
-                    <p className="text-base text-white/50">{exp.period}</p>
+                    <h4 className="text-xl mb-1 text-story">{exp.company}</h4>
+                    <p className="text-base text-story-mid">{exp.period}</p>
                   </motion.div>
                 </div>
               </div>

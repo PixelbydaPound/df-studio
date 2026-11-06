@@ -146,7 +146,7 @@ export default function App() {
       const clientHeight = window.innerHeight;
       const maxScroll = Math.max(1, scrollHeight - clientHeight);
       const storyT = reducedMotionQuery.matches
-        ? 0
+        ? 1
         : Math.min(1, Math.max(0, scrollTop / maxScroll));
       el.style.setProperty("--portfolio-scroll-story", String(storyT));
     };
@@ -252,10 +252,7 @@ export default function App() {
   }
 
   return (
-    <div
-      ref={homeShellRef}
-      className="portfolio-scroll-story min-h-screen dark relative"
-    >
+    <div ref={homeShellRef} className="portfolio-scroll-story min-h-screen relative">
       <div
         className="fixed bottom-0 left-0 right-0 pointer-events-none z-40 transition-opacity duration-300"
         style={{

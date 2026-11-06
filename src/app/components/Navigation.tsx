@@ -81,21 +81,15 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 px-6 md:px-12 flex items-center justify-between font-portfolio"
-      style={{
-        height: "64px",
-        backgroundColor: "rgba(0, 0, 0, 0.3)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        borderBottom: "1px solid rgba(255, 255, 255, 0.05)",
-      }}
+      className="portfolio-nav-bar fixed top-0 left-0 right-0 z-50 px-6 md:px-12 flex items-center justify-between font-portfolio"
+      style={{ height: "64px" }}
     >
       <div className="flex items-center gap-4">
         {showBackButton && onBack ? (
           <motion.button
             type="button"
             onClick={onBack}
-            className="flex items-center gap-2 hover:opacity-70 transition-opacity text-white"
+            className="flex items-center gap-2 hover:opacity-70 transition-opacity text-story"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.3 }}
@@ -131,7 +125,7 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
                     key={link.name}
                     type="button"
                     onClick={(e) => handleNavClick(e, link.href, true)}
-                    className="hover:opacity-70 transition-opacity text-left bg-transparent border-0 p-0 cursor-pointer text-white text-xl"
+                    className="hover:opacity-70 transition-opacity text-left bg-transparent border-0 p-0 cursor-pointer text-story text-xl"
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
@@ -146,9 +140,9 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
       </div>
 
       {!showBackButton && (
-        <div className="text-right text-xs text-white/80 tabular-nums">
-          <span className="text-white/50">Local time</span> {formatTime()}{" "}
-          <span className="text-white/45">GMT−4</span>
+        <div className="text-right text-xs text-story-mid tabular-nums">
+          <span className="text-story-soft">Local time</span> {formatTime()}{" "}
+          <span className="text-story-soft">GMT−4</span>
         </div>
       )}
     </nav>

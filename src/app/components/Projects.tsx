@@ -161,10 +161,10 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
     <section className="pt-10 px-6 md:px-12 font-portfolio" id="projects">
       <div className="max-w-6xl mx-auto">
         <motion.div {...scrollRevealMotion(reducedMotion, 0)} className="mb-12 font-portfolio">
-          <h2 className="text-4xl md:text-5xl mb-3 text-white">
+          <h2 className="text-4xl md:text-5xl mb-3 text-story">
             Enterprise work<span style={{ color: "#EB5097" }}>.</span>
           </h2>
-          <p className="text-lg text-white/60">
+          <p className="text-lg text-story-mid">
             Product design within cross-functional teams at scale
           </p>
         </motion.div>
@@ -185,10 +185,10 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
           {...scrollRevealMotion(reducedMotion, 0.2)}
           className="mt-24 mb-12 font-portfolio"
         >
-          <h2 className="text-4xl md:text-5xl mb-3 text-white">
+          <h2 className="text-4xl md:text-5xl mb-3 text-story">
             Solo builds<span style={{ color: "#EB5097" }}>.</span>
           </h2>
-          <p className="text-lg text-white/60">Designed, architected, shipped — end to end</p>
+          <p className="text-lg text-story-mid">Designed, architected, shipped — end to end</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-6">
@@ -217,10 +217,10 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
               onClick={() => setIsMoreProjectsExpanded(!isMoreProjectsExpanded)}
             >
               <div>
-                <h3 className="text-2xl mb-1 text-white">
+                <h3 className="text-2xl mb-1 text-story">
                   More Projects
                 </h3>
-                <p className="text-sm text-white/40">
+                <p className="text-sm text-story-soft">
                   {isMoreProjectsExpanded ? 'Click to collapse' : 'Click to view additional work'}
                 </p>
               </div>
@@ -245,7 +245,7 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-6 mt-6 border-t border-white/10">
+                  <div className="pt-6 mt-6 border-t border-story">
                     {/* Carousel Container */}
                     <div className="relative">
                       {/* Main Carousel */}
@@ -288,13 +288,13 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
 
                       {/* Project Info */}
                       <div className="mt-6 text-center">
-                        <h4 className="text-xl mb-1 text-white">
+                        <h4 className="text-xl mb-1 text-story">
                           {moreProjectsImages[currentSlide].title}
                         </h4>
                         <p className="text-sm mb-2 text-[#EB5097]">
                           {moreProjectsImages[currentSlide].subtitle}
                         </p>
-                        <p className="text-sm text-white/60">
+                        <p className="text-sm text-story-mid">
                           {moreProjectsImages[currentSlide].description}
                         </p>
                       </div>
