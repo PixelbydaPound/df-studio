@@ -217,10 +217,10 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
               onClick={() => setIsMoreProjectsExpanded(!isMoreProjectsExpanded)}
             >
               <div>
-                <h3 className="text-2xl mb-1 text-story">
+                <h3 className="text-2xl mb-1 text-white">
                   More Projects
                 </h3>
-                <p className="text-sm text-story-mid">
+                <p className="text-sm text-white/65">
                   {isMoreProjectsExpanded ? 'Click to collapse' : 'Click to view additional work'}
                 </p>
               </div>
@@ -245,7 +245,7 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
                   transition={{ duration: 0.4, ease: "easeInOut" }}
                   className="overflow-hidden"
                 >
-                  <div className="pt-6 mt-6 border-t border-story">
+                  <div className="pt-6 mt-6 border-t border-white/10">
                     {/* Carousel Container */}
                     <div className="relative">
                       {/* Main Carousel */}
@@ -259,7 +259,7 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
                             transition={{ duration: 0.5, ease: "easeInOut" }}
                             className="absolute inset-0"
                           >
-                            <div className="relative w-full h-full bg-gradient-to-br from-white/5 to-white/10 rounded-2xl p-8 flex items-center justify-center">
+                            <div className="relative w-full h-full bg-[#f8f8f7] rounded-2xl p-8 flex items-center justify-center">
                               <img
                                 src={moreProjectsImages[currentSlide].src}
                                 alt={moreProjectsImages[currentSlide].alt}
@@ -288,13 +288,13 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
 
                       {/* Project Info */}
                       <div className="mt-6 text-center">
-                        <h4 className="text-xl mb-1 text-story">
+                        <h4 className="text-xl mb-1 text-white">
                           {moreProjectsImages[currentSlide].title}
                         </h4>
                         <p className="text-sm mb-2 text-[#EB5097]">
                           {moreProjectsImages[currentSlide].subtitle}
                         </p>
-                        <p className="text-sm text-story-mid">
+                        <p className="text-sm text-white/65">
                           {moreProjectsImages[currentSlide].description}
                         </p>
                       </div>

@@ -239,7 +239,7 @@ export function Photography() {
                   scroll-smooth overscroll-x-contain
                   pl-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
                   pr-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--story-bg,#000)] rounded-xl"
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f8f8f7] rounded-xl"
                 style={{
                   scrollBehavior: reducedMotion ? "auto" : undefined,
                 }}
@@ -251,15 +251,15 @@ export function Photography() {
                       slideRefs.current[index] = el;
                     }}
                     data-snap-index={index}
-                    className="snap-center shrink-0 w-[min(88vw,42rem)] flex flex-col rounded-2xl border border-white/15 bg-white/[0.06] shadow-[0_20px_50px_-24px_rgba(0,0,0,0.55)] overflow-hidden"
+                    className="snap-center shrink-0 w-[min(88vw,42rem)] flex flex-col rounded-2xl border border-black/[0.08] bg-[#f8f8f7] shadow-[0_20px_50px_-28px_rgba(20,7,0,0.18)] overflow-hidden"
                   >
-                    <div className="relative flex-1 min-h-[min(42vh,320px)] md:min-h-[min(52vh,420px)] flex items-center justify-center p-3 md:p-6 bg-black/20">
+                    <div className="relative flex-1 min-h-[min(42vh,320px)] md:min-h-[min(52vh,420px)] flex items-center justify-center p-3 md:p-6 bg-white">
                       {!loadedIds[photo.id] && (
                         <div
-                          className="absolute inset-0 flex items-center justify-center bg-black/25 z-[1]"
+                          className="absolute inset-0 flex items-center justify-center bg-[#f8f8f7]/90 z-[1]"
                           aria-hidden
                         >
-                          <div className="h-12 w-12 rounded-full border-2 border-white/15 border-t-[#EB5097]/80 animate-spin" />
+                          <div className="h-12 w-12 rounded-full border-2 border-neutral-200 border-t-[#EB5097] animate-spin" />
                         </div>
                       )}
                       <button
@@ -268,7 +268,7 @@ export function Photography() {
                           setCurrentIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="relative z-[2] w-full h-full min-h-[200px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--story-bg,#000)]"
+                        className="relative z-[2] w-full h-full min-h-[200px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                         aria-label={`View full size: ${photo.caption}`}
                       >
                         <img
@@ -283,15 +283,15 @@ export function Photography() {
                         />
                       </button>
                     </div>
-                    <div className="border-t border-white/10 px-4 py-3 flex items-center justify-between gap-2 bg-black/25">
-                      <p className="text-white/70 text-xs md:text-sm truncate">View full size</p>
+                    <div className="border-t border-black/[0.08] px-4 py-3 flex items-center justify-between gap-2 bg-[#f8f8f7]">
+                      <p className="text-neutral-600 text-xs md:text-sm truncate">View full size</p>
                       <button
                         type="button"
                         onClick={() => {
                           setCurrentIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="text-white text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
+                        className="text-neutral-900 text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
                       >
                         Open
                       </button>
