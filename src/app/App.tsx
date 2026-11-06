@@ -290,9 +290,8 @@ export default function App() {
         <BlurReveal>
           <Readings />
         </BlurReveal>
-        <BlurReveal>
-          <Photography />
-        </BlurReveal>
+        {/* No BlurReveal here: parent filter: blur() breaks <img> painting in some WebKit builds */}
+        <Photography />
         <BlurReveal>
           <Print />
         </BlurReveal>

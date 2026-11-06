@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ScrollReveal } from "./ScrollReveal";
 import {
   Dialog,
@@ -41,6 +41,40 @@ export function Photography() {
   const markLoaded = useCallback((id: string) => {
     setLoadedIds((prev) => (prev[id] ? prev : { ...prev, [id]: true }));
   }, []);
+
+  /** Cached images often skip onLoad; sync from decode / complete after paint */
+  useLayoutEffect(() => {
+    if (length === 0) return;
+
+    const syncFromElements = () => {
+      slideRefs.current.forEach((el, index) => {
+        const photo = photos[index];
+        if (!el || !photo) return;
+        const img = el.querySelector("img");
+        if (!img) return;
+        if (img.complete && img.naturalWidth > 0) {
+          markLoaded(photo.id);
+        }
+      });
+    };
+
+    syncFromElements();
+
+    let cancelled = false;
+    const decodePromises = photos.map((photo, index) => {
+      const img = slideRefs.current[index]?.querySelector("img");
+      if (!img?.decode) return Promise.resolve();
+      return img.decode().catch(() => undefined);
+    });
+
+    void Promise.all(decodePromises).then(() => {
+      if (!cancelled) syncFromElements();
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [length, markLoaded, photos]);
 
   const scrollToIndex = useCallback(
     (index: number) => {
@@ -244,6 +278,7 @@ export function Photography() {
                           fetchPriority={index === 0 ? "high" : "auto"}
                           loading={index < 3 ? "eager" : "lazy"}
                           onLoad={() => markLoaded(photo.id)}
+                          onError={() => markLoaded(photo.id)}
                           className="max-w-full max-h-[min(48vh,400px)] w-auto h-auto object-contain rounded-lg"
                         />
                       </button>
@@ -294,6 +329,8 @@ export function Photography() {
             src={current.src}
             alt={current.alt}
             decoding="async"
+            onLoad={() => markLoaded(current.id)}
+            onError={() => markLoaded(current.id)}
             className="w-full h-auto max-h-[80vh] object-contain bg-black"
           />
           <div className="px-6 py-4 border-t border-white/10 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
