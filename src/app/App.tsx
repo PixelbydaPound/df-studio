@@ -154,12 +154,12 @@ export default function App() {
       const clientHeight = window.innerHeight;
       const maxScroll = Math.max(0, scrollHeight - clientHeight);
 
-      const experienceEl = document.getElementById("experience");
+      const readingsEl = document.getElementById("readings");
       let storyT = 0;
 
-      if (experienceEl) {
-        const expTop = experienceEl.getBoundingClientRect().top + scrollTop;
-        const transitionStart = Math.max(0, expTop - clientHeight);
+      if (readingsEl) {
+        const readingsTop = readingsEl.getBoundingClientRect().top + scrollTop;
+        const transitionStart = Math.max(0, readingsTop - clientHeight);
 
         if (scrollTop < transitionStart) {
           storyT = 0;
