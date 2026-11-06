@@ -177,6 +177,11 @@
     color: var(--story-fg);
   }
 
+  /* Same warm off-black / cream tokens as the home page at end-of-scroll (story = 1) */
+  .portfolio-scroll-story--locked-dark {
+    --portfolio-scroll-story: 1;
+  }
+
   .text-story {
     color: var(--story-fg, #ffffff);
   }

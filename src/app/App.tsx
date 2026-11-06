@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect, useCallback, useRef } from "react";
+import { lazy, Suspense, useState, useEffect, useCallback, useRef, type ReactNode } from "react";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { Projects } from "./components/Projects";
@@ -58,9 +58,17 @@ const EnterpriseRolesProject = lazy(() =>
   })),
 );
 
+function CaseStudyShell({ children }: { children: ReactNode }) {
+  return (
+    <div className="portfolio-scroll-story portfolio-scroll-story--locked-dark min-h-screen">
+      {children}
+    </div>
+  );
+}
+
 function ProjectLoading() {
   return (
-    <div className="min-h-[50vh] flex items-center justify-center text-white/50 font-portfolio">
+    <div className="min-h-[50vh] flex items-center justify-center text-story-mid font-portfolio">
       Loading case study...
     </div>
   );
@@ -175,7 +183,7 @@ export default function App() {
 
   if (currentPage === "maia") {
     return (
-      <>
+      <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
           <MaiaProject
@@ -183,13 +191,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </>
+      </CaseStudyShell>
     );
   }
 
   if (currentPage === "rappi-mix") {
     return (
-      <>
+      <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
           <HritProject
@@ -197,13 +205,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </>
+      </CaseStudyShell>
     );
   }
 
   if (currentPage === "project-3") {
     return (
-      <>
+      <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
           <AlliedCreditProject
@@ -211,21 +219,23 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </>
+      </CaseStudyShell>
     );
   }
 
   if (currentPage === "enterprise-roles" && SHOW_ENTERPRISE_ROLES_CASE_STUDY) {
     return (
-      <Suspense fallback={<ProjectLoading />}>
-        <EnterpriseRolesProject onBack={handleBackToHome} />
-      </Suspense>
+      <CaseStudyShell>
+        <Suspense fallback={<ProjectLoading />}>
+          <EnterpriseRolesProject onBack={handleBackToHome} />
+        </Suspense>
+      </CaseStudyShell>
     );
   }
 
   if (currentPage === "juice-up") {
     return (
-      <>
+      <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
           <JuiceUpProject
@@ -233,13 +243,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </>
+      </CaseStudyShell>
     );
   }
 
   if (currentPage === "urc-records") {
     return (
-      <>
+      <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
           <UrcRecordsProject
@@ -247,7 +257,7 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </>
+      </CaseStudyShell>
     );
   }
 

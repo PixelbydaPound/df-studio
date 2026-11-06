@@ -55,7 +55,7 @@ export function UrcRecordsProject({ onBack, onNavigateToProject }: UrcRecordsPro
   };
 
   return (
-    <div className="min-h-screen bg-black text-white" style={{ paddingTop: '64px' }}>
+    <div className="min-h-screen text-white" style={{ paddingTop: '64px' }}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
         {/* Subtitle */}
         <motion.p

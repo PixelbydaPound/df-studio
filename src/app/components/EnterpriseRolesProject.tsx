@@ -177,7 +177,7 @@ export function EnterpriseRolesProject({ onBack }: EnterpriseRolesProjectProps) 
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen text-white">
       <div className="max-w-7xl mx-auto px-6 md:px-12 pt-10 pb-8">
         <button
           type="button"
