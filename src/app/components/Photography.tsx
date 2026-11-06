@@ -142,6 +142,30 @@ export function Photography() {
     return () => window.removeEventListener("keydown", onKey);
   }, [scrollToIndex, currentIndex, lightboxOpen, length]);
 
+  /** Vertical wheel → horizontal scroll when pointer is over the track (desktop mouse) */
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || length <= 1 || lightboxOpen) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const nextLeft = el.scrollLeft + e.deltaY;
+      const atStart = el.scrollLeft <= 0;
+      const atEnd = el.scrollLeft >= maxScroll - 1;
+
+      if (e.deltaY > 0 && atEnd) return;
+      if (e.deltaY < 0 && atStart) return;
+
+      e.preventDefault();
+      el.scrollLeft = Math.max(0, Math.min(maxScroll, nextLeft));
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [length, lightboxOpen]);
+
   if (length === 0 || !current) {
     return null;
   }
@@ -254,7 +278,9 @@ export function Photography() {
                   <span className="uppercase tracking-wide text-xs">{current.medium}</span>
                 </p>
               </div>
-              <p className="text-white/40 text-sm">Scroll to browse · tap Open or image to enlarge</p>
+              <p className="text-white/40 text-sm">
+                Scroll or mouse wheel to browse · tap Open or image to enlarge
+              </p>
             </div>
           </div>
         </ScrollReveal>
