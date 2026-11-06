@@ -1,4 +1,5 @@
 import { type ReactNode, useState } from "react";
+import billerScreen from "../../assets/org-admin-biller-screen.png";
 import {
   AddFilter,
   Card,
@@ -10,11 +11,9 @@ import {
   FilterChip,
   LoIcon,
   OrgShell,
-  PermissionsMatrix,
   PrimaryButton,
   SecondaryButton,
   Verified,
-  billerMatrix,
 } from "./LotusOrg";
 
 const helvetica =
@@ -451,26 +450,17 @@ export function GroupSettingsFigure() {
   );
 }
 
-function BillerMatrixScreen() {
-  const [openId, setOpenId] = useState("firm-financials");
-  return (
-    <OrgShell active="roles">
-      <PermissionsMatrix
-        state={billerMatrix()}
-        openId={openId}
-        onOpen={(id) => setOpenId((current) => (current === id ? "" : id))}
-      />
-    </OrgShell>
-  );
-}
-
 export function RolesBillerFigure() {
   return (
     <ScreenFrame
       title="Roles · Biller permissions matrix"
-      caption="Lotus RBAC groups: Patients, Practices, ModMed Pay, Analytics. Firm Financials open — Biller Console on, reconciliation off."
+      caption="Live Organization Admin capture — Firm Financials open, Biller Console on, reconciliation off."
     >
-      <BillerMatrixScreen />
+      <img
+        src={billerScreen}
+        alt="Organization Admin Biller role with Firm Financials privileges, Users 5, Groups 2, and grant counts"
+        className="w-full h-auto rounded-xl border border-white/10 bg-black"
+      />
     </ScreenFrame>
   );
 }

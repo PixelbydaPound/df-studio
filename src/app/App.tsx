@@ -175,12 +175,9 @@ export default function App() {
 
   if (currentPage === "enterprise-roles" && SHOW_ENTERPRISE_ROLES_CASE_STUDY) {
     return (
-      <>
-        <Navigation showBackButton onBack={handleBackToHome} />
-        <Suspense fallback={<ProjectLoading />}>
-          <EnterpriseRolesProject />
-        </Suspense>
-      </>
+      <Suspense fallback={<ProjectLoading />}>
+        <EnterpriseRolesProject onBack={handleBackToHome} />
+      </Suspense>
     );
   }
 

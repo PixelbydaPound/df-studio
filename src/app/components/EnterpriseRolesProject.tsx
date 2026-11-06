@@ -1,36 +1,19 @@
 import { motion } from "motion/react";
 import { LoIcon } from "./LotusOrg";
 import { useState } from "react";
-import heroImage from "../../assets/enterprise-roles-hero.svg";
+import { ArrowLeft } from "lucide-react";
 import msoEcosystemDiagram from "../../assets/enterprise-mso-ecosystem-diagram.svg";
 import rbacProvisioningDiagram from "../../assets/enterprise-rbac-provisioning-diagram.svg";
 import { ScrollToTop } from "./ScrollToTop";
-import { Footer } from "./Footer";
-import { NextProject } from "./NextProject";
-import { PreviousProject } from "./PreviousProject";
 import { EnterpriseRolesPrototype } from "./EnterpriseRolesPrototype";
 import {
   EnterpriseRolesGatedDetail,
   useEnterpriseRolesUnlock,
 } from "./EnterpriseRolesCaseGate";
-import {
-  AccountGroupsDrawerFigure,
-  AccountsMainFigure,
-  AccessRulesFigure,
-  EditAccessRuleFigure,
-  GroupBasicInfoFigure,
-  GroupLocationsFigure,
-  GroupSettingsFigure,
-  RolesBillerFigure,
-} from "./EnterpriseRolesScreens";
+import { RolesBillerFigure } from "./EnterpriseRolesScreens";
 
 const helvetica =
   '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif';
-
-interface EnterpriseRolesProjectProps {
-  onBack: () => void;
-  onNavigateToProject?: (projectId: string) => void;
-};
 
 type ResearchFigureProps = {
   title: string;
@@ -178,9 +161,11 @@ function BulletList({ items }: { items: string[] }) {
   );
 }
 
-export function EnterpriseRolesProject({
-  onNavigateToProject,
-}: EnterpriseRolesProjectProps) {
+type EnterpriseRolesProjectProps = {
+  onBack: () => void;
+};
+
+export function EnterpriseRolesProject({ onBack }: EnterpriseRolesProjectProps) {
   const [expandedFigure, setExpandedFigure] = useState<"mso" | "rbac" | null>(null);
   const { unlocked, setUnlocked } = useEnterpriseRolesUnlock();
 
@@ -192,8 +177,17 @@ export function EnterpriseRolesProject({
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white" style={{ paddingTop: "64px" }}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+    <div className="min-h-screen bg-black text-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 pt-10 pb-8">
+        <button
+          type="button"
+          onClick={onBack}
+          className="group mb-8 inline-flex items-center gap-2 text-sm text-white/50 hover:text-white/90 transition-colors bg-transparent border-0 p-0 cursor-pointer font-portfolio"
+        >
+          <ArrowLeft className="w-4 h-4 opacity-70 group-hover:opacity-100" aria-hidden />
+          <span>Back to portfolio</span>
+        </button>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -284,15 +278,6 @@ export function EnterpriseRolesProject({
             className="lg:col-span-9 space-y-16"
             style={{ fontFamily: helvetica }}
           >
-            <div className="rounded-2xl overflow-hidden border border-white/10">
-              <img
-                src={heroImage}
-                alt="Abstract illustration of enterprise roles and permissions administration"
-                className="w-full h-auto"
-                loading="lazy"
-              />
-            </div>
-
             <section id="overview" className="space-y-4">
               <SectionHeading title="Overview" />
               <p className="text-white/80 text-xl md:text-2xl leading-snug">
@@ -499,10 +484,10 @@ export function EnterpriseRolesProject({
                   Security for shift-based teams.
                 </p>
                 <p>
-                  The flows below are{" "}
-                  <span className="text-white">reconstructed Organization Admin patterns</span> with
-                  brand marks removed — not production exports. Unlock once to view static frames
-                  and the interactive prototype (roles, groups, matrix, access rules).
+                  Product detail below is{" "}
+                  <span className="text-white">password-gated under NDA</span>: a live Organization
+                  Admin capture for the Biller matrix, plus an interactive concept demo to explore
+                  related admin patterns — not production exports.
                 </p>
               </div>
 
@@ -510,29 +495,6 @@ export function EnterpriseRolesProject({
                 unlocked={unlocked}
                 onUnlocked={() => setUnlocked(true)}
               >
-                <div id="accounts" className="space-y-6">
-                  <h3 className="text-xl text-white">One user, one login</h3>
-                  <p className="text-white/60 text-lg leading-relaxed">
-                    Organization Admin starts at the account directory. Identity lives on the
-                    person; application, business unit, and role travel with groups — so a biller
-                    covering two practices does not need two logins.
-                  </p>
-                  <AccountsMainFigure />
-                  <AccountGroupsDrawerFigure />
-                </div>
-
-                <div id="groups" className="space-y-6">
-                  <h3 className="text-xl text-white">Groups as the provisioning unit</h3>
-                  <p className="text-white/60 text-lg leading-relaxed">
-                    Groups bind applications to roles, filter locations for large MSOs, and attach
-                    one access rule per team — login hours follow the group, not a one-off user
-                    flag.
-                  </p>
-                  <GroupBasicInfoFigure />
-                  <GroupLocationsFigure />
-                  <GroupSettingsFigure />
-                </div>
-
                 <div id="roles-matrix" className="space-y-6">
                   <h3 className="text-xl text-white">The Biller matrix</h3>
                   <p className="text-white/60 text-lg leading-relaxed">
@@ -541,16 +503,6 @@ export function EnterpriseRolesProject({
                     vertical slice.
                   </p>
                   <RolesBillerFigure />
-                </div>
-
-                <div id="access-rules" className="space-y-6">
-                  <h3 className="text-xl text-white">Access rules under Security</h3>
-                  <p className="text-white/60 text-lg leading-relaxed">
-                    Rules map to groups and describe when access is allowed — any day left off the
-                    list is implicitly denied.
-                  </p>
-                  <AccessRulesFigure />
-                  <EditAccessRuleFigure />
                 </div>
 
                 <div id="interactive-demo" className="space-y-4">
@@ -683,20 +635,8 @@ export function EnterpriseRolesProject({
             )}
           </motion.div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 mt-8">
-          <PreviousProject
-            projectName="Allied Credit Union — Mobile Banking"
-            onNavigate={() => onNavigateToProject?.("project-3")}
-          />
-          <NextProject
-            projectName="Juice Up — E-Commerce"
-            onNavigate={() => onNavigateToProject?.("juice-up")}
-          />
-        </div>
       </div>
 
-      <Footer />
       <ScrollToTop />
     </div>
   );

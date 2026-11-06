@@ -15,8 +15,9 @@ export function Print() {
           <p className="text-white/50 text-sm uppercase tracking-wide mb-3">
             URC Zine 001 — Westenia
           </p>
+          <p className="text-white/50 text-xs uppercase tracking-wide mb-2">Designer</p>
           <p className="text-white/60 text-base max-w-2xl mb-8">
-            Editorial print design for URC Records — cover, typography, and a paired digital reader.
+            Editorial print designed for URC Records — cover, typography, and a paired digital reader.
           </p>
 
           <div className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden mb-8 max-w-3xl">

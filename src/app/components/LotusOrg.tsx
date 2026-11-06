@@ -516,7 +516,10 @@ export function PermissionsMatrix({
   const analyticsGranted = state.analytics.filter((item) => item.level !== "Hidden").length;
   const payGranted =
     state.payLevel === "Hidden" ? 0 : state.payLevel === "View" ? PAY_VIEW.length : PAY_VIEW.length + Object.values(state.payManage).filter(Boolean).length;
-  const showPay = match("ModMed Pay") || PAY_VIEW.some(match) || PAY_MANAGE.some(match);
+  const showPay =
+    needle.length > 0 &&
+    (match("ModMed Pay") || PAY_VIEW.some(match) || PAY_MANAGE.some(match));
+  const showAnalytics = needle.length > 0 && analyticsItems.length > 0;
 
   const payOpen = openId === "modmed-pay";
   const analyticsOpen = openId === "analytics";
@@ -634,7 +637,7 @@ export function PermissionsMatrix({
               </div>
             </div>}
 
-            {analyticsItems.length > 0 && <div className="lo-perm-group">
+            {showAnalytics && <div className="lo-perm-group">
               <h3 className="lo-perm-group-title">Analytics</h3>
               <div className="lo-acc">
                 <AccordionRow

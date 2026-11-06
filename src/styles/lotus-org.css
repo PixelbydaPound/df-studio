@@ -417,6 +417,39 @@
   min-height: 720px;
 }
 
+.lo-real-screen {
+  position: relative;
+  background: #000;
+}
+
+.lo-real-screen-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lo-real-screen-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 14px 14px;
+  background: #000;
+}
+
+.lo-real-screen-link {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.lo-real-screen-link:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
 .lo-license-pill {
   display: inline-flex;
   align-items: center;

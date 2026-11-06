@@ -1,4 +1,5 @@
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
+import billerScreen from "../../assets/org-admin-biller-screen.png";
 import {
   EnterpriseRolesCaseGate,
   useEnterpriseRolesUnlock,
@@ -150,8 +151,6 @@ function InteractiveMatrix({
       usersActive: 4,
       usersInactive: 1,
       groups: 2,
-      detail:
-        "Revenue staff access in EMA for BetterBones. Firm Financials open — Biller Console on, reconciliation off. Patients, Practices, ModMed Pay, Analytics.",
     },
     "sr-biller": {
       name: "Sr. Biller",
@@ -801,7 +800,29 @@ export function EnterpriseRolesPrototype({ hideOverlayGate = false }: { hideOver
         />
       )}
       <div className={!unlocked && !hideOverlayGate ? "pointer-events-none select-none blur-[2px]" : ""}>
-        {view === "assign" ? (
+        {view === "matrix" && template === "biller" ? (
+          <div className="lo-real-screen">
+            <img
+              src={billerScreen}
+              alt="Organization Admin Biller role — Firm Financials open, Biller Console on, reconciliation off"
+              className="lo-real-screen-img"
+            />
+            <div className="lo-real-screen-bar">
+              <button type="button" className="lo-real-screen-link" onClick={() => setView("roles")}>
+                Roles list
+              </button>
+              <button type="button" className="lo-real-screen-link" onClick={() => setView("assign")}>
+                Accounts
+              </button>
+              <button type="button" className="lo-real-screen-link" onClick={() => setView("groups")}>
+                Groups
+              </button>
+              <button type="button" className="lo-real-screen-link" onClick={() => setView("rules")}>
+                Access Rules
+              </button>
+            </div>
+          </div>
+        ) : view === "assign" ? (
           <AssignView selected={account} onSelect={setAccount} onNavigate={handleNavigate} />
         ) : view === "groups" ? (
           <GroupsView selected={group} onSelect={setGroup} onNavigate={handleNavigate} />
