@@ -24,44 +24,24 @@ function neighborIndices(index: number, length: number): number[] {
   return [index, prev, next];
 }
 
+/** Collins-style row: side panels peek prev/next; center is the hero */
 export function Photography() {
   const reducedMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [slideReady, setSlideReady] = useState(false);
-  const thumbStripRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
-  const slideImgRef = useRef<HTMLImageElement>(null);
+  const centerImgRef = useRef<HTMLImageElement>(null);
 
-  const current = photos[currentIndex];
+  const length = photos.length;
+  const current = length ? photos[currentIndex] : null;
+  const prevPhoto = length ? photos[(currentIndex - 1 + length) % length] : null;
+  const nextPhoto = length ? photos[(currentIndex + 1) % length] : null;
 
-  const scrollThumbIntoStrip = useCallback(
-    (index: number) => {
-      const strip = thumbStripRef.current;
-      if (!strip) return;
-      const active = strip.querySelector<HTMLButtonElement>(`[data-index="${index}"]`);
-      if (!active) return;
-      const target =
-        active.offsetLeft - strip.clientWidth / 2 + active.offsetWidth / 2;
-      strip.scrollTo({
-        left: target,
-        behavior: reducedMotion ? "auto" : "smooth",
-      });
-    },
-    [reducedMotion],
-  );
-
-  const goToSlide = useCallback(
-    (index: number, scrollThumb = false) => {
-      setSlideReady(false);
-      const next = (index + photos.length) % photos.length;
-      setCurrentIndex(next);
-      if (scrollThumb) {
-        scrollThumbIntoStrip(next);
-      }
-    },
-    [scrollThumbIntoStrip],
-  );
+  const goToSlide = useCallback((index: number) => {
+    setSlideReady(false);
+    setCurrentIndex((index + length) % length);
+  }, [length]);
 
   const goToPrev = useCallback(() => {
     goToSlide(currentIndex - 1);
@@ -72,28 +52,29 @@ export function Photography() {
   }, [currentIndex, goToSlide]);
 
   useEffect(() => {
-    setCurrentIndex((prev) => (photos.length ? prev % photos.length : 0));
-  }, [photos.length]);
+    setCurrentIndex((prev) => (length ? prev % length : 0));
+  }, [length]);
 
   useEffect(() => {
+    if (!current) return;
     setSlideReady(false);
-    for (const i of neighborIndices(currentIndex, photos.length)) {
+    for (const i of neighborIndices(currentIndex, length)) {
       preloadImage(photos[i].src);
     }
-    const img = slideImgRef.current;
+    const img = centerImgRef.current;
     if (img?.complete && img.naturalWidth > 0) {
       setSlideReady(true);
     }
-  }, [currentIndex, current.id]);
+  }, [currentIndex, current?.id, length]);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || photos.length === 0) return;
+    if (!section || length === 0) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (!entries[0]?.isIntersecting) return;
-        for (const i of neighborIndices(0, photos.length)) {
+        for (const i of neighborIndices(0, length)) {
           preloadImage(photos[i].src);
         }
         observer.disconnect();
@@ -103,9 +84,25 @@ export function Photography() {
 
     observer.observe(section);
     return () => observer.disconnect();
-  }, []);
+  }, [length]);
 
-  if (photos.length === 0) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (lightboxOpen || length <= 1) return;
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goToPrev();
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goToNext();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [goToPrev, goToNext, lightboxOpen, length]);
+
+  if (length === 0 || !current) {
     return null;
   }
 
@@ -135,62 +132,115 @@ export function Photography() {
             aria-roledescription="carousel"
             aria-label="Photography gallery"
           >
-            <div
-              className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-white/5"
-              style={{ height: "min(70vh, 560px)" }}
-            >
-              {!slideReady && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center bg-white/[0.03]"
-                  aria-hidden
-                >
-                  <div className="h-12 w-12 rounded-full border-2 border-white/15 border-t-[#EB5097]/80 animate-spin" />
-                </div>
-              )}
-
-              <AnimatePresence mode="sync" initial={false}>
-                <motion.div
-                  key={current.id}
-                  initial={reducedMotion ? false : { opacity: 0 }}
-                  animate={{ opacity: slideReady ? 1 : 0 }}
-                  exit={reducedMotion ? undefined : { opacity: 0 }}
-                  transition={{ duration: reducedMotion ? 0 : 0.35, ease: "easeInOut" }}
-                  className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
-                >
-                  <button
-                    type="button"
-                    onClick={() => setLightboxOpen(true)}
-                    className="w-full h-full flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
-                    aria-label={`View full size: ${current.caption}`}
-                  >
-                    <img
-                      ref={slideImgRef}
-                      src={current.src}
-                      alt={current.alt}
-                      decoding="async"
-                      fetchPriority={currentIndex === 0 ? "high" : "auto"}
-                      onLoad={() => setSlideReady(true)}
-                      className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg"
-                    />
-                  </button>
-                </motion.div>
-              </AnimatePresence>
-
+            <div className="flex flex-col gap-4 md:flex-row md:items-stretch md:gap-3 md:justify-center min-h-[min(52vh,420px)] md:min-h-[min(60vh,480px)]">
+              {/* Previous peek */}
               <button
                 type="button"
                 onClick={goToPrev}
-                className="absolute left-3 md:left-4 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 z-10"
-                aria-label="Previous photo"
+                className="relative order-2 md:order-1 min-h-[140px] md:min-h-0 md:w-[22%] md:max-w-[200px] flex-shrink-0 rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-transform hover:scale-[1.02] active:scale-[0.99]"
+                aria-label={`Previous: ${prevPhoto?.caption}`}
               >
-                <ChevronLeft className="w-6 h-6 text-white" />
+                {prevPhoto && (
+                  <img
+                    src={prevPhoto.src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
+                  />
+                )}
+                <span className="absolute bottom-2 left-2 right-2 text-left text-[10px] md:text-xs text-white/50 uppercase tracking-wide">
+                  Previous
+                </span>
               </button>
+
+              {/* Center hero */}
+              <div className="relative order-1 md:order-2 flex-1 md:w-[56%] min-h-[min(48vh,380px)] md:min-h-0 rounded-2xl border border-white/15 bg-white/[0.06] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col">
+                {!slideReady && (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center bg-black/30 z-[1]"
+                    aria-hidden
+                  >
+                    <div className="h-12 w-12 rounded-full border-2 border-white/15 border-t-[#EB5097]/80 animate-spin" />
+                  </div>
+                )}
+
+                <AnimatePresence mode="sync" initial={false}>
+                  <motion.div
+                    key={current.id}
+                    initial={reducedMotion ? false : { opacity: 0 }}
+                    animate={{ opacity: slideReady ? 1 : 0 }}
+                    exit={reducedMotion ? undefined : { opacity: 0 }}
+                    transition={{ duration: reducedMotion ? 0 : 0.35, ease: "easeInOut" }}
+                    className="flex-1 flex items-center justify-center p-3 md:p-6 min-h-0"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setLightboxOpen(true)}
+                      className="w-full h-full min-h-[200px] md:min-h-[280px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                      aria-label={`View full size: ${current.caption}`}
+                    >
+                      <img
+                        ref={centerImgRef}
+                        src={current.src}
+                        alt={current.alt}
+                        decoding="async"
+                        fetchPriority={currentIndex === 0 ? "high" : "auto"}
+                        onLoad={() => setSlideReady(true)}
+                        className="max-w-full max-h-[min(48vh,420px)] w-auto h-auto object-contain rounded-lg"
+                      />
+                    </button>
+                  </motion.div>
+                </AnimatePresence>
+
+                <div className="border-t border-white/10 px-4 py-3 md:py-3.5 flex items-center justify-between gap-2 bg-black/20">
+                  <p className="text-white/60 text-xs md:text-sm truncate">View full size</p>
+                  <button
+                    type="button"
+                    onClick={() => setLightboxOpen(true)}
+                    className="text-white/80 text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
+                  >
+                    Open
+                  </button>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={goToPrev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-[2] w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 md:left-3"
+                  aria-label="Previous photo"
+                >
+                  <ChevronLeft className="w-5 h-5 text-white" />
+                </button>
+                <button
+                  type="button"
+                  onClick={goToNext}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-[2] w-10 h-10 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 md:right-3"
+                  aria-label="Next photo"
+                >
+                  <ChevronRight className="w-5 h-5 text-white" />
+                </button>
+              </div>
+
+              {/* Next peek */}
               <button
                 type="button"
                 onClick={goToNext}
-                className="absolute right-3 md:right-4 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-full bg-black/50 backdrop-blur-sm border border-white/10 flex items-center justify-center transition-colors hover:bg-black/70 hover:border-[#EB5097]/50 z-10"
-                aria-label="Next photo"
+                className="relative order-3 min-h-[140px] md:min-h-0 md:w-[22%] md:max-w-[200px] flex-shrink-0 rounded-2xl border border-white/10 bg-white/[0.04] overflow-hidden group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-transform hover:scale-[1.02] active:scale-[0.99]"
+                aria-label={`Next: ${nextPhoto?.caption}`}
               >
-                <ChevronRight className="w-6 h-6 text-white" />
+                {nextPhoto && (
+                  <img
+                    src={nextPhoto.src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
+                  />
+                )}
+                <span className="absolute bottom-2 left-2 right-2 text-left text-[10px] md:text-xs text-white/50 uppercase tracking-wide">
+                  Next
+                </span>
               </button>
             </div>
 
@@ -199,46 +249,14 @@ export function Photography() {
                 <p className="text-white text-lg">{current.caption}</p>
                 <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
                 <p className="text-white/50 text-sm mt-1">
-                  {currentIndex + 1} / {photos.length}
+                  {currentIndex + 1} / {length}
                   <span className="mx-2 text-white/30" aria-hidden>
                     ·
                   </span>
                   <span className="uppercase tracking-wide text-xs">{current.medium}</span>
                 </p>
               </div>
-              <p className="text-white/40 text-sm">Click image to enlarge</p>
-            </div>
-
-            <div
-              ref={thumbStripRef}
-              className="mt-6 flex gap-2 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin"
-              aria-label="All photos"
-            >
-              {photos.map((photo, index) => (
-                <button
-                  key={photo.id}
-                  type="button"
-                  data-index={index}
-                  onClick={() => goToSlide(index, true)}
-                  className={`flex-shrink-0 snap-center rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] ${
-                    index === currentIndex
-                      ? "border-[#EB5097] opacity-100 scale-105"
-                      : "border-white/10 opacity-60 hover:opacity-90"
-                  }`}
-                  aria-label={`Go to photo ${index + 1}: ${photo.caption}`}
-                  aria-current={index === currentIndex ? "true" : undefined}
-                >
-                  <img
-                    src={photo.thumbSrc}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    width={80}
-                    height={80}
-                    className="w-16 h-16 md:w-20 md:h-20 object-cover"
-                  />
-                </button>
-              ))}
+              <p className="text-white/40 text-sm">Click center image or Open</p>
             </div>
           </div>
         </ScrollReveal>
