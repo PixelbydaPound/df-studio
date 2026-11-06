@@ -67,14 +67,10 @@ export function Readings() {
                       aria-hidden
                     >
                       {reading.checked && (
-                        <Check className="w-3 h-3 text-story-mid" />
+                        <Check className="w-3 h-3 text-story" />
                       )}
                     </div>
-                    <span
-                      className={`text-[15px] leading-normal ${
-                        reading.checked ? "text-story-mid" : "text-story"
-                      }`}
-                    >
+                    <span className="text-[15px] leading-normal text-story">
                       {reading.title}
                     </span>
                   </div>

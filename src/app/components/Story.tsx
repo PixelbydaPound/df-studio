@@ -33,7 +33,7 @@ export function Story() {
               key={index}
               as="p"
               delay={0.1 + index * 0.08}
-              className="text-lg mb-6 text-story-mid leading-relaxed last:mb-0"
+              className="text-lg mb-6 text-story leading-relaxed last:mb-0"
             >
               {content}
             </ScrollReveal>

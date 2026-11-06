@@ -138,7 +138,7 @@ export function Education() {
                   <h3 className="text-lg mb-2 text-story">{item.title}</h3>
                   <p className="text-base text-story-mid">{item.institution}</p>
                 </div>
-                <div className="text-base flex-shrink-0 text-story-soft">{item.year}</div>
+                <div className="text-base flex-shrink-0 text-story-mid">{item.year}</div>
               </div>
             </ScrollReveal>
           ))}

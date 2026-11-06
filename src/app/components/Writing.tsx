@@ -40,7 +40,7 @@ export function Writing() {
                 <p className="text-base mb-6 text-story-mid">{article.description}</p>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-story-soft group-hover:text-story-mid transition-colors">
+              <div className="flex items-center gap-2 text-sm text-story-mid group-hover:text-story transition-colors">
                 Read article on Medium
                 <ArrowUpRight className="portfolio-card__link-icon w-4 h-4" aria-hidden />
               </div>
@@ -55,7 +55,7 @@ export function Writing() {
             delay={0.2}
             className="group portfolio-card portfolio-card--interactive p-8 min-h-[240px] items-center justify-center text-center"
           >
-            <p className="text-sm mb-4 text-story-soft">Read all my articles on</p>
+            <p className="text-sm mb-4 text-story-mid">Read all my articles on</p>
             <div className="text-5xl mb-6 text-story font-normal" style={{ fontFamily: "Georgia, serif" }}>
               Medium
             </div>

@@ -15,7 +15,7 @@ export function Contact() {
               Contact Me<span className="text-[#EB5097]">.</span>
             </ScrollReveal>
 
-            <ScrollReveal as="p" delay={0.1} className="text-lg max-w-xl text-story-mid leading-relaxed">
+            <ScrollReveal as="p" delay={0.1} className="text-lg max-w-xl text-story leading-relaxed">
               Let's build something exceptional. I'm open to connecting about design roles,
               systems, and opportunities where strategy meets creativity.
             </ScrollReveal>

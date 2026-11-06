@@ -33,7 +33,7 @@ export function Print() {
               loading="lazy"
               decoding="async"
             />
-            <p className="text-story-soft text-xs text-center py-3 px-4 border-t border-story">
+            <p className="text-story text-sm text-center py-3 px-4 border-t border-story">
               Cover and print mock — risograph-style treatment, serif title, stippled sprout motif
             </p>
           </div>

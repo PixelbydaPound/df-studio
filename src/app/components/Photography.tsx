@@ -313,7 +313,7 @@ export function Photography() {
                   <span className="uppercase tracking-wide text-xs">{current.medium}</span>
                 </p>
               </div>
-              <p className="text-story-soft text-sm">
+              <p className="text-story-mid text-sm">
                 Scroll or mouse wheel to browse · tap Open or image to enlarge
               </p>
             </div>

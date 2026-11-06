@@ -61,7 +61,7 @@ export function Footer() {
                 df-studio.net
               </a>
             </div>
-            <p className="text-sm mb-4 text-story-mid">
+            <p className="text-sm mb-4 text-story">
               Design, code, and motion by me.
             </p>
             

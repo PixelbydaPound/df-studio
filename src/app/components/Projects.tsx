@@ -220,7 +220,7 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
                 <h3 className="text-2xl mb-1 text-story">
                   More Projects
                 </h3>
-                <p className="text-sm text-story-soft">
+                <p className="text-sm text-story-mid">
                   {isMoreProjectsExpanded ? 'Click to collapse' : 'Click to view additional work'}
                 </p>
               </div>

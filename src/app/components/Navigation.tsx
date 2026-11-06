@@ -141,8 +141,7 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
 
       {!showBackButton && (
         <div className="text-right text-xs text-story-mid tabular-nums">
-          <span className="text-story-soft">Local time</span> {formatTime()}{" "}
-          <span className="text-story-soft">GMT−4</span>
+          Local time {formatTime()} GMT−4
         </div>
       )}
     </nav>
