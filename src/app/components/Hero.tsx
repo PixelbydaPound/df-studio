@@ -78,7 +78,7 @@ export function Hero() {
               className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-8 mt-8 text-story max-w-2xl mx-auto text-left"
               {...heroEntranceMotion(reducedMotion, 0.3)}
             >
-              Product Designer — B2C, B2B & SaaS · Human-in-the-Loop AI
+              Product Designer — B2C, B2B & SaaS
             </motion.p>
 
             <motion.p
