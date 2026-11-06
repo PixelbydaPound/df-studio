@@ -241,7 +241,7 @@ export function EnterpriseRolesProject({ onBack }: EnterpriseRolesProjectProps) 
           >
             <div>
               <h3 className="text-white mb-2">Timeline</h3>
-              <p className="text-white/60">Jul – Oct 2025 (~3 months)</p>
+              <p className="text-white/60">Jul – Oct 2026 (~3 months)</p>
             </div>
             <div>
               <h3 className="text-white mb-2">Team</h3>

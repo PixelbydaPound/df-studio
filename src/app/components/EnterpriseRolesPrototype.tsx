@@ -80,10 +80,10 @@ const GROUP_MEMBERS: Record<string, string[]> = {
 };
 
 const ROLES = [
-  { id: "read-only" as const, name: "Read-only · Standard", type: "Phase 1 PoC", users: "6", groups: "1", modified: "Jul 22, 2025", status: "Enabled", open: true },
-  { id: "biller" as const, name: "Biller", type: "Revenue", users: "5", groups: "2", modified: "Aug 4, 2025", status: "Enabled", open: true },
-  { id: "sr-biller" as const, name: "Sr. Biller", type: "Revenue", users: "4", groups: "1", modified: "Aug 4, 2025", status: "Enabled", open: true },
-  { id: "jr-biller" as const, name: "Jr. Biller", type: "Revenue", users: "6", groups: "1", modified: "Aug 18, 2025", status: "Enabled", open: true },
+  { id: "read-only" as const, name: "Read-only · Standard", type: "Phase 1 PoC", users: "6", groups: "1", modified: "Jul 22, 2026", status: "Enabled", open: true },
+  { id: "biller" as const, name: "Biller", type: "Revenue", users: "5", groups: "2", modified: "Aug 4, 2026", status: "Enabled", open: true },
+  { id: "sr-biller" as const, name: "Sr. Biller", type: "Revenue", users: "4", groups: "1", modified: "Aug 4, 2026", status: "Enabled", open: true },
+  { id: "jr-biller" as const, name: "Jr. Biller", type: "Revenue", users: "6", groups: "1", modified: "Aug 18, 2026", status: "Enabled", open: true },
   { id: "front-desk" as const, name: "Front desk", type: "Clinical ops", users: "8", groups: "1", modified: "—", status: "Disabled", open: false },
   { id: "rcm" as const, name: "RCM", type: "Coming later", users: "3", groups: "1", modified: "—", status: "Disabled", open: false },
 ];

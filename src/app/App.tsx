@@ -281,9 +281,8 @@ export default function App() {
         <BlurReveal>
           <Education />
         </BlurReveal>
-        <BlurReveal>
-          <Experience />
-        </BlurReveal>
+        {/* Experience uses a PNG logo; BlurReveal's filter: blur() can hide imgs in WebKit — same as Photography */}
+        <Experience />
         <BlurReveal>
           <Readings />
         </BlurReveal>

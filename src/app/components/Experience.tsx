@@ -30,7 +30,7 @@ export function Experience() {
       id: "modmed",
       title: "Senior Product Designer",
       company: "Modernizing Medicine",
-      period: "Jul – Oct 2025",
+      period: "Jul – Oct 2026",
       logo: modmedLotusM,
       color: "#FFFFFF",
       logoClass: "w-14 h-14 object-contain",
