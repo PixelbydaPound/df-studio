@@ -144,6 +144,34 @@ a.portfolio-card {
   }
 }
 
+/* Photography horizontal gallery: Collins-style grab, no visible scrollbar */
+.photography-gallery-scroller {
+  cursor: grab;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.photography-gallery-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.photography-gallery-scroller.is-grabbing {
+  cursor: grabbing;
+}
+
+.photography-gallery-scroller.is-grabbing * {
+  cursor: grabbing;
+}
+
+/* Image-only tiles: rounded contour, no frame chrome */
+.photography-gallery-card {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .portfolio-card,
   .portfolio-card__media,

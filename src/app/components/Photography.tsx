@@ -200,6 +200,68 @@ export function Photography() {
     return () => el.removeEventListener("wheel", onWheel);
   }, [length, lightboxOpen]);
 
+  /** Pointer drag → horizontal scroll (grab hand); suppress click if user dragged */
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || length <= 1) return;
+
+    let pointerId: number | null = null;
+    let startX = 0;
+    let startScroll = 0;
+    let didDrag = false;
+
+    const onPointerDown = (e: PointerEvent) => {
+      if (e.button !== 0) return;
+      pointerId = e.pointerId;
+      startX = e.clientX;
+      startScroll = el.scrollLeft;
+      didDrag = false;
+      el.classList.add("is-grabbing");
+      el.setPointerCapture(e.pointerId);
+    };
+
+    const onPointerMove = (e: PointerEvent) => {
+      if (pointerId !== e.pointerId) return;
+      const delta = e.clientX - startX;
+      if (Math.abs(delta) > 4) didDrag = true;
+      el.scrollLeft = startScroll - delta;
+    };
+
+    const endDrag = (e: PointerEvent) => {
+      if (pointerId !== e.pointerId) return;
+      el.classList.remove("is-grabbing");
+      try {
+        el.releasePointerCapture(e.pointerId);
+      } catch {
+        /* already released */
+      }
+      pointerId = null;
+    };
+
+    const onClickCapture = (e: MouseEvent) => {
+      if (didDrag) {
+        e.preventDefault();
+        e.stopPropagation();
+        didDrag = false;
+      }
+    };
+
+    el.addEventListener("pointerdown", onPointerDown);
+    el.addEventListener("pointermove", onPointerMove);
+    el.addEventListener("pointerup", endDrag);
+    el.addEventListener("pointercancel", endDrag);
+    el.addEventListener("click", onClickCapture, true);
+
+    return () => {
+      el.removeEventListener("pointerdown", onPointerDown);
+      el.removeEventListener("pointermove", onPointerMove);
+      el.removeEventListener("pointerup", endDrag);
+      el.removeEventListener("pointercancel", endDrag);
+      el.removeEventListener("click", onClickCapture, true);
+      el.classList.remove("is-grabbing");
+    };
+  }, [length]);
+
   if (length === 0 || !current) {
     return null;
   }
@@ -230,47 +292,57 @@ export function Photography() {
             aria-roledescription="carousel"
             aria-label="Photography gallery — scroll horizontally to browse"
           >
+            <p className="sr-only">
+              Drag with pointer or scroll horizontally to browse; open a slide to view full size.
+            </p>
             {/* Full-bleed scroll track so peeks match reference sites */}
             <div className="-mx-6 md:-mx-12">
               <div
                 ref={scrollerRef}
                 tabIndex={0}
-                className="flex gap-3 md:gap-4 overflow-x-auto overflow-y-hidden snap-x snap-mandatory pb-3 scrollbar-thin
-                  scroll-smooth overscroll-x-contain
-                  pl-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
-                  pr-[max(1.5rem,calc(50vw-min(88vw,42rem)/2))]
-                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#f8f8f7] rounded-xl"
+                className="photography-gallery-scroller flex items-end gap-4 md:gap-6 overflow-x-auto overflow-y-hidden snap-x snap-mandatory
+                  scroll-smooth overscroll-x-contain touch-pan-x
+                  pl-[max(1.5rem,calc(50vw-min(70vw,20rem)/2))]
+                  pr-[max(1.5rem,calc(50vw-min(70vw,20rem)/2))]
+                  focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--story-bg,#f8f8f7)]"
                 style={{
                   scrollBehavior: reducedMotion ? "auto" : undefined,
                 }}
               >
-                {photos.map((photo, index) => (
-                  <article
-                    key={photo.id}
-                    ref={(el) => {
-                      slideRefs.current[index] = el;
-                    }}
-                    data-snap-index={index}
-                    className="snap-center shrink-0 w-[min(88vw,42rem)] flex flex-col rounded-2xl border border-black/[0.08] bg-[#f8f8f7] shadow-[0_20px_50px_-28px_rgba(20,7,0,0.18)] overflow-hidden"
-                  >
-                    <div className="relative flex-1 min-h-[min(42vh,320px)] md:min-h-[min(52vh,420px)] flex items-center justify-center p-3 md:p-6 bg-white">
-                      {!loadedIds[photo.id] && (
-                        <div
-                          className="absolute inset-0 flex items-center justify-center bg-[#f8f8f7]/90 z-[1]"
-                          aria-hidden
-                        >
-                          <div className="h-12 w-12 rounded-full border-2 border-neutral-200 border-t-[#EB5097] animate-spin" />
-                        </div>
-                      )}
+                {photos.map((photo, index) => {
+                  const stagger =
+                    index % 3 === 0
+                      ? "w-[min(72vw,18.5rem)] md:w-[min(34vw,17.5rem)] aspect-[3/4]"
+                      : index % 3 === 1
+                        ? "w-[min(76vw,20rem)] md:w-[min(36vw,19rem)] aspect-[4/5] md:mb-6"
+                        : "w-[min(68vw,16.5rem)] md:w-[min(30vw,16rem)] aspect-[5/7] md:mb-3";
+
+                  return (
+                    <article
+                      key={photo.id}
+                      ref={(el) => {
+                        slideRefs.current[index] = el;
+                      }}
+                      data-snap-index={index}
+                      className={`photography-gallery-card relative snap-center shrink-0 overflow-hidden rounded-2xl md:rounded-3xl ${stagger}`}
+                    >
                       <button
                         type="button"
                         onClick={() => {
                           setCurrentIndex(index);
                           setLightboxOpen(true);
                         }}
-                        className="relative z-[2] w-full h-full min-h-[200px] flex items-center justify-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="absolute inset-0 w-full h-full p-0 border-0 bg-transparent cursor-[inherit] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#EB5097] focus-visible:ring-inset"
                         aria-label={`View full size: ${photo.caption}`}
                       >
+                        {!loadedIds[photo.id] && (
+                          <div
+                            className="absolute inset-0 flex items-center justify-center bg-[#f8f8f7]/80 z-[1]"
+                            aria-hidden
+                          >
+                            <div className="h-10 w-10 rounded-full border-2 border-neutral-200 border-t-[#EB5097] animate-spin" />
+                          </div>
+                        )}
                         <img
                           src={photo.src}
                           alt={photo.alt}
@@ -279,42 +351,24 @@ export function Photography() {
                           loading={index < 3 ? "eager" : "lazy"}
                           onLoad={() => markLoaded(photo.id)}
                           onError={() => markLoaded(photo.id)}
-                          className="max-w-full max-h-[min(48vh,400px)] w-auto h-auto object-contain rounded-lg"
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       </button>
-                    </div>
-                    <div className="border-t border-black/[0.08] px-4 py-3 flex items-center justify-between gap-2 bg-[#f8f8f7]">
-                      <p className="text-neutral-600 text-xs md:text-sm truncate">View full size</p>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setCurrentIndex(index);
-                          setLightboxOpen(true);
-                        }}
-                        className="text-neutral-900 text-xs md:text-sm font-medium shrink-0 hover:text-[#EB5097] transition-colors"
-                      >
-                        Open
-                      </button>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  );
+                })}
               </div>
             </div>
 
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 px-1">
-              <div>
-                <p className="text-story text-lg">{current.caption}</p>
-                <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
-                <p className="text-story-mid text-sm mt-1">
-                  {currentIndex + 1} / {length}
-                  <span className="mx-2 text-story-soft" aria-hidden>
-                    ·
-                  </span>
-                  <span className="uppercase tracking-wide text-xs">{current.medium}</span>
-                </p>
-              </div>
-              <p className="text-story-mid text-sm">
-                Scroll or mouse wheel to browse · tap Open or image to enlarge
+            <div className="mt-6 px-1" aria-live="polite">
+              <p className="text-story text-lg">{current.caption}</p>
+              <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
+              <p className="text-story-mid text-sm mt-1">
+                {currentIndex + 1} / {length}
+                <span className="mx-2 text-story-soft" aria-hidden>
+                  ·
+                </span>
+                <span className="uppercase tracking-wide text-xs">{current.medium}</span>
               </p>
             </div>
           </div>
