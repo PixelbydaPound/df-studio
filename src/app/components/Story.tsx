@@ -12,7 +12,7 @@ const storyParagraphs = [
     {
       kind: "text",
       text:
-        "I'm a Product Designer with over 4 years of experience crafting scalable digital experiences across FinTech, GovTech, and AI-driven SaaS platforms. My work sits at the intersection of design systems, accessibility, and intelligent automation — where design thinking meets emerging technology.",
+        "I'm a Product Designer with over four years of experience crafting scalable digital experiences in regulated, AI-driven SaaS — across FinTech, GovTech, and HealthTech. My work sits at the intersection of design systems, accessibility, and intelligent automation.",
     },
   ]),
   storyTokensFromParts([
@@ -26,7 +26,14 @@ const storyParagraphs = [
     {
       kind: "text",
       text:
-        "In GovTech, I joined Avue Technologies, contributing to the transformation of a legacy HR system into an AI-native SaaS platform within AWS GovCloud — serving federal and DoD agencies under FedRAMP compliance. My role focused on building modular design systems and conversational AI workflows for talent management, job matching, recruitment, and performance tracking. I worked closely with cross-functional teams to align designs with federal taxonomies and accessibility regulations while introducing role-based, multi-tenant interfaces that improved both recruiter and civilian jobseeker experiences.",
+        "In GovTech, at Avue Technologies, I contributed to the transformation of a legacy HR system into an AI-native SaaS platform within AWS GovCloud — serving federal and DoD agencies under FedRAMP compliance. I built modular design systems and conversational AI workflows for talent management, job matching, recruitment, and performance tracking, and worked with cross-functional teams to align designs with federal taxonomies and accessibility regulations while introducing role-based, multi-tenant interfaces for recruiters and civilian jobseekers.",
+    },
+  ]),
+  storyTokensFromParts([
+    {
+      kind: "text",
+      text:
+        "In HealthTech, at Modernizing Medicine (ModMed), I designed administration and permission workflows for enterprise healthcare software used by multi-location practices. I also worked with the revenue cycle management product team to prepare the OBGYN experience for the 2027 shift away from the global OB package, aligning it with new billing guidelines and the needs of providers, practices, and other stakeholders. Alongside our UX research team, I applied established research methods to keep work aligned with team and business goals, and worked hands-on with AI-assisted prototyping and front-end code within the team's workflow. Confidentiality agreements limit how much of this work I can show here; I'm glad to discuss it in a private review.",
     },
   ]),
   storyTokensFromParts([

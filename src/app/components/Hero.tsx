@@ -47,9 +47,9 @@ export function Hero() {
         className="max-w-6xl mx-auto text-center px-4 relative w-full"
         style={{ zIndex: 20, marginTop: "calc(3rem + 72px)" }}
       >
-        <div className="flex flex-col items-center gap-12">
-          <div className="flex-1 relative">
-            <motion.h1 className="mb-6 text-6xl md:text-8xl lg:text-9xl leading-none overflow-hidden relative">
+        <div className="flex flex-col items-center gap-6 pb-28">
+          <div className="flex-1 relative w-full">
+            <motion.h1 className="mb-4 text-6xl md:text-8xl lg:text-9xl leading-none overflow-hidden relative">
               <motion.span
                 className="flex items-center justify-center gap-4 relative font-bold"
                 {...heroEntranceMotion(reducedMotion, 0)}
@@ -75,26 +75,33 @@ export function Hero() {
             </motion.h1>
 
             <motion.p
-              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-8 mt-8 text-story max-w-2xl mx-auto text-left"
+              className="font-portfolio-serif font-normal text-base sm:text-lg md:text-xl leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] mb-4 mt-6 text-story max-w-xl md:max-w-2xl mx-auto text-left"
               {...heroEntranceMotion(reducedMotion, 0.3)}
             >
               Product Designer — B2C, B2B & SaaS
             </motion.p>
 
-            <motion.p
-              className="font-portfolio-serif font-normal text-lg sm:text-xl md:text-[1.375rem] leading-[1.3] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] max-w-2xl mx-auto mb-8 text-left text-story"
+            <motion.div
+              className="font-portfolio-serif font-normal text-[0.9375rem] sm:text-base md:text-[1.0625rem] leading-[1.45] md:leading-[1.5] tracking-[-0.01em] [font-feature-settings:'kern'_on,'liga'_on] max-w-xl md:max-w-2xl mx-auto text-left text-story space-y-3 md:space-y-4"
               {...heroEntranceMotion(reducedMotion, 0.5)}
             >
-              <span className="text-story">
-                I design AI-native and enterprise systems in regulated environments. My work
-                focuses on transforming complex workflows into scalable, accessible, and
-                high-performing product experiences
-              </span>
-              <span className="text-story-mid">
-                {" "}
-                — balancing innovation, compliance, and operational efficiency.
-              </span>
-            </motion.p>
+              <p>
+                Technology moves fast, and AI is moving it faster than ever. Human psychology
+                doesn&apos;t. Our desires, emotions, and motivations stay largely the same. The
+                psychology that made an interface work in the 1970s is the same psychology that
+                makes one work today, and it&apos;s what will make tomorrow&apos;s AI products
+                work, too. The way people behave in groups hasn&apos;t changed much either, even
+                as more of life moves online.
+              </p>
+              <p>
+                AI can process data, generate options, and speed up workflow. It can&apos;t ask
+                &ldquo;why?&rdquo; with empathy. It can&apos;t sit with someone and feel the
+                frustration behind their words, or understand the sociological context they live in.
+                It can&apos;t carry a design process from first idea to finished solution and make
+                sure the result is what people actually need and want.
+              </p>
+              <p>That&apos;s the work I do.</p>
+            </motion.div>
           </div>
         </div>
       </div>
