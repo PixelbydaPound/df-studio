@@ -86,8 +86,8 @@ export function Projects({ onNavigateToProject }: ProjectsProps) {
   const zeroToOneProjects: ProjectData[] = [
     {
       id: "juice-up",
-      title: "Juice Up — Sip, Energize and Repeat",
-      description: "Rebrand, owned checkout & Android mobile app",
+      title: "Juice Up: Sip, Energize and Repeat",
+      description: "Rebrand, owned checkout & iOS + Android mobile apps",
       readingTime: "10 min",
       image: juiceUpAndroidPromo,
       imageClassName: "object-contain bg-black",

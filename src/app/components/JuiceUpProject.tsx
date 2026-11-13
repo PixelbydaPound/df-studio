@@ -28,6 +28,8 @@ import { PreviousProject } from "./PreviousProject";
 
 const JUICE_UP_PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.juiceupeats.app&utm_source=na_Med";
+const JUICE_UP_APP_STORE_URL =
+  "https://apps.apple.com/us/app/juice-up-eats/id6820221595";
 const JUICE_UP_MOBILE_BACKEND_URL = "https://juiceupmobileapp.netlify.app";
 
 interface JuiceUpProjectProps {
@@ -47,7 +49,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
           className="text-white/60 mb-4"
           style={{ fontFamily: '"Helvetica Now Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
         >
-          E-Commerce, Android App & Owned Checkout
+          E-Commerce, iOS & Android Apps & Owned Checkout
         </motion.p>
 
         {/* Title */}
@@ -92,7 +94,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 <p>Brand Strategy</p>
                 <p>UI/UX Design</p>
                 <p>Checkout, Catering & Cart Flows</p>
-                <p>Android Mobile App UX</p>
+                <p>Android & iOS Mobile App UX</p>
                 <p>Loyalty, Reorder & In-App Pay</p>
                 <p>3D Art Direction</p>
               </div>
@@ -104,15 +106,15 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 <p><span className="text-white">Marketing site:</span> React 18, TypeScript, Vite, Tailwind, Firebase, EmailJS</p>
                 <p><span className="text-white">Pickup checkout:</span> juiceupeats.com cart/checkout, Stripe Elements, Netlify Functions</p>
                 <p><span className="text-white">Android app:</span> Google Play listing, shared menu &amp; payment backend (Netlify), Google Pay + card checkout</p>
-                <p><span className="text-white">iOS app:</span> App Store release targeted Q4 2026; store links on marketing site via env configuration</p>
-                <p><span className="text-white">Monitoring:</span> Stripe, Microsoft Clarity, Vercel Analytics, Google Play Console (App Store Connect post-iOS)</p>
+                <p><span className="text-white">iOS app:</span> App Store (Juice Up Eats), shared menu &amp; payment backend (Netlify), Apple Pay + card checkout</p>
+                <p><span className="text-white">Monitoring:</span> Stripe, Microsoft Clarity, Vercel Analytics, Google Play Console, App Store Connect</p>
                 <p><span className="text-white">UI:</span> Radix UI, shadcn/ui, brand system shared across web and mobile</p>
               </div>
             </div>
 
             <div>
               <h3 className="text-white mb-2">Timeline</h3>
-              <p className="text-white/60">7-day rebrand · owned Stripe checkout · Android on Google Play (Oct 2025) · iOS App Store (target Q4 2026)</p>
+              <p className="text-white/60">7-day rebrand · owned Stripe checkout · Android on Google Play (Oct 2025) · iOS on the App Store</p>
             </div>
           </motion.div>
 
@@ -144,20 +146,21 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   The goal was to move away from the traditional "rustic farm" aesthetic common in the industry and embrace a <span className="text-white">bold, energetic, and modern visual language</span>.
                 </p>
                 <p>
-                  A follow-on <span className="text-white">mobile ordering web experience</span> brought cart and payment in-house—so guests complete purchases on Juice Up instead of being sent to Toast, DoorDash, or Uber Eats at the highest-intent moment in the funnel.
+                  A follow-on <span className="text-white">mobile ordering web experience</span> brought cart and payment in-house so guests complete purchases on Juice Up instead of being sent to Toast, DoorDash, or Uber Eats at the highest-intent moment in the funnel.
                 </p>
                 <p>
-                  A dedicated <span className="text-white">Android app on Google Play</span> extended the same brand, menu, and payment rails into a home-screen channel—loyalty rewards, one-tap reorder, and wallet-native checkout for repeat Coral Springs guests. An{" "}
-                  <span className="text-white">iOS App Store release is planned for Q4 2026</span> on the same architecture.
+                  Native apps on <span className="text-white">Google Play and the App Store</span> extended the same brand, menu, and payment rails into home-screen channels with loyalty tiers, one-tap reorder, and wallet-native checkout. Moving repeat guests off a{" "}
+                  <span className="text-white">legacy in-store rewards program</span> into unified in-app loyalty on owned checkout helped expand the{" "}
+                  <span className="text-white">digital revenue base by ~25%</span> (owner-reported), on top of the earlier pickup checkout lift.
                 </p>
                 <a href="https://www.juiceupeats.com" target="_blank" rel="noopener noreferrer" className="block text-[#EB5097] hover:text-white transition-colors">
                   www.juiceupeats.com
                 </a>
                 <a href="https://www.juiceupeats.com/cart" target="_blank" rel="noopener noreferrer" className="block text-[#EB5097] hover:text-white transition-colors">
-                  juiceupeats.com — cart, checkout & confirmation
+                  juiceupeats.com: cart, checkout & confirmation
                 </a>
                 <a href="https://www.juiceupeats.com/catering" target="_blank" rel="noopener noreferrer" className="block text-[#EB5097] hover:text-white transition-colors">
-                  juiceupeats.com/catering — packs, delivery & pay
+                  juiceupeats.com/catering: packs, delivery & pay
                 </a>
                 <a
                   href={JUICE_UP_PLAY_STORE_URL}
@@ -165,7 +168,15 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   rel="noopener noreferrer"
                   className="block text-[#EB5097] hover:text-white transition-colors"
                 >
-                  Google Play — Juice Up Android app
+                  Google Play: Juice Up Android app
+                </a>
+                <a
+                  href={JUICE_UP_APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-[#EB5097] hover:text-white transition-colors"
+                >
+                  App Store: Juice Up Eats (iOS)
                 </a>
               </div>
             </div>
@@ -175,7 +186,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
               <h2 className="text-2xl mb-6">Outcome</h2>
               <p className="text-white/60 text-lg max-w-3xl mb-8">
                 Rebrand, owned <span className="text-white">Stripe checkout</span> on juiceupeats.com, and native mobile
-                ordering—one catalog and kitchen-ticket path instead of sending pay intent to Toast, DoorDash, or Uber
+                ordering on one catalog and kitchen-ticket path instead of sending pay intent to Toast, DoorDash, or Uber
                 Eats at checkout.
               </p>
 
@@ -186,14 +197,14 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   <p className="text-white/50 text-sm">Higher online revenue (owner-reported) after owned Stripe checkout vs. marketplace/POS handoffs</p>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                  <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Android</p>
-                  <p className="text-2xl text-white mb-1">Live</p>
-                  <p className="text-white/50 text-sm">Google Play — baseline metrics; adoption outcomes too early to report</p>
+                  <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Digital loyalty</p>
+                  <p className="text-2xl text-white mb-1">~25%</p>
+                  <p className="text-white/50 text-sm">Growth in the digital revenue base (owner-reported) after converting repeat guests from a legacy rewards program into in-app tiers on owned ordering</p>
                 </div>
                 <div className="bg-white/5 border border-white/10 rounded-xl p-5">
-                  <p className="text-white/40 text-xs uppercase tracking-wider mb-2">iOS</p>
-                  <p className="text-2xl text-white mb-1">Q4 2026</p>
-                  <p className="text-white/50 text-sm">App Store target — same stack; metrics after launch</p>
+                  <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Mobile stores</p>
+                  <p className="text-2xl text-white mb-1">Live</p>
+                  <p className="text-white/50 text-sm">Google Play and App Store; shared menu, Stripe, and kitchen tickets. Store metrics are in a learning window.</p>
                 </div>
               </div>
 
@@ -202,20 +213,21 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   <span className="text-white">Online pickup (measured):</span> After moving payment to Stripe on
                   juiceupeats.com, the owner reported roughly{" "}
                   <span className="text-white">~20% higher online revenue</span> versus the prior flow that pushed orders
-                  through third-party marketplaces and POS handoffs. Scope is digital pickup on owned surfaces—not total
+                  through third-party marketplaces and POS handoffs. Scope is digital pickup on owned surfaces, not total
                   in-store sales. Owner-reported; not third-party audited.
                 </p>
                 <p>
-                  <span className="text-white">Android (recent launch):</span> The native app is public on Google Play;
-                  it is too early for adoption or mobile revenue claims. Near-term focus is installs, first order,
-                  stability, and 30–90 day repeat—see measurement plan below.
+                  <span className="text-white">Loyalty migration (owner-reported):</span> Repeat guests previously on a{" "}
+                  <span className="text-white">legacy rewards program</span> (POS and paper-style redemption with weak
+                  tie-in to digital checkout) moved into tiered in-app rewards on web and mobile. The owner described
+                  roughly <span className="text-white">~25% expansion of the digital revenue base</span> as those buyers
+                  shifted to owned pickup and app reorder. Scope is digital orders on Juice Up surfaces, not total
+                  register volume. Owner-reported; not third-party audited.
                 </p>
                 <p>
-                  <span className="text-white">iOS (planned Q4 2026):</span> App Store release on the same product
-                  architecture. Long-term planning benchmark:{" "}
-                  <span className="text-white">~25–30% of new digital pickup customers</span> completing a first order
-                  via mobile (Android + iOS combined) over six months post–dual-platform launch—a target, not a current
-                  result.
+                  <span className="text-white">Mobile stores (live):</span> Android and iOS share catalog, Stripe, and
+                  kitchen-ticket routing. Near-term focus is installs, first order, stability, and 30 to 90 day repeat.
+                  See measurement plan below.
                 </p>
               </div>
             </div>
@@ -226,7 +238,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
               <p className="text-white/60 text-lg max-w-3xl mb-8">
                 Ongoing instrumentation separates <span className="text-white">revenue truth</span> (Stripe) from{" "}
                 <span className="text-white">quantitative traffic</span> (Vercel Analytics) and{" "}
-                <span className="text-white">qualitative UX</span> (Microsoft Clarity)—used to benchmark checkout and
+                <span className="text-white">qualitative UX</span> (Microsoft Clarity), used to benchmark checkout and
                 menu changes without blocking the guest experience.
               </p>
               <div className="overflow-x-auto">
@@ -257,12 +269,12 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                     <tr>
                       <td className="px-4 py-3 text-white">Android</td>
                       <td className="px-4 py-3">Google Play Console</td>
-                      <td className="px-4 py-3">Installs, crashes, store conversion — baseline from launch</td>
+                      <td className="px-4 py-3">Installs, crashes, store conversion; baseline from launch</td>
                     </tr>
                     <tr>
-                      <td className="px-4 py-3 text-white">iOS (Q4 2026)</td>
+                      <td className="px-4 py-3 text-white">iOS</td>
                       <td className="px-4 py-3">App Store Connect</td>
-                      <td className="px-4 py-3">Same funnel metrics as Android once live; cohort compare after release</td>
+                      <td className="px-4 py-3">Same funnel metrics as Android; cohort compare across platforms</td>
                     </tr>
                     <tr>
                       <td className="px-4 py-3 text-white">Ops</td>
@@ -274,7 +286,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
               </div>
               <p className="text-white/50 text-base max-w-3xl mt-6">
                 Cadence: weeks 1–2 establish Android baseline; 30-day readout on web funnel + app installs; 90-day review
-                on repeat and owned vs. marketplace channel mix. Clarity and Vercel inform iteration—they do not replace
+                on repeat and owned vs. marketplace channel mix. Clarity and Vercel inform iteration; they do not replace
                 Stripe or owner reporting for revenue.
               </p>
             </div>
@@ -290,7 +302,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
               <div>
                 <h3 className="text-xl text-white mb-4">The Solution</h3>
                 <p className="text-white/60">
-                  The web experience was rebuilt from the ground up, prioritizing mobile-first interactions and high-fidelity visuals. The design system uses motion and 3D elements to signal freshness, then extends into a transactional mobile web flow—browse, cart, Stripe checkout, and kitchen fulfillment—without forcing users out to third-party apps at checkout.
+                  The web experience was rebuilt from the ground up, prioritizing mobile-first interactions and high-fidelity visuals. The design system uses motion and 3D elements to signal freshness, then extends into a transactional mobile web flow (browse, cart, Stripe checkout, and kitchen fulfillment) without forcing users out to third-party apps at checkout.
                 </p>
               </div>
             </div>
@@ -487,15 +499,15 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   <h3 className="text-2xl text-white mb-4">3. Owned checkout on juiceupeats.com</h3>
                   <div className="text-white/60 space-y-6 max-w-4xl mb-12">
                     <p>
-                      Previously, the marketing site sent high-intent guests out to Toast, DoorDash, or Uber Eats at “Order Now”—extra hops, marketplace fees, and brand drop-off at the cart. Pickup orders now stay on juiceupeats.com through cart, embedded Stripe checkout, and a post-payment confirmation with counter-ready order numbers.
+                      Previously, the marketing site sent high-intent guests out to Toast, DoorDash, or Uber Eats at “Order Now”, adding extra hops, marketplace fees, and brand drop-off at the cart. Pickup orders now stay on juiceupeats.com through cart, embedded Stripe checkout, and a post-payment confirmation with counter-ready order numbers.
                     </p>
                     <div>
                       <strong className="text-white block mb-2">Flow:</strong>
                       <ul className="list-disc pl-4 space-y-1">
-                        <li>Menu → product detail → cart (“Pay online — your order goes straight to the counter”)</li>
-                        <li>Guest checkout — name, email, mobile, scheduled pickup when closed</li>
+                        <li>Menu → product detail → cart (“Pay online: your order goes straight to the counter”)</li>
+                        <li>Guest checkout: name, email, mobile, scheduled pickup when closed</li>
                         <li>Embedded Stripe card form with subtotal, tax, and single Pay CTA</li>
-                        <li>Order received screen — progress steps, order number, receipt email, pickup location</li>
+                        <li>Order received screen: progress steps, order number, receipt email, pickup location</li>
                       </ul>
                     </div>
                     <div>
@@ -546,14 +558,14 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 Mobile Apps<span style={{ color: "#EB5097" }}>.</span>
               </h2>
               <p className="text-white/50 text-base mb-8 -mt-4">
-                Android live on Google Play · iOS App Store target Q4 2026
+                Android on Google Play and iOS on the App Store
               </p>
               <div className="space-y-8 text-white/60 text-lg">
                 <p>
                   After the rebrand and owned web checkout, the next growth lever was{" "}
-                  <span className="text-white">native mobile ordering</span>—not a wrapped mobile site, but store
+                  <span className="text-white">native mobile ordering</span>, not a wrapped mobile site, but store
                   destinations with loyalty, reorder, QR scan, and wallet checkout tuned for high-frequency wellness
-                  purchases in South Florida. Android shipped first; iOS follows on the same backend.
+                  purchases in South Florida. Both platforms use the same backend and loyalty model.
                 </p>
                 <p>
                   The app shares the same catalog, Stripe payment path, and kitchen-ticket backend as juiceupeats.com
@@ -568,7 +580,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                     className="w-full h-auto"
                   />
                   <p className="px-6 py-4 text-white/40 text-sm border-t border-white/10">
-                    Store promotional creative — production Android UI: loyalty tiers, seasonal menu, Google Pay and
+                    Store promotional creative. Production Android UI: loyalty tiers, seasonal menu, Google Pay and
                     card checkout.
                   </p>
                 </div>
@@ -580,7 +592,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
                         <span>
-                          Meet guests on Android-first devices common in the trade area—reduce dependence on
+                          Meet guests on the devices they already use in the trade area and reduce dependence on
                           marketplace discovery fees for repeat orders.
                         </span>
                       </li>
@@ -604,36 +616,36 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   <div className="bg-white/5 rounded-2xl p-8 border border-white/10 space-y-6">
                     <h3 className="text-white text-2xl mb-2">Platform impact</h3>
                     <div>
-                      <p className="text-white text-sm font-medium mb-1">Online (Stripe) — realized</p>
+                      <p className="text-white text-sm font-medium mb-1">Online (Stripe): realized</p>
                       <p>
                         ~20% higher <span className="text-white">online revenue</span> (owner-reported) after owned
-                        checkout replaced Toast / marketplace handoffs at pay—not attributed to the app.
+                        checkout replaced Toast / marketplace handoffs at pay. Not attributed to the app alone.
                       </p>
                     </div>
                     <div>
-                      <p className="text-white text-sm font-medium mb-1">Android — learning</p>
+                      <p className="text-white text-sm font-medium mb-1">Loyalty migration: realized</p>
                       <p>
-                        Play Store launch is recent; installs → first order → 30-day repeat are being tracked in Play
-                        Console and paired with Clarity/Vercel on web referral paths. No mobile outcome claims yet.
+                        ~25% growth in the <span className="text-white">digital revenue base</span> (owner-reported)
+                        after repeat guests moved from a legacy rewards program into in-app tiers on owned ordering.
                       </p>
                     </div>
                     <div>
-                      <p className="text-white text-sm font-medium mb-1">iOS — Q4 2026</p>
+                      <p className="text-white text-sm font-medium mb-1">Mobile stores: learning</p>
                       <p>
-                        App Store release expected Q4 2026 with parity on menu, pay, and loyalty. Success criteria match
-                        Android once both platforms have a 30–90 day baseline.
+                        Google Play and App Store listings are live. Installs, first order, and 30 to 90 day repeat are
+                        tracked in Play Console and App Store Connect, paired with Clarity and Vercel on referral paths.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="max-w-xl flex flex-col gap-6">
+                <div className="max-w-xl flex flex-col gap-8">
                     <div>
                       <h3 className="text-white text-xl mb-3">Shipped on Google Play</h3>
                       <p className="mb-4">
                         Package{" "}
-                        <span className="text-white font-mono text-base">com.juiceupeats.app</span> — public listing
-                        for Coral Springs pickup and loyalty.
+                        <span className="text-white font-mono text-base">com.juiceupeats.app</span>. Public listing for
+                        Coral Springs pickup and loyalty.
                       </p>
                       <a
                         href={JUICE_UP_PLAY_STORE_URL}
@@ -658,13 +670,21 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                         />
                       </a>
                     </div>
-                    <div className="bg-white/5 rounded-xl p-5 border border-white/10">
-                      <h3 className="text-white text-lg mb-2">iOS — App Store (Q4 2026)</h3>
-                      <p className="text-white/50 text-base">
-                        Target release Q4 2026 on the same catalog, Stripe, and kitchen-ticket stack. Marketing site
-                        store badges and deep links are env-driven so iOS can ship without a full site redeploy. Metrics
-                        will be added to this case study after launch and the first monitoring window.
+                    <div>
+                      <h3 className="text-white text-xl mb-3">Live on the App Store</h3>
+                      <p className="mb-4 text-white/60">
+                        <span className="text-white">Juice Up Eats</span> on iOS shares catalog, Stripe checkout, in-app
+                        loyalty tiers, and kitchen-ticket routing with web and Android.
                       </p>
+                      <a
+                        href={JUICE_UP_APP_STORE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-[#EB5097] hover:text-white transition-colors"
+                      >
+                        View on the App Store
+                        <ExternalLink className="w-4 h-4" aria-hidden />
+                      </a>
                     </div>
                 </div>
               </div>
@@ -683,9 +703,9 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
               </h2>
               <div className="space-y-12 text-white/60 text-lg">
                 <p>
-                  Corporate and event orders need a different funnel than single-item pickup—but the same{" "}
+                  Corporate and event orders need a different funnel than single-item pickup, but the same{" "}
                   <span className="text-white">trust at pay time</span>. Catering on juiceupeats.com is a dedicated
-                  three-step flow—<span className="text-white">Packs → Delivery → Pay</span>—with pack customization,
+                  three-step flow (<span className="text-white">Packs → Delivery → Pay</span>) with pack customization,
                   delivery or Coral Springs pickup, and Stripe checkout on the same owned infrastructure as consumer
                   orders, without slowing the main menu cart.
                 </p>
@@ -693,7 +713,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 <div className="rounded-2xl overflow-hidden border border-white/10 bg-white">
                   <img
                     src={juiceUpCateringHero}
-                    alt="Juice Up catering landing — NOW CATERING hero and Catering Packs introduction"
+                    alt="Juice Up catering landing: NOW CATERING hero and Catering Packs introduction"
                     className="w-full h-auto"
                   />
                 </div>
@@ -735,7 +755,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 <div className="grid sm:grid-cols-3 gap-4 max-w-4xl">
                   <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                     <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Flow</p>
-                    <p className="text-white text-sm">3 steps on one page — packs, fulfillment, pay</p>
+                    <p className="text-white text-sm">3 steps on one page: packs, fulfillment, pay</p>
                   </div>
                   <div className="bg-white/5 border border-white/10 rounded-xl p-5">
                     <p className="text-white/40 text-xs uppercase tracking-wider mb-2">Fulfillment</p>
@@ -761,7 +781,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
                         <span>
-                          Live order summary — subtotal, delivery, tax, and a single{" "}
+                          Live order summary: subtotal, delivery, tax, and a single{" "}
                           <span className="text-white">Pay</span> action (Stripe) once packs and contact details are
                           complete
                         </span>
@@ -779,7 +799,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Entry from app search (“Feeding a group?”) and site nav — isolated from consumer cart</span>
+                        <span>Entry from app search (“Feeding a group?”) and site nav, isolated from consumer cart</span>
                       </li>
                     </ul>
                   </div>
@@ -810,7 +830,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                         <span className="text-[#EB5097] mt-1.5">•</span>
                         <span>
                           <span className="text-white">Ops:</span> free delivery threshold ($400+) and $35 delivery line
-                          item visible pre-pay — fewer invoice surprises
+                          item visible pre-pay; fewer invoice surprises
                         </span>
                       </li>
                     </ul>
@@ -911,23 +931,27 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                    <ul className="space-y-3 text-white/60">
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Product catalog — 71+ products across 10 categories</span>
+                        <span>Product catalog: 71+ products across 10 categories</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>On-site cart & checkout — Stripe Elements, webhooks, kitchen tickets</span>
+                        <span>On-site cart & checkout: Stripe Elements, webhooks, kitchen tickets</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Android app — Google Play, loyalty tiers, Google Pay + card checkout, shared Netlify backend</span>
+                        <span>Android app: Google Play, loyalty tiers, Google Pay + card checkout, shared Netlify backend</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Kitchen tickets — Paid orders routed for in-store fulfillment</span>
+                        <span>iOS app: App Store, loyalty tiers, Apple Pay + card checkout, shared Netlify backend</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Catering — /catering pack builder, delivery fields, Stripe pay (shared Netlify backend)</span>
+                        <span>Kitchen tickets: paid orders routed for in-store fulfillment</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <span className="text-[#EB5097] mt-1.5">•</span>
+                        <span>Catering: /catering pack builder, delivery fields, Stripe pay (shared Netlify backend)</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
@@ -935,15 +959,15 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Responsive design — Mobile, tablet, desktop breakpoints</span>
+                        <span>Responsive design: mobile, tablet, desktop breakpoints</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Animations — Motion/react animations</span>
+                        <span>Animations: Motion/react animations</span>
                       </li>
                       <li className="flex items-start gap-3">
                         <span className="text-[#EB5097] mt-1.5">•</span>
-                        <span>Firebase integration — Firestore for data storage</span>
+                        <span>Firebase integration: Firestore for data storage</span>
                       </li>
                    </ul>
                 </div>
@@ -968,6 +992,10 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                         Google Play (com.juiceupeats.app), shared payment & kitchen-ticket API with web checkout
                       </div>
                       <div>
+                        <span className="text-white block mb-1">iOS app:</span>
+                        App Store (Juice Up Eats), shared payment & kitchen-ticket API with web checkout
+                      </div>
+                      <div>
                         <span className="text-white block mb-1">UI:</span>
                         Radix UI, shadcn/ui, shared Juice Up design tokens
                       </div>
@@ -977,7 +1005,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
 
               <div className="mt-12 p-6 bg-white/5 rounded-2xl border border-white/10">
                  <p className="text-white/60">
-                    <strong className="text-white">System Architecture:</strong> The marketing site runs on Vite with Firebase for catalog and legacy lead capture, plus first-party pickup and catering funnels on juiceupeats.com—consumer cart in the browser, catering packs on /catering, both paying through Stripe with kitchen routing on Netlify. The Android app calls the same mobile backend host for payments and fulfillment routing.
+                    <strong className="text-white">System Architecture:</strong> The marketing site runs on Vite with Firebase for catalog and legacy lead capture, plus first-party pickup and catering funnels on juiceupeats.com. Consumer cart lives in the browser; catering packs on /catering; both pay through Stripe with kitchen routing on Netlify. The Android and iOS apps call the same mobile backend host for payments and fulfillment routing.
                  </p>
               </div>
             </div>
