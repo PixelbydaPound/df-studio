@@ -12,6 +12,7 @@ import juiceUpMobileMock from "../../assets/juice-up-mobile-mock.jpg";
 import juiceUpItemCards from "../../assets/juice-up-item-cards.jpg";
 import juiceUpAndroidAppPhones from "../../assets/juice-up-android-app-phones.png";
 import juiceUpGooglePlayBadge from "../../assets/juice-up-google-play-badge.png";
+import juiceUpAppStoreBadge from "../../assets/juice-up-app-store-badge.svg";
 import juiceUpCateringHero from "../../assets/juice-up-catering-packs.jpg";
 import juiceUpCateringBuildPacks from "../../assets/juice-up-catering-build-packs.jpg";
 import juiceUpCateringDelivery from "../../assets/juice-up-catering-delivery-pay.jpg";
@@ -639,7 +640,7 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                   </div>
                 </div>
 
-                <div className="max-w-xl flex flex-col gap-8">
+                <div className="max-w-2xl flex flex-col gap-8">
                     <div>
                       <h3 className="text-white text-xl mb-3">Shipped on Google Play</h3>
                       <p className="mb-4">
@@ -656,19 +657,6 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                         View on Google Play
                         <ExternalLink className="w-4 h-4" aria-hidden />
                       </a>
-                      <a
-                        href={JUICE_UP_PLAY_STORE_URL}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                        aria-label="Get Juice Up on Google Play"
-                      >
-                        <img
-                          src={juiceUpGooglePlayBadge}
-                          alt="Get it on Google Play"
-                          className="h-12 w-auto"
-                        />
-                      </a>
                     </div>
                     <div>
                       <h3 className="text-white text-xl mb-3">Live on the App Store</h3>
@@ -684,6 +672,34 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                       >
                         View on the App Store
                         <ExternalLink className="w-4 h-4" aria-hidden />
+                      </a>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <a
+                        href={JUICE_UP_PLAY_STORE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                        aria-label="Get Juice Up on Google Play"
+                      >
+                        <img
+                          src={juiceUpGooglePlayBadge}
+                          alt="Get it on Google Play"
+                          className="h-12 w-auto"
+                        />
+                      </a>
+                      <a
+                        href={JUICE_UP_APP_STORE_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-block"
+                        aria-label="Download Juice Up Eats on the App Store"
+                      >
+                        <img
+                          src={juiceUpAppStoreBadge}
+                          alt="Download on the App Store"
+                          className="h-12 w-auto"
+                        />
                       </a>
                     </div>
                 </div>
