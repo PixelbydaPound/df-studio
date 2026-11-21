@@ -38,9 +38,27 @@ interface JuiceUpProjectProps {
   onNavigateToProject?: (projectId: string) => void;
 }
 
+const MENU_CAROUSEL_SLIDES = [
+  {
+    src: juiceUpItemCards,
+    alt: "Juice Up menu item cards on mobile",
+  },
+  {
+    src: juiceUpMobileMock,
+    alt: "Juice Up mobile web menu overview",
+  },
+  {
+    src: productCardImage,
+    alt: "Product card detail",
+  },
+] as const;
+
 export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectProps) {
   return (
-    <div className="min-h-screen text-white" style={{ paddingTop: '64px' }}>
+    <div
+      className="min-h-screen text-white pb-[max(2rem,env(safe-area-inset-bottom))]"
+      style={{ paddingTop: "64px" }}
+    >
       <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
         {/* Subtitle */}
         <motion.p
@@ -440,39 +458,41 @@ export function JuiceUpProject({ onBack, onNavigateToProject }: JuiceUpProjectPr
                 {/* Principle 2 */}
                 <div className="grid md:grid-cols-2 gap-12 items-center">
                   <div className="order-1">
-                    <Slider
-                      dots={true}
-                      infinite={true}
-                      speed={500}
-                      slidesToShow={1}
-                      slidesToScroll={1}
-                      autoplay={true}
-                      autoplaySpeed={4000}
-                      arrows={false}
-                      className="cursor-grab active:cursor-grabbing"
-                    >
-                      <div className="outline-none px-1">
-                        <img 
-                          src={juiceUpItemCards} 
-                          alt="Juice Up menu item cards on mobile" 
+                    {/* Mobile: no Slick — its touch handlers block page scroll on iOS/Android */}
+                    <div className="flex flex-col gap-4 md:hidden">
+                      {MENU_CAROUSEL_SLIDES.map((slide) => (
+                        <img
+                          key={slide.alt}
+                          src={slide.src}
+                          alt={slide.alt}
                           className="w-full h-auto rounded-2xl"
+                          draggable={false}
                         />
-                      </div>
-                      <div className="outline-none px-1">
-                        <img 
-                          src={juiceUpMobileMock} 
-                          alt="Juice Up mobile web menu overview" 
-                          className="w-full h-auto rounded-2xl"
-                        />
-                      </div>
-                      <div className="outline-none px-1">
-                        <img 
-                          src={productCardImage} 
-                          alt="Product card detail" 
-                          className="w-full h-auto rounded-2xl"
-                        />
-                      </div>
-                    </Slider>
+                      ))}
+                    </div>
+                    <div className="hidden md:block">
+                      <Slider
+                        dots={true}
+                        infinite={true}
+                        speed={500}
+                        slidesToShow={1}
+                        slidesToScroll={1}
+                        autoplay={true}
+                        autoplaySpeed={4000}
+                        arrows={false}
+                        className="cursor-grab active:cursor-grabbing"
+                      >
+                        {MENU_CAROUSEL_SLIDES.map((slide) => (
+                          <div key={slide.alt} className="outline-none px-1">
+                            <img
+                              src={slide.src}
+                              alt={slide.alt}
+                              className="w-full h-auto rounded-2xl"
+                            />
+                          </div>
+                        ))}
+                      </Slider>
+                    </div>
                   </div>
                   <div className="order-2">
                     <h3 className="text-2xl text-white mb-4">2. Reducing Cognitive Load</h3>
