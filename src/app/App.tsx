@@ -20,7 +20,9 @@ import {
   trackPortfolioSession,
 } from "./lib/analytics";
 import { SHOW_ENTERPRISE_ROLES_CASE_STUDY } from "./lib/featureFlags";
+import { isPortfolioGuideEnabled } from "./lib/portfolioGuide";
 import { prefersReducedMotion } from "./lib/useReducedMotion";
+import { PortfolioGuide } from "./components/PortfolioGuide/PortfolioGuide";
 
 const MaiaProject = lazy(() =>
   import("./components/MaiaProject").then((module) => ({
@@ -71,6 +73,19 @@ function ProjectLoading() {
     <div className="min-h-[50vh] flex items-center justify-center text-story-mid font-portfolio">
       Loading case study...
     </div>
+  );
+}
+
+function withGuide(
+  content: ReactNode,
+  guide: ReactNode | null,
+) {
+  if (!guide) return content;
+  return (
+    <>
+      {content}
+      {guide}
+    </>
   );
 }
 
@@ -201,8 +216,12 @@ export default function App() {
     };
   }, [currentPage]);
 
+  const portfolioGuide = isPortfolioGuideEnabled() ? (
+    <PortfolioGuide onNavigateToProject={handleNavigateToProject} />
+  ) : null;
+
   if (currentPage === "maia") {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
@@ -211,12 +230,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
   if (currentPage === "rappi-mix") {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
@@ -225,12 +245,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
   if (currentPage === "project-3") {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
@@ -239,22 +260,24 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
   if (currentPage === "enterprise-roles" && SHOW_ENTERPRISE_ROLES_CASE_STUDY) {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Suspense fallback={<ProjectLoading />}>
           <EnterpriseRolesProject onBack={handleBackToHome} />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
   if (currentPage === "juice-up") {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
@@ -263,12 +286,13 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
   if (currentPage === "urc-records") {
-    return (
+    return withGuide(
       <CaseStudyShell>
         <Navigation showBackButton onBack={handleBackToHome} />
         <Suspense fallback={<ProjectLoading />}>
@@ -277,11 +301,12 @@ export default function App() {
             onNavigateToProject={handleNavigateToProject}
           />
         </Suspense>
-      </CaseStudyShell>
+      </CaseStudyShell>,
+      portfolioGuide,
     );
   }
 
-  return (
+  return withGuide(
     <div ref={homeShellRef} className="portfolio-scroll-story min-h-screen relative">
       <div
         className="fixed bottom-0 left-0 right-0 pointer-events-none z-40 transition-opacity duration-300"
@@ -342,6 +367,7 @@ export default function App() {
           }}
         />
       )}
-    </div>
+    </div>,
+    portfolioGuide,
   );
 }
