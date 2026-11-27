@@ -11,6 +11,27 @@ import {
 } from "./ui/sheet";
 import { prefersReducedMotion } from "../lib/useReducedMotion";
 
+const CORAL_SPRINGS_TZ = "America/New_York";
+
+function formatCoralSpringsClock(date: Date) {
+  const time = new Intl.DateTimeFormat("en-US", {
+    timeZone: CORAL_SPRINGS_TZ,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  }).format(date);
+
+  const zone =
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: CORAL_SPRINGS_TZ,
+      timeZoneName: "short",
+    })
+      .formatToParts(date)
+      .find((part) => part.type === "timeZoneName")?.value ?? "ET";
+
+  return { time, zone };
+}
+
 interface NavigationProps {
   showBackButton?: boolean;
   onBack?: () => void;
@@ -28,18 +49,8 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
     return () => clearInterval(timer);
   }, []);
 
-  const formatTime = () => {
-    const gmtHours = currentTime.getUTCHours();
-    const gmtMinutes = currentTime.getUTCMinutes();
-
-    const localDate = new Date(currentTime);
-    localDate.setUTCHours(gmtHours - 4);
-
-    const localHours = localDate.getUTCHours().toString().padStart(2, "0");
-    const localMinutes = localDate.getUTCMinutes().toString().padStart(2, "0");
-
-    return `${localHours}:${localMinutes}`;
-  };
+  const { time: coralSpringsTime, zone: easternLabel } =
+    formatCoralSpringsClock(currentTime);
 
   const navLinks = [
     { name: "Recent work", href: "#projects" },
@@ -141,7 +152,9 @@ export function Navigation({ showBackButton = false, onBack }: NavigationProps =
 
       {!showBackButton && (
         <div className="text-right text-xs text-story-mid tabular-nums">
-          Local time {formatTime()} GMT−4
+          <span className="hidden sm:inline">Coral Springs </span>
+          <span className="sm:hidden">Local </span>
+          {coralSpringsTime} {easternLabel}
         </div>
       )}
     </nav>
