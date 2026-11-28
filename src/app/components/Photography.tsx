@@ -278,7 +278,7 @@ export function Photography() {
             Photography<span className="text-[#EB5097]">.</span>
           </h2>
           <p className="text-lg md:text-xl text-story max-w-2xl mb-3 opacity-90">
-            Reminiscence — memories in analog and digital light.
+            Reminiscence: memories in analog and digital light.
           </p>
           <p className="text-base text-story-mid max-w-2xl mb-12">
             Not assignment work: places, weather, and scenes I didn&apos;t want to forget. Grain,
@@ -290,7 +290,7 @@ export function Photography() {
           <div
             className="relative"
             aria-roledescription="carousel"
-            aria-label="Photography gallery — scroll horizontally to browse"
+            aria-label="Photography gallery, scroll horizontally to browse"
           >
             <p className="sr-only">
               Drag with pointer or scroll horizontally to browse; open a slide to view full size.
