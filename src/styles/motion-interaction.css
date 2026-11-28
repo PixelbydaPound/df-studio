@@ -166,6 +166,21 @@ a.portfolio-card {
 }
 
 /* Image-only tiles: rounded contour, no frame chrome */
+.photography-gallery-city-label {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 4px 12px;
+  min-width: 3.5rem;
+  font-family: var(--portfolio-font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(20, 7, 0, 0.38);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
 .photography-gallery-card {
   border: none;
   box-shadow: none;

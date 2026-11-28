@@ -1,118 +1,94 @@
-import amsterdamCanal from "../../assets/photography/amsterdam-canal.jpg";
-import amsterdam750 from "../../assets/photography/amsterdam-750.jpg";
-import amsterdamBicycles from "../../assets/photography/amsterdam-bicycles.jpg";
-import amsterdamFacade from "../../assets/photography/amsterdam-facade.jpg";
-import amsterdamWaterfront from "../../assets/photography/amsterdam-waterfront.jpg";
-import archedShops from "../../assets/photography/arched-shops.jpg";
-import beachSwimmers from "../../assets/photography/beach-swimmers.jpg";
-import bikeRentalSign from "../../assets/photography/bike-rental-sign.jpg";
-import rotterdamLyceum from "../../assets/photography/rotterdam-lyceum.jpg";
-
-import thumbAmsterdamCanal from "../../assets/photography/thumbs/amsterdam-canal.jpg";
-import thumbAmsterdam750 from "../../assets/photography/thumbs/amsterdam-750.jpg";
-import thumbAmsterdamBicycles from "../../assets/photography/thumbs/amsterdam-bicycles.jpg";
-import thumbAmsterdamFacade from "../../assets/photography/thumbs/amsterdam-facade.jpg";
-import thumbAmsterdamWaterfront from "../../assets/photography/thumbs/amsterdam-waterfront.jpg";
-import thumbArchedShops from "../../assets/photography/thumbs/arched-shops.jpg";
-import thumbBeachSwimmers from "../../assets/photography/thumbs/beach-swimmers.jpg";
-import thumbBikeRentalSign from "../../assets/photography/thumbs/bike-rental-sign.jpg";
-import thumbRotterdamLyceum from "../../assets/photography/thumbs/rotterdam-lyceum.jpg";
+import entries from "../../data/photography-entries.json";
 
 export type Photo = {
   id: string;
+  city: string;
+  place: string;
   src: string;
   thumbSrc: string;
   alt: string;
   caption: string;
   medium: "Analog" | "Digital";
-  /** ILFORD stock for film; iPhone model + exposure for digital */
+  /** ILFORD color stock for film; device color profile for digital */
   technical: string;
+  cityIndex: number;
+  cityTotal: number;
 };
 
-const HP5 = "ILFORD HP5 Plus · ISO 400";
-const DELTA = "ILFORD Delta 400 Professional · ISO 400";
+/** Carousel group order — each `city` in entries should appear here */
+export const PHOTO_CITY_ORDER = [
+  "Berlin",
+  "Hoofddorp",
+  "Amsterdam",
+  "The Hague",
+  "Rotterdam",
+  "Vatican City",
+  "Rome",
+  "Barcelona",
+  "London",
+] as const;
 
-/** Amsterdam-focused set plus arched shops, Rotterdam, shoreline, and street detail — swap JPEGs in /photography for final scans — filenames stable */
-export const photos: Photo[] = [
-  {
-    id: "amsterdam-canal",
-    src: amsterdamCanal,
-    thumbSrc: thumbAmsterdamCanal,
-    alt: "Tour boat on an Amsterdam canal in bright sunlight, film grain",
-    caption: "Amsterdam",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "amsterdam-750",
-    src: amsterdam750,
-    thumbSrc: thumbAmsterdam750,
-    alt: "Amsterdam 750 celebration banners on a circular building beside the water",
-    caption: "Amsterdam",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "amsterdam-facade",
-    src: amsterdamFacade,
-    thumbSrc: thumbAmsterdamFacade,
-    alt: "Amsterdam canal house facades and gables, analog film grain",
-    caption: "Amsterdam — facades",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "amsterdam-waterfront",
-    src: amsterdamWaterfront,
-    thumbSrc: thumbAmsterdamWaterfront,
-    alt: "Amsterdam waterfront and boats, washed film tones",
-    caption: "Amsterdam — waterfront",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "amsterdam-bicycles",
-    src: amsterdamBicycles,
-    thumbSrc: thumbAmsterdamBicycles,
-    alt: "Museumplein with Van Gogh Museum and Concertgebouw in the distance, film grain",
-    caption: "Amsterdam — Museumplein",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "arched-shops",
-    src: archedShops,
-    thumbSrc: thumbArchedShops,
-    alt: "Stone arch shopfronts with outdoor seating and film texture",
-    caption: "Arched shopfronts",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "rotterdam-lyceum",
-    src: rotterdamLyceum,
-    thumbSrc: thumbRotterdamLyceum,
-    alt: "Grafisch Lyceum Rotterdam building, grainy film look",
-    caption: "Rotterdam",
-    medium: "Analog",
-    technical: HP5,
-  },
-  {
-    id: "beach-swimmers",
-    src: beachSwimmers,
-    thumbSrc: thumbBeachSwimmers,
-    alt: "Beach with swimmers in the distance, washed film colors",
-    caption: "Shoreline",
-    medium: "Analog",
-    technical: DELTA,
-  },
-  {
-    id: "bike-rental-sign",
-    src: bikeRentalSign,
-    thumbSrc: thumbBikeRentalSign,
-    alt: "Bike rental and ATM sign with street stickers",
-    caption: "Street signage",
-    medium: "Digital",
-    technical: "iPhone 15 Pro · Daylight · hard sun / shadow",
-  },
-];
+const ILFORD_COLOR =
+  "ILFORD XP2 Super 400 · C41 color · warm grain, lifted mids";
+const IPHONE_COLOR =
+  "iPhone 15 Pro · auto color · daylight white balance";
+
+type Entry = {
+  id: string;
+  city: string;
+  place: string;
+  file: string;
+  digital?: boolean;
+};
+
+function assetUrl(file: string) {
+  return new URL(`../../assets/photography/${file}`, import.meta.url).href;
+}
+
+function thumbUrl(file: string) {
+  return new URL(`../../assets/photography/thumbs/${file}`, import.meta.url).href;
+}
+
+function sortEntries(list: Entry[]): Entry[] {
+  const cityRank = new Map(
+    PHOTO_CITY_ORDER.map((city, index) => [city, index]),
+  );
+  const fileOrder = new Map(list.map((row, index) => [row.id, index]));
+  return [...list].sort((a, b) => {
+    const ra = cityRank.get(a.city as (typeof PHOTO_CITY_ORDER)[number]) ?? 99;
+    const rb = cityRank.get(b.city as (typeof PHOTO_CITY_ORDER)[number]) ?? 99;
+    if (ra !== rb) return ra - rb;
+    return (fileOrder.get(a.id) ?? 0) - (fileOrder.get(b.id) ?? 0);
+  });
+}
+
+const sorted = sortEntries(entries as Entry[]);
+
+const cityTotals = sorted.reduce<Record<string, number>>((acc, row) => {
+  acc[row.city] = (acc[row.city] ?? 0) + 1;
+  return acc;
+}, {});
+
+const citySeen: Record<string, number> = {};
+
+export const photos: Photo[] = sorted.map((row) => {
+  citySeen[row.city] = (citySeen[row.city] ?? 0) + 1;
+  const cityIndex = citySeen[row.city];
+  const medium: Photo["medium"] = row.digital ? "Digital" : "Analog";
+  const technical = row.digital ? IPHONE_COLOR : ILFORD_COLOR;
+  const caption = row.place;
+
+  return {
+    id: row.id,
+    city: row.city,
+    place: row.place,
+    src: assetUrl(row.file),
+    thumbSrc: thumbUrl(row.file),
+    alt: caption,
+    caption,
+    medium,
+    technical,
+    cityIndex,
+    cityTotal: cityTotals[row.city] ?? 1,
+  };
+});

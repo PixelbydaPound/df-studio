@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ScrollReveal } from "./ScrollReveal";
 import {
   Dialog,
@@ -98,6 +98,7 @@ export function Photography() {
     if (!length) return;
     for (const i of neighborIndices(currentIndex, length)) {
       preloadImage(photos[i].src);
+      preloadImage(photos[i].thumbSrc);
     }
   }, [currentIndex, length]);
 
@@ -316,10 +317,20 @@ export function Photography() {
                       : index % 3 === 1
                         ? "w-[min(76vw,20rem)] md:w-[min(36vw,19rem)] aspect-[4/5] md:mb-6"
                         : "w-[min(68vw,16.5rem)] md:w-[min(30vw,16rem)] aspect-[5/7] md:mb-3";
+                  const showCityLead =
+                    index === 0 || photos[index - 1].city !== photo.city;
 
                   return (
+                    <Fragment key={photo.id}>
+                      {showCityLead && (
+                        <div
+                          className="photography-gallery-city-label snap-center shrink-0 self-end"
+                          aria-hidden
+                        >
+                          <span>{photo.city}</span>
+                        </div>
+                      )}
                     <article
-                      key={photo.id}
                       ref={(el) => {
                         slideRefs.current[index] = el;
                       }}
@@ -344,7 +355,7 @@ export function Photography() {
                           </div>
                         )}
                         <img
-                          src={photo.src}
+                          src={photo.thumbSrc}
                           alt={photo.alt}
                           decoding="async"
                           fetchPriority={index === 0 ? "high" : "auto"}
@@ -355,16 +366,21 @@ export function Photography() {
                         />
                       </button>
                     </article>
+                    </Fragment>
                   );
                 })}
               </div>
             </div>
 
             <div className="mt-6 px-1" aria-live="polite">
-              <p className="text-story text-lg">{current.caption}</p>
+              <p className="text-story text-lg font-medium">{current.place}</p>
               <p className="text-[#EB5097]/90 text-sm mt-1">{current.technical}</p>
               <p className="text-story-mid text-sm mt-1">
-                {currentIndex + 1} / {length}
+                {current.city} {current.cityIndex} / {current.cityTotal}
+                <span className="mx-2 text-story-soft" aria-hidden>
+                  ·
+                </span>
+                Gallery {currentIndex + 1} / {length}
                 <span className="mx-2 text-story-soft" aria-hidden>
                   ·
                 </span>
@@ -377,8 +393,10 @@ export function Photography() {
 
       <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
         <DialogContent className="sm:max-w-5xl bg-black border-white/15 p-0 overflow-hidden gap-0">
-          <DialogTitle className="sr-only">{current.caption}</DialogTitle>
-          <DialogDescription className="sr-only">{current.alt}</DialogDescription>
+          <DialogTitle className="sr-only">{current.place}</DialogTitle>
+          <DialogDescription className="sr-only">
+            {current.technical}
+          </DialogDescription>
           <img
             src={current.src}
             alt={current.alt}
@@ -389,8 +407,11 @@ export function Photography() {
           />
           <div className="px-6 py-4 border-t border-white/10 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-white text-sm">{current.caption}</p>
-              <p className="text-[#EB5097]/90 text-xs mt-0.5">{current.technical}</p>
+              <p className="text-white text-sm font-medium">{current.place}</p>
+              <p className="text-[#EB5097]/90 text-xs mt-1.5">{current.technical}</p>
+              <p className="text-white/45 text-xs mt-1">
+                {current.city} {current.cityIndex} / {current.cityTotal}
+              </p>
             </div>
             <p className="text-white/50 text-xs uppercase tracking-wide">{current.medium}</p>
           </div>
