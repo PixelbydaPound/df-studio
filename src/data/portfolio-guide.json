@@ -5,13 +5,14 @@
     "tagline": "From Daniel's portfolio case studies, not a general chatbot",
     "fabLabel": "Recruiter Ask",
     "fabLabelShort": "Ask",
-    "topicsLabel": "Start here",
-    "followUpsLabel": "Go deeper",
+    "topicsLabel": "Other case studies",
+    "followUpsLabel": "Insights",
     "searchCta": "Search portfolio case studies",
     "searchPlaceholder": "Juice Up, Allied, outcomes (this site only)",
-    "thinkingLabel": "Finding a matching case study"
+    "thinkingLabel": "Matching your question",
+    "thoughtsLabel": "Review steps"
   },
-  "welcome": "Screening Daniel and need the highlights?\n\nThese answers come only from his portfolio case studies: scope, collaboration, and results. Tap a topic below, then open the study for screenshots and detail.",
+  "welcome": "Screening Daniel and need the highlights?\n\nThese answers come only from his portfolio case studies: scope, collaboration, and results. Pick a case study below, then open the full study for screenshots and detail.",
   "disclaimer": "Portfolio case studies only. Metrics are owner-reported unless noted. Questions beyond this site? Email or schedule a call.",
   "prompts": [
     { "label": "Maia / HRIT: AI-native GovTech", "intentId": "hrit-maia" },
@@ -306,7 +307,7 @@
     {
       "id": "out-of-scope",
       "keywords": [],
-      "answer": "That’s outside Recruiter Ask’s scope. It only summarizes published case studies on this site.\n\nPick a topic below or open a case study. For depth beyond the site, use Contact.",
+      "answer": "That’s outside Recruiter Ask’s scope. It only summarizes published case studies on this site.\n\nPick another case study below or open one from the portfolio. For depth beyond the site, use Contact.",
       "sourceLabel": null,
       "followUps": [
         "Maia / HRIT: AI-native GovTech",
@@ -318,7 +319,7 @@
     {
       "id": "default",
       "keywords": [],
-      "answer": "I couldn’t match that to a case study on this site. Try a topic in portfolio order: Maia/HRIT, Avue design system, Allied, Juice Up, URC, role, or outcomes.",
+      "answer": "I couldn’t match that to a case study on this site. Choose from Other case studies below (portfolio order): Maia/HRIT, Avue design system, Allied, Juice Up, URC, role, or outcomes.",
       "sourceLabel": null,
       "followUps": [
         "Maia / HRIT: AI-native GovTech",

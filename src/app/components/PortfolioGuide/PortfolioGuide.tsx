@@ -4,14 +4,21 @@ import {
   getPortfolioGuideBrand,
   getPortfolioGuideData,
   getIntentById,
+  getThinkingLinesForIntent,
   matchPortfolioGuideQuery,
   resolveFollowUp,
   type PortfolioGuideBrand,
   type PortfolioGuideIntent,
   type PortfolioGuideSection,
 } from "../../lib/portfolioGuide";
+import { useReducedMotion } from "../../lib/useReducedMotion";
+import { GuideDisclosure } from "./GuideDisclosure";
+import { GuideThinking } from "./GuideThinking";
 import { StreamingGuideMessage } from "./StreamingGuideMessage";
 import "./PortfolioGuide.css";
+
+const THINKING_STEP_MS = 340;
+const THINKING_FINISH_MS = 240;
 
 type GuideMessage = {
   id: string;
@@ -49,9 +56,14 @@ function intentToAssistantMessage(intent: PortfolioGuideIntent): GuideMessage {
 export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
   const guide = getPortfolioGuideData();
   const brand = getPortfolioGuideBrand();
+  const reducedMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [thinkingLines, setThinkingLines] = useState<string[]>([]);
+  const [thinkingStep, setThinkingStep] = useState(0);
   const [isStreaming, setIsStreaming] = useState(false);
+  const [topicsExpanded, setTopicsExpanded] = useState(true);
+  const [followUpsExpanded, setFollowUpsExpanded] = useState(false);
   const [customInputOpen, setCustomInputOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<GuideMessage[]>([]);
@@ -59,6 +71,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
     guide.prompts.map((p) => p.label),
   );
   const listRef = useRef<HTMLDivElement>(null);
+  const pendingIntentRef = useRef<PortfolioGuideIntent | null>(null);
 
   const conversationStarted = useMemo(
     () => messages.some((m) => m.role === "user"),
@@ -88,7 +101,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
   useEffect(() => {
     if (!open || !listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
-  }, [messages, thinking, isStreaming, open]);
+  }, [messages, thinking, thinkingStep, isStreaming, open]);
 
   const applyIntent = useCallback(
     (intent: PortfolioGuideIntent) => {
@@ -102,27 +115,69 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
     [guide.prompts],
   );
 
-  const respond = useCallback(
-    (userText: string) => {
+  const finishThinking = useCallback(() => {
+    const intent = pendingIntentRef.current;
+    if (intent) {
+      applyIntent(intent);
+      pendingIntentRef.current = null;
+    }
+    setThinking(false);
+    setThinkingLines([]);
+    setThinkingStep(0);
+    setFollowUpsExpanded(true);
+  }, [applyIntent]);
+
+  useEffect(() => {
+    if (!thinking || thinkingLines.length === 0) return;
+
+    if (thinkingStep >= thinkingLines.length) {
+      const id = window.setTimeout(finishThinking, THINKING_FINISH_MS);
+      return () => window.clearTimeout(id);
+    }
+
+    const id = window.setTimeout(() => {
+      setThinkingStep((s) => s + 1);
+    }, THINKING_STEP_MS);
+
+    return () => window.clearTimeout(id);
+  }, [thinking, thinkingStep, thinkingLines.length, finishThinking]);
+
+  const queueAssistantReply = useCallback(
+    (userText: string, intent: PortfolioGuideIntent) => {
       const trimmed = userText.trim();
       if (!trimmed) return;
 
+      setTopicsExpanded(false);
+      setFollowUpsExpanded(false);
       setMessages((prev) => [
         ...prev,
         { id: nextId(), role: "user", content: trimmed },
       ]);
       setDraft("");
-      setThinking(true);
 
-      const { intent, reason } = matchPortfolioGuideQuery(trimmed);
-      const delay = reason === "matched" || reason === "off-topic" ? 0 : 280;
-
-      window.setTimeout(() => {
+      if (reducedMotion) {
         applyIntent(intent);
-        setThinking(false);
-      }, delay);
+        setFollowUpsExpanded(true);
+        return;
+      }
+
+      pendingIntentRef.current = intent;
+      setThinkingLines(getThinkingLinesForIntent(intent, trimmed));
+      setThinkingStep(0);
+      setThinking(true);
     },
-    [applyIntent],
+    [applyIntent, reducedMotion],
+  );
+
+  const respond = useCallback(
+    (userText: string) => {
+      if (seedsBusy) return;
+      const trimmed = userText.trim();
+      if (!trimmed) return;
+      const { intent } = matchPortfolioGuideQuery(trimmed);
+      queueAssistantReply(trimmed, intent);
+    },
+    [queueAssistantReply, seedsBusy],
   );
 
   const handlePrompt = useCallback(
@@ -132,19 +187,14 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
         ? getIntentById(intentId)
         : resolveFollowUp(label);
       if (!intent) return;
-
-      setMessages((prev) => [
-        ...prev,
-        { id: nextId(), role: "user", content: label },
-      ]);
-      applyIntent(intent);
+      queueAssistantReply(label, intent);
     },
-    [applyIntent, seedsBusy],
+    [queueAssistantReply, seedsBusy],
   );
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    if (thinking) return;
+    if (seedsBusy) return;
     respond(draft);
   };
 
@@ -153,8 +203,8 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
     onNavigateToProject?.(projectId);
   };
 
-  const showFollowUpRow =
-    conversationStarted && lastFollowUps.length > 0 && !thinking;
+  const showFollowUpSection =
+    conversationStarted && lastFollowUps.length > 0;
 
   return (
     <>
@@ -258,37 +308,47 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
                   </div>
                 );
               })}
-              {thinking && (
-                <p className="portfolio-guide-thinking" aria-live="polite">
-                  {brand.thinkingLabel}
-                </p>
+              {thinking && thinkingLines.length > 0 && (
+                <GuideThinking
+                  headline={brand.thinkingLabel}
+                  thoughtsLabel={brand.thoughtsLabel}
+                  lines={thinkingLines}
+                  activeIndex={thinkingStep}
+                />
               )}
             </div>
 
-            <div
-              className={`portfolio-guide-seed-dock${
-                conversationStarted ? " portfolio-guide-seed-dock--compact" : ""
-              }`}
-            >
-              <p className="portfolio-guide-topics-label">{brand.topicsLabel}</p>
-              <div className="portfolio-guide-seed-scroll">
-                {guide.prompts.map((prompt) => (
-                  <button
-                    key={prompt.intentId}
-                    type="button"
-                    className="portfolio-guide-chip portfolio-guide-chip--compact"
-                    disabled={seedsBusy}
-                    onClick={() => handlePrompt(prompt.label, prompt.intentId)}
-                  >
-                    {prompt.label}
-                  </button>
-                ))}
-              </div>
-              {showFollowUpRow && (
-                <>
-                  <p className="portfolio-guide-followups-label portfolio-guide-followups-label--compact">
-                    {brand.followUpsLabel}
-                  </p>
+            <div className="portfolio-guide-seed-dock">
+              <GuideDisclosure
+                label={brand.topicsLabel}
+                open={topicsExpanded}
+                badge={guide.prompts.length}
+                onToggle={() => setTopicsExpanded((v) => !v)}
+              >
+                <div className="portfolio-guide-seed-scroll">
+                  {guide.prompts.map((prompt) => (
+                    <button
+                      key={prompt.intentId}
+                      type="button"
+                      className="portfolio-guide-chip portfolio-guide-chip--compact"
+                      disabled={seedsBusy}
+                      onClick={() =>
+                        handlePrompt(prompt.label, prompt.intentId)
+                      }
+                    >
+                      {prompt.label}
+                    </button>
+                  ))}
+                </div>
+              </GuideDisclosure>
+
+              {showFollowUpSection && (
+                <GuideDisclosure
+                  label={brand.followUpsLabel}
+                  open={followUpsExpanded}
+                  badge={lastFollowUps.length}
+                  onToggle={() => setFollowUpsExpanded((v) => !v)}
+                >
                   <div className="portfolio-guide-seed-scroll portfolio-guide-seed-scroll--followups">
                     {lastFollowUps.map((label) => (
                       <button
@@ -302,7 +362,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
                       </button>
                     ))}
                   </div>
-                </>
+                </GuideDisclosure>
               )}
             </div>
 
@@ -392,7 +452,7 @@ function GuideFooter(props: GuideFooterProps) {
           className="portfolio-guide-custom-collapse"
           onClick={() => setCustomInputOpen(false)}
         >
-          Back to topics
+          Back to case studies
         </button>
       )}
       <p className="portfolio-guide-footer-note">{disclaimer}</p>

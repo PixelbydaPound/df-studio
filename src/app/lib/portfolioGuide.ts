@@ -27,6 +27,7 @@ export type PortfolioGuideBrand = {
   searchCta: string;
   searchPlaceholder: string;
   thinkingLabel: string;
+  thoughtsLabel: string;
 };
 
 export type PortfolioGuideData = {
@@ -44,12 +45,33 @@ const DEFAULT_BRAND: PortfolioGuideBrand = {
   tagline: "From Daniel's portfolio case studies, not a general chatbot",
   fabLabel: "Recruiter Ask",
   fabLabelShort: "Ask",
-  topicsLabel: "Start here",
-  followUpsLabel: "Go deeper",
+  topicsLabel: "Other case studies",
+  followUpsLabel: "Insights",
   searchCta: "Search portfolio case studies",
   searchPlaceholder: "Juice Up, Allied, outcomes (this site only)",
-  thinkingLabel: "Finding a matching case study",
+  thinkingLabel: "Matching your question",
+  thoughtsLabel: "Review steps",
 };
+
+/** Scripted “thinking” lines for Recruiter Ask (portfolio matching, not a live LLM). */
+export function getThinkingLinesForIntent(
+  intent: PortfolioGuideIntent,
+  userText: string,
+): string[] {
+  const lines: string[] = ["Scanning published case studies on this site…"];
+
+  if (intent.sourceLabel) {
+    lines.push(`Matched: ${intent.sourceLabel}`);
+  } else if (intent.sections?.[0]?.title) {
+    lines.push(`Pulling section: ${intent.sections[0].title}`);
+  } else if (intent.id !== "default" && intent.id !== "out-of-scope") {
+    const hint = userText.trim().slice(0, 56);
+    if (hint) lines.push(`Topic: ${hint}${userText.length > 56 ? "…" : ""}`);
+  }
+
+  lines.push("Formatting answer from Daniel's portfolio work");
+  return lines.slice(0, 4);
+}
 
 const data = guideData as PortfolioGuideData;
 
