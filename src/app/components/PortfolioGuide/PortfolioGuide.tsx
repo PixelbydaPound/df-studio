@@ -8,6 +8,7 @@ import {
   resolveFollowUp,
   type PortfolioGuideBrand,
   type PortfolioGuideIntent,
+  type PortfolioGuideSection,
 } from "../../lib/portfolioGuide";
 import "./PortfolioGuide.css";
 
@@ -15,6 +16,7 @@ type GuideMessage = {
   id: string;
   role: "user" | "assistant";
   content: string;
+  sections?: PortfolioGuideSection[];
   sourceLabel?: string | null;
   caseStudyId?: string;
   followUps?: string[];
@@ -31,10 +33,12 @@ function nextId() {
 }
 
 function intentToAssistantMessage(intent: PortfolioGuideIntent): GuideMessage {
+  const hasSections = Boolean(intent.sections?.length);
   return {
     id: nextId(),
     role: "assistant",
-    content: intent.answer,
+    content: hasSections ? "" : intent.answer,
+    sections: hasSections ? intent.sections : undefined,
     sourceLabel: intent.sourceLabel,
     caseStudyId: intent.caseStudyId,
     followUps: intent.followUps,
@@ -183,7 +187,25 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
                   key={msg.id}
                   className={`portfolio-guide-bubble portfolio-guide-bubble--${msg.role}`}
                 >
-                  {msg.content}
+                  {msg.role === "assistant" && msg.sections?.length ? (
+                    <div className="portfolio-guide-sections">
+                      {msg.sections.map((section) => (
+                        <div
+                          key={section.title}
+                          className="portfolio-guide-section"
+                        >
+                          <p className="portfolio-guide-section-title">
+                            {section.title}
+                          </p>
+                          <p className="portfolio-guide-section-body">
+                            {section.body}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    msg.content
+                  )}
                   {msg.role === "assistant" && msg.sourceLabel && (
                     <>
                       {msg.caseStudyId && onNavigateToProject ? (

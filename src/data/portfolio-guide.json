@@ -14,12 +14,13 @@
   "welcome": "Screening Daniel and need the highlights?\n\nThese answers come only from his portfolio case studies: scope, collaboration, and results. Tap a topic below, then open the study for screenshots and detail.",
   "disclaimer": "Portfolio case studies only. Metrics are owner-reported unless noted. Questions beyond this site? Email or schedule a call.",
   "prompts": [
-    { "label": "Juice Up: owned checkout & apps", "intentId": "juice-up" },
-    { "label": "Allied: mobile banking & auth", "intentId": "allied-auth" },
     { "label": "Maia / HRIT: AI-native GovTech", "intentId": "hrit-maia" },
+    { "label": "Avue: Maia design system", "intentId": "avue-maia-ds" },
+    { "label": "Allied: mobile banking & auth", "intentId": "allied-auth" },
+    { "label": "Juice Up: owned checkout & apps", "intentId": "juice-up" },
+    { "label": "URC: 0→1 vinyl e-commerce", "intentId": "urc" },
     { "label": "Daniel’s role & focus", "intentId": "role" },
-    { "label": "How outcomes are measured", "intentId": "measurement" },
-    { "label": "Design systems & handoff", "intentId": "design-system" }
+    { "label": "How outcomes are measured", "intentId": "measurement" }
   ],
   "followUpRoutes": [
     { "label": "What changed in the checkout funnel?", "intentId": "juice-up-checkout" },
@@ -35,19 +36,145 @@
     { "label": "GovTech constraints", "intentId": "hrit-maia" },
     { "label": "Juice Up loyalty migration", "intentId": "juice-up" },
     { "label": "HRIT telemetry", "intentId": "measurement" },
-    { "label": "Maia Storybook workflow", "intentId": "design-system" },
+    { "label": "Maia Storybook workflow", "intentId": "avue-maia-ds" },
     { "label": "NDA presentations", "intentId": "nda" },
     { "label": "Allied public case study", "intentId": "allied-auth" },
     { "label": "What can you show in interviews?", "intentId": "nda" },
+    { "label": "Maia / HRIT: AI-native GovTech", "intentId": "hrit-maia" },
+    { "label": "Avue: Maia design system", "intentId": "avue-maia-ds" },
     { "label": "Juice Up: owned checkout & apps", "intentId": "juice-up" },
+    { "label": "URC: 0→1 vinyl e-commerce", "intentId": "urc" },
     { "label": "Daniel’s role & focus", "intentId": "role" },
     { "label": "How outcomes are measured", "intentId": "measurement" }
   ],
   "intents": [
     {
+      "id": "hrit-maia",
+      "keywords": ["maia", "hrit", "govtech", "avue", "smartmatch", "federal", "hiring", "llm", "aws", "govcloud"],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Project",
+          "body": "Avue Technologies: Maia / HRIT, AI-native GovTech talent platform in AWS GovCloud (FedRAMP context)."
+        },
+        {
+          "title": "Problem",
+          "body": "Legacy HR tooling and high compliance boundaries (DoD, multi-tenant agencies) with limited direct end-user research access."
+        },
+        {
+          "title": "Daniel’s role",
+          "body": "Senior product design on conversational workflows, SmartMatch-style recommendations, role-based interfaces, and partnership with AI/ML and engineering on explainability and guardrails."
+        },
+        {
+          "title": "Approach",
+          "body": "Structured guardrails behind the LLM; progressive disclosure on recommendations; separation of automation from human hiring decisions; modular patterns for multi-tenant deployment."
+        },
+        {
+          "title": "Outcomes",
+          "body": "Case study frames adoption, task completion, and trust for hiring managers (partner context). No public client UI beyond portfolio narrative."
+        }
+      ],
+      "sourceLabel": "Maia HRIT case study",
+      "caseStudyId": "rappi-mix",
+      "followUps": ["Avue: Maia design system", "Explainability for hiring managers", "GovTech constraints"]
+    },
+    {
+      "id": "avue-maia-ds",
+      "keywords": [
+        "maia design system",
+        "avue",
+        "design system",
+        "storybook",
+        "tokens",
+        "token pipeline",
+        "figma mcp",
+        "component library",
+        "conversational ai design system",
+        "multitenant"
+      ],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Project",
+          "body": "Avue: Maia Design System for conversational AI on the HRIT multi-tenant platform (DoD agencies, desktop-first, high-security GovTech)."
+        },
+        {
+          "title": "Problem",
+          "body": "Drift between Figma and code on a complex product; legacy component library needed modernization for scale and cross-team consistency."
+        },
+        {
+          "title": "Daniel’s role",
+          "body": "Led redesign and implementation of the Maia Design System (~3 months): design execution, cross-team collaboration, and component library modernization."
+        },
+        {
+          "title": "Approach",
+          "body": "Design token pipeline (color, typography, spacing, icons). Variants and booleans for maintainable components. Figma merged into Storybook as single source of truth; Figma MCP to Cursor for typed React components and stories with one-to-one variant props."
+        },
+        {
+          "title": "Outcomes",
+          "body": "Unified visual foundations, AI-adaptive interaction patterns, and faster design-to-code iteration. Documented on the Maia case study with Storybook and token examples."
+        }
+      ],
+      "sourceLabel": "Maia design system case study",
+      "caseStudyId": "maia",
+      "followUps": ["Maia / HRIT: AI-native GovTech", "Maia Storybook workflow", "White-label / design tokens"]
+    },
+    {
+      "id": "allied-auth",
+      "keywords": ["allied", "credit", "union", "banking", "mobile", "mahalo", "passcode", "biometric", "auth", "fca"],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Project",
+          "body": "Allied Credit Union / Mahalo Banking: mobile banking redesign (FinTech, iOS and Android)."
+        },
+        {
+          "title": "Problem",
+          "body": "Members need trusted, accessible mobile journeys; auth flows must balance security with low abandonment."
+        },
+        {
+          "title": "Daniel’s role",
+          "body": "Competitive audit, core flows, and member journey UX with product and engineering on Mahalo-aligned delivery."
+        },
+        {
+          "title": "Approach",
+          "body": "Tiered authentication (passcode, biometrics, security questions). Explicit tradeoffs in the case study, e.g. “Use passcode instead” at key steps to reduce drop-off."
+        },
+        {
+          "title": "Outcomes",
+          "body": "Framed around member task completion and engagement; Lean UX cycles with Allied stakeholders under a fixed delivery window."
+        }
+      ],
+      "sourceLabel": "Allied Credit Union case study",
+      "caseStudyId": "project-3",
+      "followUps": ["How do you mitigate auth friction?", "White-label / design tokens"]
+    },
+    {
       "id": "juice-up",
       "keywords": ["juice", "checkout", "stripe", "android", "ios", "app store", "loyalty", "coral", "rebrand", "catering"],
-      "answer": "Juice Up (Coral Springs): 7-day rebrand plus owned Stripe checkout on juiceupeats.com instead of marketplace handoffs at pay. The owner reported roughly ~20% higher online pickup revenue after that shift (scope: digital pickup on owned surfaces).\n\nNative apps on Google Play and the App Store share menu, Stripe, and kitchen tickets. In-app tiered loyalty replaced a legacy rewards path; the owner described roughly ~25% growth in the digital revenue base as repeat guests moved onto owned ordering.\n\nDaniel was lead product designer and design engineer: brand, checkout/catering flows, and mobile UX.",
+      "answer": "",
+      "sections": [
+        {
+          "title": "Project",
+          "body": "Juice Up, Coral Springs: DTC rebrand, owned web checkout, iOS and Android apps."
+        },
+        {
+          "title": "Problem",
+          "body": "High-intent guests leaving juiceupeats.com for marketplaces at pay; fragmented digital ordering and loyalty."
+        },
+        {
+          "title": "Daniel’s role",
+          "body": "Lead product designer and design engineer: brand, checkout and catering flows, mobile UX, and implementation."
+        },
+        {
+          "title": "Approach",
+          "body": "Owned Stripe path on juiceupeats.com; shared menu, payments, and kitchen tickets with native apps; in-app tiered loyalty on owned ordering."
+        },
+        {
+          "title": "Outcomes",
+          "body": "Owner-reported ~20% higher online pickup revenue on owned surfaces after checkout shift; ~25% growth in digital revenue base after loyalty migration (scoped in the case study)."
+        }
+      ],
       "sourceLabel": "Juice Up case study",
       "caseStudyId": "juice-up",
       "followUps": [
@@ -57,9 +184,90 @@
       ]
     },
     {
+      "id": "urc",
+      "keywords": ["urc", "vinyl", "records", "ecommerce", "supabase", "0→1"],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Project",
+          "body": "URC Records: 0→1 e-commerce for an underground dance vinyl label."
+        },
+        {
+          "title": "Problem",
+          "body": "Collectors need fast discovery (BPM/key), reliable inventory, and simple checkout without marketplace friction."
+        },
+        {
+          "title": "Daniel’s role",
+          "body": "End-to-end product design and build: storefront, auth, checkout, and ops handoff."
+        },
+        {
+          "title": "Approach",
+          "body": "Supabase auth, Stripe checkout, webhook-driven inventory, metadata-forward PLP for known buyers."
+        },
+        {
+          "title": "Outcomes",
+          "body": "Live storefront and checkout on the case study; solo ship from concept through launch."
+        }
+      ],
+      "sourceLabel": "URC Records case study",
+      "caseStudyId": "urc-records",
+      "followUps": ["Daniel’s role & focus", "How outcomes are measured"]
+    },
+    {
+      "id": "role",
+      "keywords": ["role", "daniel", "designer", "engineer", "b2b", "b2c", "saas", "who", "you", "experience", "cross-functional"],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Background",
+          "body": "Product designer across B2C, B2B, and SaaS (~4+ years), often as lead product designer and design engineer."
+        },
+        {
+          "title": "Domains",
+          "body": "FinTech (Mahalo/Allied), GovTech (Avue Maia/HRIT), DTC and studio builds (Juice Up, URC), plus confidential HealthTech patterns on the portfolio."
+        },
+        {
+          "title": "How he works",
+          "body": "Brand and UX through flows that ship: React, design systems, owned checkout, mobile. Strong cross-functional work with product, engineering, and compliance on enterprise work; solo 0→1 on Juice Up and URC."
+        },
+        {
+          "title": "On this site",
+          "body": "Case studies follow portfolio grid order: enterprise (Maia/HRIT, design system, Allied), then solo builds (Juice Up, URC)."
+        }
+      ],
+      "sourceLabel": "Portfolio home",
+      "followUps": ["Maia / HRIT: AI-native GovTech", "Avue: Maia design system", "Juice Up: owned checkout & apps"]
+    },
+    {
+      "id": "measurement",
+      "keywords": ["metric", "outcome", "measure", "analytics", "clarity", "stripe", "kpi", "data"],
+      "answer": "",
+      "sections": [
+        {
+          "title": "Principle",
+          "body": "Daniel separates claims by source and labels owner-reported lifts explicitly."
+        },
+        {
+          "title": "Sources",
+          "body": "Stripe and kitchen tickets (revenue), Vercel Analytics and Microsoft Clarity (web funnel), store consoles (mobile installs), partner context for GovTech and banking."
+        },
+        {
+          "title": "Juice Up example",
+          "body": "~20% online pickup and ~25% digital base tied to loyalty migration are owner-reported; web checkout gains are not attributed to the app alone."
+        },
+        {
+          "title": "Enterprise",
+          "body": "GovTech and banking narratives emphasize task completion and adoption with stakeholder context, not inflated attribution."
+        }
+      ],
+      "sourceLabel": "Juice Up → Measurement",
+      "caseStudyId": "juice-up",
+      "followUps": ["Juice Up loyalty migration", "HRIT telemetry"]
+    },
+    {
       "id": "juice-up-catering",
       "keywords": ["catering", "pack", "bulk", "trays", "office"],
-      "answer": "Juice Up catering on the owned site: packs and bulk ordering stay on juiceupeats.com with the same Stripe path as pickup — no marketplace handoff at checkout.\n\nFlows emphasize clear pack sizing, pickup scheduling, and kitchen-ticket handoff so back-of-house sees one order stream.",
+      "answer": "Juice Up catering on the owned site: packs and bulk ordering stay on juiceupeats.com with the same Stripe path as pickup.\n\nFlows emphasize clear pack sizing, pickup scheduling, and kitchen-ticket handoff so back-of-house sees one order stream.",
       "sourceLabel": "Juice Up case study",
       "caseStudyId": "juice-up",
       "followUps": ["What changed in the checkout funnel?", "Juice Up outcomes"]
@@ -67,7 +275,7 @@
     {
       "id": "juice-up-mobile-ux",
       "keywords": ["scroll", "carousel", "slick", "mobile", "ios", "android", "touch"],
-      "answer": "On the Juice Up case study page, mobile no longer uses a touch carousel for hero shots — react-slick’s handlers were blocking vertical page scroll on iOS/Android.\n\nBelow the `md` breakpoint the study uses a static stacked image list; desktop keeps the carousel. Tradeoff: less swipe flair on small screens for reliable scrolling.",
+      "answer": "On the Juice Up case study page, mobile no longer uses a touch carousel for hero shots. react-slick handlers were blocking vertical page scroll on iOS/Android.\n\nBelow the md breakpoint the study uses a static stacked image list; desktop keeps the carousel.",
       "sourceLabel": "Juice Up case study",
       "caseStudyId": "juice-up",
       "followUps": ["Juice Up: owned checkout & apps", "Juice Up outcomes"]
@@ -75,78 +283,48 @@
     {
       "id": "juice-up-checkout",
       "keywords": ["cart", "funnel", "toast", "doordash", "marketplace", "conversion"],
-      "answer": "The problem was high-intent guests leaving juiceupeats.com for Toast, DoorDash, or Uber Eats at “Order Now.” The fix kept menu → cart → embedded Stripe → confirmation and kitchen tickets on one surface.\n\nDesign choices: shallow navigation, clear category cards, guest checkout with pickup scheduling, and counter-ready order numbers on confirmation.",
+      "answer": "Problem: guests leaving juiceupeats.com for Toast, DoorDash, or Uber Eats at Order Now.\n\nFix: menu → cart → embedded Stripe → confirmation and kitchen tickets on one surface. Guest checkout, pickup scheduling, counter-ready order numbers.",
       "sourceLabel": "Juice Up → Owned checkout",
       "caseStudyId": "juice-up",
       "followUps": ["Tell me about catering packs", "Juice Up app store links"]
     },
     {
-      "id": "allied-auth",
-      "keywords": ["allied", "credit", "union", "banking", "mobile", "mahalo", "passcode", "biometric", "auth", "fca"],
-      "answer": "Allied Credit Union (Mahalo): mobile banking redesign with tiered authentication (passcode, biometrics, security questions) and clearer member journeys.\n\nDaniel contributed competitive audit, core flows, and member journey UX. The case study frames tradeoffs explicitly: e.g. offering “Use passcode instead” at key steps to reduce abandonment vs. strict single-path login.",
-      "sourceLabel": "Allied Credit Union case study",
-      "caseStudyId": "project-3",
-      "followUps": ["How do you mitigate auth friction?", "White-label / design tokens"]
-    },
-    {
-      "id": "hrit-maia",
-      "keywords": ["maia", "hrit", "govtech", "avue", "smartmatch", "federal", "hiring", "llm", "aws", "govcloud"],
-      "answer": "Maia / HRIT: AI-native GovTech HR talent platform in AWS GovCloud (FedRAMP context). Work included modular design systems, conversational workflows for matching and recruitment, and role-based, multi-tenant interfaces.\n\nPatterns: structured guardrails behind the LLM, progressive disclosure on SmartMatch-style recommendations, and separating automation from human hiring decisions.",
-      "sourceLabel": "Maia & HRIT case studies",
-      "caseStudyId": "rappi-mix",
-      "followUps": ["Explainability for hiring managers", "0→1 vs legacy migration"]
-    },
-    {
-      "id": "urc",
-      "keywords": ["urc", "vinyl", "records", "ecommerce", "supabase", "0→1"],
-      "answer": "URC Records: 0→1 e-commerce for an underground dance vinyl label. Focus on collectors who already know what they want: fast storefront, BPM/key metadata, simple email/password auth via Supabase, Stripe checkout, and inventory accuracy with webhooks.",
-      "sourceLabel": "URC Records case study",
-      "caseStudyId": "urc-records",
-      "followUps": []
-    },
-    {
-      "id": "role",
-      "keywords": ["role", "daniel", "designer", "engineer", "b2b", "b2c", "saas", "who", "you", "experience"],
-      "answer": "Daniel Fornica is a product designer across B2C, B2B, and SaaS, often operating as lead product designer and design engineer: brand and UI/UX through flows that ship (React, design systems, owned checkout, mobile).\n\nRecent work spans wellness DTC (Juice Up), credit union mobile (Allied), GovTech HR/AI (Maia/HRIT), and label e-commerce (URC).",
-      "sourceLabel": "Portfolio home",
-      "followUps": ["Juice Up outcomes", "GovTech constraints", "Open a case study"]
-    },
-    {
-      "id": "measurement",
-      "keywords": ["metric", "outcome", "measure", "analytics", "clarity", "stripe", "kpi", "data"],
-      "answer": "Daniel separates claims by source: Stripe/kitchen tickets for revenue, Vercel Analytics and Microsoft Clarity for web funnel and qualitative friction, store consoles for mobile installs.\n\nJuice Up labels owner-reported lifts (~20% online pickup, ~25% digital base from loyalty migration) and avoids attributing web checkout gains to the app alone. GovTech and banking work emphasizes task completion and adoption narratives with partner context.",
-      "sourceLabel": "Juice Up → Measurement",
-      "caseStudyId": "juice-up",
-      "followUps": ["Juice Up loyalty migration", "HRIT telemetry"]
-    },
-    {
       "id": "design-system",
-      "keywords": ["design system", "storybook", "figma", "tokens", "handoff", "components", "radix"],
-      "answer": "Recurring approach: document tokens and components, align Figma with code (including Storybook on Maia), use Radix/shadcn-style primitives for accessible UI, and keep case studies honest about what shipped vs. PoC.\n\nEnterprise / NDA work is shown as diagrams or password-gated prototypes when client UI cannot be public.",
-      "sourceLabel": "Maia & case studies",
+      "keywords": ["handoff", "radix", "shadcn", "white-label", "components", "figma"],
+      "answer": "Cross-project pattern: document tokens and components, align Figma with code, Radix-style primitives for accessible UI, and distinguish what shipped vs. PoC.\n\nFor Avue-specific depth, see Avue: Maia design system.",
+      "sourceLabel": "Case studies",
       "caseStudyId": "maia",
-      "followUps": ["Maia Storybook workflow", "NDA presentations"]
+      "followUps": ["Avue: Maia design system", "Maia Storybook workflow"]
     },
     {
       "id": "nda",
       "keywords": ["nda", "confidential", "modmed", "enterprise", "roles", "password"],
-      "answer": "Some employer work stays confidential. The portfolio uses anonymized diagrams, outcome framing, and optional password-gated prototypes (e.g. organization admin RBAC) rather than publishing client UI.\n\nAsk Daniel in a live conversation for depth beyond what’s on the site.",
+      "answer": "Some employer work stays confidential. The portfolio uses anonymized diagrams, outcome framing, and password-gated prototypes rather than publishing client UI.\n\nAsk Daniel in a live conversation for depth beyond the site.",
       "sourceLabel": "Enterprise patterns",
       "followUps": ["Allied public case study", "What can you show in interviews?"]
     },
     {
       "id": "out-of-scope",
       "keywords": [],
-      "answer": "That’s outside Recruiter Ask’s scope. It only summarizes published case studies on this site — no résumés, salary advice, or general knowledge.\n\nPick a topic below or open a case study. For depth beyond the site, use Contact.",
+      "answer": "That’s outside Recruiter Ask’s scope. It only summarizes published case studies on this site.\n\nPick a topic below or open a case study. For depth beyond the site, use Contact.",
       "sourceLabel": null,
-      "followUps": ["Juice Up: owned checkout & apps", "Allied: mobile banking & auth", "Maia / HRIT: AI-native GovTech"]
+      "followUps": [
+        "Maia / HRIT: AI-native GovTech",
+        "Avue: Maia design system",
+        "Allied: mobile banking & auth",
+        "Juice Up: owned checkout & apps"
+      ]
     },
     {
       "id": "default",
       "keywords": [],
-      "answer": "I couldn’t match that to a case study on this site. Use a topic chip — Juice Up, Allied, Maia/HRIT, URC, design systems, outcomes, or NDA patterns.",
+      "answer": "I couldn’t match that to a case study on this site. Try a topic in portfolio order: Maia/HRIT, Avue design system, Allied, Juice Up, URC, role, or outcomes.",
       "sourceLabel": null,
-      "followUps": ["Juice Up: owned checkout & apps", "Daniel’s role & focus", "How outcomes are measured"]
+      "followUps": [
+        "Maia / HRIT: AI-native GovTech",
+        "Avue: Maia design system",
+        "Daniel’s role & focus"
+      ]
     }
   ]
 }

@@ -135,6 +135,29 @@
   white-space: pre-wrap;
 }
 
+.portfolio-guide-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portfolio-guide-section-title {
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(20, 7, 0, 0.48);
+}
+
+.portfolio-guide-section-body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #140700;
+  white-space: pre-wrap;
+}
+
 .portfolio-guide-bubble--assistant {
   align-self: flex-start;
   background: #fff;

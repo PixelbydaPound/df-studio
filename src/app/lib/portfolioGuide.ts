@@ -1,9 +1,16 @@
 import guideData from "../../data/portfolio-guide.json";
 
+export type PortfolioGuideSection = {
+  title: string;
+  body: string;
+};
+
 export type PortfolioGuideIntent = {
   id: string;
   keywords: string[];
+  /** Plain fallback when `sections` is omitted */
   answer: string;
+  sections?: PortfolioGuideSection[];
   sourceLabel: string | null;
   caseStudyId?: string;
   followUps?: string[];
