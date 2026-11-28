@@ -1,4 +1,4 @@
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { MessageCircle, ArrowUp, X } from "lucide-react";
 import {
   getPortfolioGuideBrand,
@@ -10,6 +10,7 @@ import {
   type PortfolioGuideIntent,
   type PortfolioGuideSection,
 } from "../../lib/portfolioGuide";
+import { StreamingGuideMessage } from "./StreamingGuideMessage";
 import "./PortfolioGuide.css";
 
 type GuideMessage = {
@@ -50,6 +51,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
   const brand = getPortfolioGuideBrand();
   const [open, setOpen] = useState(false);
   const [thinking, setThinking] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [customInputOpen, setCustomInputOpen] = useState(false);
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<GuideMessage[]>([]);
@@ -57,6 +59,20 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
     guide.prompts.map((p) => p.label),
   );
   const listRef = useRef<HTMLDivElement>(null);
+
+  const conversationStarted = useMemo(
+    () => messages.some((m) => m.role === "user"),
+    [messages],
+  );
+
+  const lastAssistantId = useMemo(() => {
+    for (let i = messages.length - 1; i >= 0; i -= 1) {
+      if (messages[i].role === "assistant") return messages[i].id;
+    }
+    return null;
+  }, [messages]);
+
+  const seedsBusy = thinking || isStreaming;
 
   useEffect(() => {
     if (!open || messages.length > 0) return;
@@ -72,7 +88,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
   useEffect(() => {
     if (!open || !listRef.current) return;
     listRef.current.scrollTop = listRef.current.scrollHeight;
-  }, [messages, thinking, open]);
+  }, [messages, thinking, isStreaming, open]);
 
   const applyIntent = useCallback(
     (intent: PortfolioGuideIntent) => {
@@ -111,6 +127,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
 
   const handlePrompt = useCallback(
     (label: string, intentId?: string) => {
+      if (seedsBusy) return;
       const intent = intentId
         ? getIntentById(intentId)
         : resolveFollowUp(label);
@@ -122,7 +139,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
       ]);
       applyIntent(intent);
     },
-    [applyIntent],
+    [applyIntent, seedsBusy],
   );
 
   const handleSubmit = (event: FormEvent) => {
@@ -135,6 +152,9 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
     setOpen(false);
     onNavigateToProject?.(projectId);
   };
+
+  const showFollowUpRow =
+    conversationStarted && lastFollowUps.length > 0 && !thinking;
 
   return (
     <>
@@ -181,48 +201,63 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
               </button>
             </header>
 
-            <div className="portfolio-guide-messages" ref={listRef}>
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`portfolio-guide-bubble portfolio-guide-bubble--${msg.role}`}
-                >
-                  {msg.role === "assistant" && msg.sections?.length ? (
-                    <div className="portfolio-guide-sections">
-                      {msg.sections.map((section) => (
-                        <div
-                          key={section.title}
-                          className="portfolio-guide-section"
-                        >
-                          <p className="portfolio-guide-section-title">
-                            {section.title}
-                          </p>
-                          <p className="portfolio-guide-section-body">
-                            {section.body}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    msg.content
-                  )}
-                  {msg.role === "assistant" && msg.sourceLabel && (
-                    <>
-                      {msg.caseStudyId && onNavigateToProject ? (
-                        <button
-                          type="button"
-                          className="portfolio-guide-source"
-                          onClick={() => openCaseStudy(msg.caseStudyId!)}
-                        >
-                          Open {msg.sourceLabel}
-                        </button>
-                      ) : (
-                        <p className="portfolio-guide-meta">{msg.sourceLabel}</p>
-                      )}
-                    </>
-                  )}
-                </div>
-              ))}
+            <div
+              className={`portfolio-guide-messages${
+                conversationStarted ? " portfolio-guide-messages--conversation" : ""
+              }`}
+              ref={listRef}
+            >
+              {messages.map((msg) => {
+                const isWelcome =
+                  msg.role === "assistant" &&
+                  msg.content === guide.welcome &&
+                  !msg.sections?.length;
+                const streamThis =
+                  msg.role === "assistant" &&
+                  msg.id === lastAssistantId &&
+                  !isWelcome;
+                const showSource =
+                  msg.role === "assistant" &&
+                  msg.sourceLabel &&
+                  !(streamThis && isStreaming);
+
+                return (
+                  <div
+                    key={msg.id}
+                    className={`portfolio-guide-bubble portfolio-guide-bubble--${msg.role}${
+                      msg.role === "assistant" ? " portfolio-guide-bubble--answer" : ""
+                    }`}
+                  >
+                    {msg.role === "assistant" ? (
+                      <StreamingGuideMessage
+                        content={msg.content}
+                        sections={msg.sections}
+                        enabled={streamThis}
+                        onStreamingChange={
+                          streamThis ? setIsStreaming : undefined
+                        }
+                      />
+                    ) : (
+                      msg.content
+                    )}
+                    {showSource && (
+                      <>
+                        {msg.caseStudyId && onNavigateToProject ? (
+                          <button
+                            type="button"
+                            className="portfolio-guide-source"
+                            onClick={() => openCaseStudy(msg.caseStudyId!)}
+                          >
+                            Open {msg.sourceLabel}
+                          </button>
+                        ) : (
+                          <p className="portfolio-guide-meta">{msg.sourceLabel}</p>
+                        )}
+                      </>
+                    )}
+                  </div>
+                );
+              })}
               {thinking && (
                 <p className="portfolio-guide-thinking" aria-live="polite">
                   {brand.thinkingLabel}
@@ -230,39 +265,46 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
               )}
             </div>
 
-            <div className="portfolio-guide-topics">
+            <div
+              className={`portfolio-guide-seed-dock${
+                conversationStarted ? " portfolio-guide-seed-dock--compact" : ""
+              }`}
+            >
               <p className="portfolio-guide-topics-label">{brand.topicsLabel}</p>
-              <div className="portfolio-guide-topics-scroll">
+              <div className="portfolio-guide-seed-scroll">
                 {guide.prompts.map((prompt) => (
                   <button
                     key={prompt.intentId}
                     type="button"
                     className="portfolio-guide-chip portfolio-guide-chip--compact"
-                    disabled={thinking}
+                    disabled={seedsBusy}
                     onClick={() => handlePrompt(prompt.label, prompt.intentId)}
                   >
                     {prompt.label}
                   </button>
                 ))}
               </div>
+              {showFollowUpRow && (
+                <>
+                  <p className="portfolio-guide-followups-label portfolio-guide-followups-label--compact">
+                    {brand.followUpsLabel}
+                  </p>
+                  <div className="portfolio-guide-seed-scroll portfolio-guide-seed-scroll--followups">
+                    {lastFollowUps.map((label) => (
+                      <button
+                        key={label}
+                        type="button"
+                        className="portfolio-guide-chip portfolio-guide-chip--compact portfolio-guide-chip--followup"
+                        disabled={seedsBusy}
+                        onClick={() => handlePrompt(label)}
+                      >
+                        {label}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
-
-            {lastFollowUps.length > 0 && messages.length > 0 && (
-              <div className="portfolio-guide-followups">
-                <p className="portfolio-guide-followups-label">{brand.followUpsLabel}</p>
-                {lastFollowUps.map((label) => (
-                  <button
-                    key={label}
-                    type="button"
-                    className="portfolio-guide-followup"
-                    disabled={thinking}
-                    onClick={() => handlePrompt(label)}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            )}
 
             <GuideFooter
               brand={brand}
@@ -270,7 +312,7 @@ export function PortfolioGuide({ onNavigateToProject }: PortfolioGuideProps) {
               setCustomInputOpen={setCustomInputOpen}
               draft={draft}
               setDraft={setDraft}
-              thinking={thinking}
+              thinking={seedsBusy}
               onSubmit={handleSubmit}
               onRespond={respond}
               disclaimer={guide.disclaimer}
